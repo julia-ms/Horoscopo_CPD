@@ -1,0 +1,263 @@
+.Direitos autorais
+
+Dicionário Priberam da Língua Portuguesa , edição em português do Brasil
+para Kindle, junho 2011
+
+
+
+ISBN: 978-989-96820-2-3
+
+
+
+© 2011 Priberam Informática, S.A. Todos os direitos reservados.
+
+
+
+"Dicionário Priberam", "Dicionário Priberam da Língua Portuguesa", "Priberam"
+e o logotipo da Priberam são marcas registradas da Priberam Informática, S.A.
+
+
+Índice
+
+Direitos autorais
+
+Sobre o Dicionário
+
+Abreviaturas utilizadas
+
+Dicionário:
+
+               A B C D E F G H I J                   K L M
+
+              N O P Q R S T U V W X Y Z
+
+
+Sobre o Dicionário
+.Sobre o Dicionário
+
+Dicionário Priberam da Língua Portuguesa
+
+
+O Dicionário Priberam da Língua Portuguesa (DPLP) é um dicionário de
+português contemporâneo, cuja nomenclatura compreende o vocabulário geral,
+bem como os termos mais comuns das principais áreas científicas e técnicas. O
+conteúdo dos verbetes do DPLP segue a ortografia da norma brasileira do
+português. O DPLP contém, sempre que pertinente, informação sobre as
+diferenças ortográficas e de uso entre o português europeu e o português do
+Brasil no final de cada verbete.
+
+
+
+Exemplos:
+
+
+
+umidade s. f. 1. Qualidade ou estado de úmido. 2. Estado de molhado ou um
+pouco molhado. 3. Relento da noite.
+ ‣ Etimologia: úmido + -idade
+ ♦ Grafia em Portugal: humidade .
+
+
+
+humidade s. f. 1. Qualidade ou estado de úmido. 2. Estado de molhado ou um
+pouco molhado. 3. Relento da noite.
+ ‣ Etimologia: úmido + -idade
+ ♦ Grafia no Brasil: umidade .
+
+
+
+O DPLP tem por base o Novo Dicionário Lello da Língua Portuguesa (Porto,
+Lello Editores, 1996 e 1999), licenciado pela Priberam em 2008. A obra foi
+adaptada para formato adequado à disponibilização digital pela Priberam e
+.revista pelos seus linguistas, estando em constante atualização e melhoramento.
+
+A Priberam agradece desde já todos os comentários e sugestões dos usuários,
+que deverão ser enviados para dicionario@priberam.pt .
+
+
+
+Estrutura dos verbetes
+
+
+A estrutura básica dos verbetes do DPLP inclui informação sobre:
+
+
+
+    grafia (a negrito)
+    pronúncia (entre | |)
+    classificação gramatical (em itálico e abreviada – a lista das abreviaturas
+    pode ser consultada no capítulo Abreviaturas)
+    definição
+    nível de língua a que pertence determinado sentido ou vocábulo (entre
+    colchetes)
+    restrição geográfica de determinado sentido ou vocábulo (entre colchetes)
+    domínio técnico em que determinado sentido é mais usado (entre colchetes)
+    sinônimos e antônimos (identificados, respetivamente, pelos sinais = e ≠, e
+    grafados em letra maiúscula)
+    locuções (a negrito, seguidas de dois pontos e por ordem alfabética
+    absoluta)
+    plurais, femininos, superlativos, variantes (a redondo, indicados pela
+    etiqueta correspondente)
+    origem da palavra (antecedida pela indicação "‣ Etimologia: ")
+    indicação de variação de grafias na norma portuguesa ou brasileira
+    (antecedida do sinal ♦)
+    indicação de grafias ou variantes antes e depois do Acordo Ortográfico de
+    1990 (antecedida do sinal ♦)
+    notas (inseridas no final dos verbetes com a indicação "Nota:")
+    indicação de relações lexicais (inseridas no final dos verbetes com a
+    indicação "Confrontar:")
+.Exemplos:
+
+
+
+belicoso |ô| adj. Propenso à guerra. = BELÍGERO ≠ PACÍFICO • Plural: belicosos |ó|.
+ ‣ Etimologia: latim bellicosus, -a, -um
+
+
+
+carapau s. m. 1.    [Ictiologia] Peixe
+                                   teleósteo, de pequenas dimensões e corpo
+estreito e comprido, muito comum em Portugal. = CHICHARRO 2. [Informal] Pessoa
+magra. 3. [Portugal] carapau de corrida: pessoa que se considera muito esperta
+ou que se tem em alta conta.
+ ‣ Etimologia: origem obscura
+
+
+
+Na versão atual, o DPLP conta com cerca de:
+
+     105000 entradas;
+     2500 locuções ou fraseologias;
+     26500 etimologias;
+     16000 indicações de pronúncia;
+     22000 sinônimos;
+     2000 antônimos.
+
+
+
+Como procurar palavras no DPLP
+
+
+A pesquisa da palavra a definir pode ser feita pela sua forma não flexionada, isto
+é, o masculino singular, no caso de nomes e adjetivos, e o infinitivo, no caso de
+verbos, mas também pode ser realizada por flexões. Por exemplo, se procurar o
+significado da palavra dramaturga , o usuário obterá o significado pelo
+substantivo masculino dramaturgo . Se procurar o significado da palavra
+.dramatizarias , o usuário irá obter como resultado da pesquisa o verbo
+dramatizar .
+
+Nas pesquisas que efetua, o usuário deve ter presente que a nomenclatura do
+DPLP, assim como a de qualquer outro dicionário, não é exaustiva, pois nenhum
+dicionário consegue incluir todo o léxico de uma língua. Como o DPLP é um
+dicionário em constante atualização e aperfeiçoamento, quaisquer falhas ou
+omissões podem ser comunicadas à Priberam através do endereço
+dicionario@priberam.pt para serem tidas em conta em futuras atualizações.
+
+
+
+Como citar o DPLP
+
+
+A informação retirada de verbetes do DPLP deve ser referenciada da seguinte
+forma (exemplo para o verbete chave ):
+
+
+
+PRIBERAM, "chave", in Dicionário Priberam da Língua Portuguesa [e-book],
+2011.
+
+
+
+O DPLP e o novo Acordo Ortográfico
+
+
+O DPLP é redigido segundo o Acordo Ortográfico de 1990. As palavras que
+sofrem alteração ortográfica surgem no DPLP com entrada própria, com a
+indicação de que se trata de uma grafia alterada pelo Acordo Ortográfico de
+1990.
+
+
+
+Exemplo:
+.ulceróide adj. 2 g. Que se assemelha a úlcera.
+ ♦ Grafia de ulceroide antes do Acordo Ortográfico de 1990.
+
+
+
+Há casos em que a alteração se verifica apenas em Portugal ou no Brasil, sendo
+essa indicação dada como nota no final.
+
+
+
+Exemplo:
+
+
+
+sumptuoso |umpt...ô| adj. 1. Feito à custa de grandes despesas. 2. Que é de um
+luxo extremo. = ESPLÊNDIDO, FAUSTOSO, LUXUOSO, MAGNÍFICO 3. Que ostenta
+pompa. = APARATOSO, POMPOSO • [Portugal] Plural: sumptuosos |ó|.
+ ‣ Etimologia: latim sumptuosus, -a, -um
+ ♦ Grafia no Brasil: suntuoso .
+
+
+
+suntuoso |unt...ô| adj. 1. Feito à custa de grandes despesas. 2. Que é de um luxo
+extremo. = ESPLÊNDIDO, FAUSTOSO, LUXUOSO, MAGNÍFICO 3. Que ostenta pompa. =
+APARATOSO, POMPOSO • [Brasil] Plural: suntuosos |ó|. • [Portugal] Plural: sumptuosos
+ou suntuosos |ó|.
+ ‣ Etimologia: latim sumptuosus, -a, -um
+ ♦ [Portugal] Variante de sumptuoso após o Acordo Ortográfico de 1990.
+
+
+
+
+Abreviaturas
+
+abrev. abreviatura
+adj.   adjetivo
+adj.    adjetivo
+adv.    advérbio
+advers. adversativa
+art.    artigo
+auxil. auxiliar
+card. cardinal
+caus. causal
+comp. composição
+compar. comparativo, comparativa
+conj. conjunção
+contr. contração
+coord. coordenativa
+cop.    copulativa
+def.    definido
+dem. demonstrativo
+det.    determinante
+disj.   disjuntiva
+elem. elemento
+f.      feminino
+fin.    final
+frac.   fracionário
+g.      gênero
+indef. indefinido, indefinida
+integr. integrante
+interj. interjeição
+interr. interrogativo
+intr.   intransitivo
+loc.    locução
+m.      masculino
+mult. multiplicativo
+num. numeral
+núm. número
+ord.    ordinal
+pess. pessoa, pessoal
+pess.   pessoa, pessoal
+pl.     plural
+poss.   possessivo
+pref.   prefixo
+prep.   preposição
+pron.   pronome, pronominal
+rel.    relativo
+s.      substantivo
+símb.   símbolo
+suf.    sufixo
+tr.     transitivo
+v.      verbo
