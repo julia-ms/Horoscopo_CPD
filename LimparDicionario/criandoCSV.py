@@ -16,7 +16,7 @@ listaClasses = ['abrev.','adj.','adv.','advers.','art.','auxil.','card.','caus.'
 #if 'elem.' in listaClasses:
 #    print("ta aquii")
 
-with open("texto.txt", "r", encoding="utf8") as x:
+with open("dicionario.txt", "r", encoding="utf8") as x:
     for lines in x:
         if lines != "\n": 
             strVar = strVar+ lines[0:-2]
@@ -31,16 +31,36 @@ with open("texto.txt", "r", encoding="utf8") as x:
                         varList[i] = ';'
                         varI = i
                         break
+
+                # separa o significado 
                 for i in range (varI,tamanho):
+                    if varList[i] == '|':
+                        aux = i+1
+                        varList[i] = ''
+                        while varList[aux] != '|':
+                            varList[aux] = ''
+                            aux = aux + 1
+                        varList[aux] = ''
+
+                            
                     if varList[i].isupper():
                         varList[i-1] = ';'
+                        varI = i
                         break
                     if varList[i] == '1':
                         varList[i-1] = ';'
+                        varI = i
                         break
                     if varList[i] == '[':
                         varList[i-1] = ';'
+                        varI = i
                         break
+                
+
+                #ve se tem mais ; no resto do significado e troca por ,
+                for i in range (varI,tamanho):
+                    if varList[i] == ';':
+                        varList[i] = ','
                     
                 
                 linhaPronta =  ''.join(varList)
@@ -49,3 +69,10 @@ with open("texto.txt", "r", encoding="utf8") as x:
                 strVar = ''
                 teste = 0
    
+
+# tem 'e' no meio
+# plural
+# fem ou masc
+# 2g
+# 2 num
+# apagar as classes que não estão na lista
