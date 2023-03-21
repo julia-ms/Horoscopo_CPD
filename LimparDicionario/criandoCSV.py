@@ -8,9 +8,11 @@ teste = 0
 
 listaClasses = ['abrev.','adj.','adv.','advers.','art.','auxil.','card.','caus.',
                 'comp.','compar.','conj.','contr.','coord.','cop.','def.', 'dem.','det.','disj.',
-                'elem.','f.','fin.','frac.','g.','indef.','integr.','interj.','interr.',
-                'intr.','loc.','m.','mult.','num.','núm.','ord.','pess.','pl.','poss.','pref.',
+                'elem.','fin.','frac.','g.','indef.','integr.','interj.','interr.',
+                'intr.','loc.','mult.','num.','núm.','ord.','pess.','poss.','pref.',
                 'prep.','pron.','rel.','s.','símb.','suf.','tr.','v.']
+listaGeneros = [' f.',' m.']
+listaNumero = [' pl.']
 
 
 #if 'elem.' in listaClasses:
@@ -24,16 +26,21 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
         else:
             if teste == 1:
 
+                #separa palavra com ;
+                #deixa varI no lugar do ;
                 tamanho = len(strVar)
                 varList = list(strVar)
                 for i in range (tamanho):
                     if varList[i] == ' ':
                         varList[i] = ';'
                         varI = i
+                        inicioClasse = i+1
                         break
 
-                # separa o significado 
+                # separa o significado
+                # apaga tudo que esta em modulo junto com a palavra (como falar)
                 for i in range (varI,tamanho):
+                    fimClasse = i; 
                     if varList[i] == '|':
                         aux = i+1
                         varList[i] = ''
@@ -56,19 +63,52 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
                         varI = i
                         break
                 
-
-                #ve se tem mais ; no resto do significado e troca por ,
-                for i in range (varI,tamanho):
-                    if varList[i] == ';':
-                        varList[i] = ','
-                    
+                fimClasse = fimClasse-1
                 
-                linhaPronta =  ''.join(varList)
-                print(linhaPronta)
-                f.write(linhaPronta + '\n')
-                strVar = ''
-                teste = 0
-   
+                if tamanho > fimClasse:
+                    
+
+                    #ve se tem mais ; no resto do significado e troca por ,
+                    for i in range (varI,tamanho):
+                        if varList[i] == ';':
+                            varList[i] = ','
+
+
+                    #verificacoes só dentro da classe
+                    #se eu acho um genero, so separo antes. pq se tiver mais genero depois, eles vem em seguida
+                    temGen = 0
+                    for i in range (inicioClasse, fimClasse-2):
+                        aux = varList[i] + varList[i+1] + varList[i+2]
+
+                        if (aux in listaGeneros):
+                            if (i <= fimClasse):
+                                temGen = 1
+                                varList[i] = ';'
+                                break
+                    
+                    if temGen == 0:
+                        varList[fimClasse] = varList[fimClasse] + ';'
+
+
+                    temNum = 0
+                    for i in range (inicioClasse, fimClasse-3):
+                        aux = varList[i] + varList[i+1] + varList[i+2] + varList[i+3]
+
+                        if (aux in listaNumero):
+                            if (i <= fimClasse):
+                                temNum = 1 
+                                varList[i] = ';'
+                                break
+                        
+                    if temNum == 0:
+                        varList[fimClasse] = varList[fimClasse] + ';'
+                    
+                    linhaPronta =  ''.join(varList)
+                    f.write(linhaPronta + '\n')
+                    strVar = ''
+                    teste = 0
+    
+
 
 # tem 'e' no meio
 # plural
