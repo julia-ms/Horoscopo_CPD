@@ -37,6 +37,7 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
                         inicioClasse = i+1
                         break
 
+
                 # separa o significado
                 # apaga tudo que esta em modulo junto com a palavra (como falar)
                 for i in range (varI,tamanho):
@@ -48,6 +49,8 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
                             varList[aux] = ''
                             aux = aux + 1
                         varList[aux] = ''
+                        varList[aux+1] = ''
+
 
                             
                     if varList[i].isupper():
@@ -66,8 +69,6 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
                 fimClasse = fimClasse-1
                 
                 if tamanho > fimClasse:
-                    
-
                     #ve se tem mais ; no resto do significado e troca por ,
                     for i in range (varI,tamanho):
                         if varList[i] == ';':
@@ -102,7 +103,18 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
                         
                     if temNum == 0:
                         varList[fimClasse] = varList[fimClasse] + ';'
-                    
+
+                    for i in range (inicioClasse, fimClasse-2):
+                        aux = varList[i] + varList[i+1] + varList[i+2]
+                        if aux == ' e ':
+                            varList[i] = ','
+                            varList[i+1] = ''
+                            varList[i+2] = ''
+
+                        if varList[i] == ' ':
+                            varList[i] = ','
+                        
+
                     linhaPronta =  ''.join(varList)
                     f.write(linhaPronta + '\n')
                     strVar = ''
