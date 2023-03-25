@@ -5,7 +5,6 @@ f = open('teste.csv', 'w', newline='', encoding='utf-8')
 strVar =''
 teste = 0
 
-
 listaClasses = ['abrev.','adj.','adv.','advers.','art.','auxil.','card.','caus.',
                 'comp.','compar.','conj.','contr.','coord.','cop.','def.', 'dem.','det.','disj.',
                 'elem.','fin.','frac.','g.','indef.','integr.','interj.','interr.',
@@ -19,6 +18,7 @@ listaNumero = [' pl.']
 #    print("ta aquii")
 
 with open("dicionario.txt", "r", encoding="utf8") as x:
+
     for lines in x:
         if lines != "\n": 
             strVar = strVar+ lines[0:-2]
@@ -28,6 +28,7 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
 
                 #separa palavra com ;
                 #deixa varI no lugar do ;
+
                 tamanho = len(strVar)
                 varList = list(strVar)
                 for i in range (tamanho):
@@ -128,3 +129,4 @@ with open("dicionario.txt", "r", encoding="utf8") as x:
 # 2g
 # 2 num
 # apagar as classes que não estão na lista
+
