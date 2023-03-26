@@ -15,7 +15,7 @@ int main(int arqc, char* argv[]) {
   cout << arq_data_is;
   cout << arq_binary_is; 
 
-  fillArchive(arq_data_is, arq_binary_is);
-  readArchive(arq_binary_is); 
+  fillFile(arq_data_is, arq_binary_is);
+  readFile(arq_binary_is); 
   return 0;
 }

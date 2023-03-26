@@ -17,11 +17,8 @@ using namespace std;
     - e quando eu quiser, por exemplo, um SUBSTANTIVO FEMININO, eu procuro nos dois arquivos invertidos? 
 */
 
-
-
-
 // funcao que abre o arquivo csv e coloca os itens em um arquivo binário com ID
-int fillArchive(string arq_data_is, string arq_binary_is){
+int fillFile(string arq_data_is, string arq_binary_is){
 
     ifstream arq_data(arq_data_is);
     ofstream dic_binary(arq_binary_is, ios::binary);
@@ -61,10 +58,9 @@ int fillArchive(string arq_data_is, string arq_binary_is){
     return 0; 
 }
 
-
 //funcao que abre o arquivo binario e le cada item printando no terminal
-
-int readArchive(string arq_binary_is){
+//pode ser usada na hora de procurar todos os itens de uma classe ou coisas assim....
+int readFile(string arq_binary_is){
     ifstream dic_binary(arq_binary_is, ios::binary);
 
     Word wordAux; 
@@ -83,13 +79,13 @@ int readArchive(string arq_binary_is){
         getline(dic_binary, wordAux.numero, '\0');
         getline(dic_binary, wordAux.significado, '\0');     
 
-        //e aqui vou printar a struct pra mostrar que deu certo
+        /*//e aqui vou printar a struct pra mostrar que deu certo
         cout << "ID:" << wordAux.ID << endl; 
         cout << "palavra:" << wordAux.palavra << endl; 
         cout << "classe:"  << wordAux.classe  << endl;
         cout << "genero:"  << wordAux.genero  << endl;
         cout << "numero:"  << wordAux.numero  << endl;
-        cout << "significado:" << wordAux.significado << endl <<endl;
+        cout << "significado:" << wordAux.significado << endl <<endl;*/
     }
     
     if (!dic_binary.eof()) {
@@ -101,9 +97,8 @@ int readArchive(string arq_binary_is){
     dic_binary.close();
     return 0; 
 }
- 
 
-
+//funcao que recebe uma string adequada e transforma em struct palavra
 Word construct(string line, int IDAux) {
      
     Word wordAux; 

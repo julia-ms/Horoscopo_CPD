@@ -21,9 +21,9 @@ struct Word {
 }; 
 
 //functions
-int fillArchive(string arq_data_is, string arq_binary_is);
-int readArchive(string arq_binary_is);
-Word construct(string line, int ID); 
+int fillFile(string arq_data_is, string arq_binary_is);
+int readFile(string arq_binary_is);
+Word construct(string line, int ID);            
 
 
 #endif // BIB_H
