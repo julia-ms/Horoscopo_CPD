@@ -20,34 +20,38 @@ struct Word {
     string significado; 
 }; 
 
-struct Node {    
-    //pensar melhor nessas estruturas
-    vector<Key> keys;
-    vector<Node*> children; 
-    Node* parent; 
-    bool isLeaf; 
-    int numKeys; 
-}; 
 
 struct Key {
     int ID; 
-    string word; 
-    int adress;         //endereço de uma struct dentro do arquivo 
+    string word;            //talvez isso aqui prejudique no tamanho, se prejudicar usaremos char word[50]
+    streampos adress;       //endereço de uma struct dentro do arquivo 
 };
 
-//funcoes
+//node declaration
+struct Node {    
+    //pensar melhor nessas estruturas
+    Key* keys;              //array de keys 
+    streampos* children;    //array de posicoes em arquivo
+    streampos parent; 
+    bool isLeaf; 
+    int numChildren; 
+}; 
+
+
+
+//functions
 int fillFile(string arq_data_is, string arq_binary_is);
 int readFile(string arq_binary_is);
 Word construct(string line, int ID); 
 
-int createBTree(string arq_binary_is);
-int newUserWord();
-string doStringWord(); 
-int insertWord(string line, string arq_binary_is, string arq_Btree_is);
-int deleteWord(string word, string arq_binary_is, string arq_Btree_is);
-int createBTree(string arq_binary_is, Word word); 
-int insertInBTree(Node* &root, Key key, int t);
-int deleteInBTree(string arq_binary_is, Word word);
-
+//functions Btree
+Node init(); 
+streampos putInArq(Node node); 
+Node readInArq (streampos pos);
+int swapStruct(streampos pos, Node node);  
+void traverse(streampos p); 
+void sort(Key *keys, int numKeys); 
+Key split_child(streampos x, int i); 
+void insert(Key key); 
 
 #endif // BIB_H
