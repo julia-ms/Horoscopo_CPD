@@ -148,5 +148,3 @@ Word construct(string line, int IDAux) {
     }
     return wordAux; 
 }
-
-
