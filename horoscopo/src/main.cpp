@@ -1,5 +1,5 @@
 // Bibliotecas
-#include "./include/bib.h"
+#include "../include/bib.h"
 
 
 using namespace std;

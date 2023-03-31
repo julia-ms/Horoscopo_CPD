@@ -1,9 +1,9 @@
-#include  "../include/word.h"
+#include  "../include/wordkey.h"
 
 
 using namespace std; 
 
-int Word::fromString(string str) {
+int WordKey::fromString(string str) {
     int tam = str.length(); 
     if (tam>tamStr) {
         return -1;  
@@ -14,7 +14,7 @@ int Word::fromString(string str) {
     return 0; 
 }
 
-string Word::toString() {
+string WordKey::toString() {
     string str; 
     
     int i = 0; 
@@ -25,7 +25,7 @@ string Word::toString() {
     return str;
 }
 
-void Word::clear(){
+void WordKey::clear(){
     int i = 0; 
     while (i<tamStr){
         word[i] = '\0'; 
@@ -33,7 +33,7 @@ void Word::clear(){
     }
 }
 
-void Word::wPrint() {
+void WordKey::wPrint() {
     int i = 0; 
     while (word[i] != '\0' && i<tamStr){
         cout << word[i];
@@ -41,7 +41,7 @@ void Word::wPrint() {
     }
 }
 
-int Word::compareW(string str){
+int WordKey::compareW(string str){
     int comp; 
     string wordStr; 
 

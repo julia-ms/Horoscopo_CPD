@@ -16,7 +16,7 @@ using namespace std;
 
 const int tamStr = 50 + 1;
 
-class Word {
+class WordKey {
     private: 
         char word[50] = {'\0'}; 
 

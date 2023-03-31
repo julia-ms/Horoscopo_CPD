@@ -1,4 +1,4 @@
-#include "../include/bib.h"
+#include "bib.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ Node init() {
 
     for (int i = 0; i < t; i++){
         node.keys[i].ID = 0;  
-        node.keys[i].word.clear();
+        node.keys[i].word = "";
         node.keys[i].address = -1;   
     }
 
@@ -26,56 +26,81 @@ Node init() {
     node.parent = 0;                     // Definindo a posição do pai como 0
     node.isLeaf = false;                 // Indicando que o nó não é folha
     node.numChildren = 0; 
+
     return node; 
 }
 
 //funcao que coloca nodo no fim do arquivo e retorna endereço 
 streampos putInArq(Node node) {
     streampos addressNode; 
+    //criando o arquivo ou abro o arquivo que já existe e me posiciono ao final dele  ::append
+    ofstream BTree("Btree.bin", ios::binary | ios::app);
 
-    ofstream BTreePut("Btree.bin", ios::binary | ios::app);
-
-    if (!BTreePut) {                                   //arquivo nao foi criado/aberto
+    if (!BTree) {                                   //arquivo nao foi criado/aberto
         return 1;
     }
+    
+    addressNode = BTree.tellp();                     //obtenho endereco atual de final do arquivo, que eh onde sera colocado o novo nodo
+         
+    //escrevo no arquivo 3
 
-    BTreePut.write((char*)&node, sizeof(Node));
-    addressNode = BTreePut.tellp();                     
+    BTree.write((char*)&node, sizeof(Node)*t);
 
-    BTreePut.close(); 
+    //BTree.write((char*)&node, sizeof(Node)*t);
+    //BTree.write(&node, sizeof(Node));       //seguir lógica 
+    //BTree.write((char*)&node.children, sizeof(streampos)*(t+1));
+    //BTree.write((char*)&node.parent, sizeof(streampos));
+    //BTree.write((char*)&node.isLeaf, sizeof(bool));
+    //BTree.write((char*)&node.numChildren, sizeof(int));
+    
+
+    cout << "errroooo";
+
+    BTree.close(); 
     return addressNode;                              // retorno a posicao do arquivo onde ta o nodo
 }
-
 
 //recebe uma posicao e retorna o nodo que ta la 
 Node readInArq (streampos pos) {
     Node node; 
-    ifstream BTreeRead("Btree.bin", ios::binary);
+    //agora eu devo ler o arquivo onde ta esse streampos e pegar as informaçoes
+    ifstream BTree("Btree.bin", ios::binary);
 
     //vou ate o endereco desse nodo e leio
-    BTreeRead.seekg(pos); 
-    BTreeRead.read((char*)&node, sizeof(Node)); 
+    BTree.seekg(pos); 
+    BTree.read((char*)&node, sizeof(Node)); 
 
-    BTreeRead.close();
+    BTree.close();
     return node; 
 }
 
+//a pergunta q sobra eh se ao adicionar mais infos nao vai mudar o espaco ocupado, por isso preciso garantir que tudo tem espaço igual
+//o que pode mudar eh por causa do tamanho das keys, mais especificamente da string letra 
+
+
 //vai ate uma posicao e coloca lá a struct recebida
 int swapStruct(streampos pos, Node node){
-    ofstream BTreeSwap("Btree.bin", ios::binary);
+    ofstream BTree("Btree.bin", ios::binary);
         
     //move o ponteiro ate a posicao da string antiga 
-    BTreeSwap.seekp(pos); 
+    BTree.seekp(pos); 
 
     //escrevo nodo no arquivo nessa posicao
-    BTreeSwap.write((char*)&node, sizeof(Node));        
+    BTree.write((char*)&node, sizeof(Node));        
     
-    BTreeSwap.close();
+    BTree.close();
     return 0; 
 }
 
 
 //traverse the tree
+/*A função "traverse tree" em uma implementação de B-trees é responsável por 
+percorrer a árvore a partir da raiz até encontrar um determinado nó, 
+chave ou intervalo de chaves. Essa função é fundamental para a busca 
+de informações em uma B-tree, já que é necessário percorrer a estrutura 
+a partir da raiz para encontrar o nó correto.*/
+
+//alterei pra receber um endereco de arquivo 
 void traverse(streampos p) {
     Node node; 
     node = readInArq(p); 
@@ -85,15 +110,13 @@ void traverse(streampos p) {
         if (node.isLeaf == false) {              // se o nodo nao eh folha, ou seja, se nao acabou e ainda tem filhos   
             traverse(node.children[i]);    // vou recursivamente entrar no nodo filho e repetir isso, ate chegar no ultimo filho
         }
-        node.keys[i].word.wPrint(); 
+    cout << " " << node.keys[i].word;               // assim, como depois eu volto tudo, vou imprimir o dado i e estarei imprimindo em ordem 
     }
-
     if (node.isLeaf == false) {                  // faco isso de novo, nao sei pq, talvez seja pro pai e o do lado tb aparecerem
         traverse(node.children[i]);
     }
     cout<<endl;
 }
-
 
 //sort the tree 
 
@@ -109,9 +132,10 @@ void sort(Key *keys, int numKeys) {
     for (i = 0; i < numKeys; i++) {
         for (j = i; j <= numKeys; j++) {
 
+            si = keys[i].word; 
+            sj = keys[j].word; 
 
-            si = keys[i].word.toString(); 
-            sj = keys[j].word.toString(); 
+            si.compare(sj);
 
             if ((si.compare(sj)) > 0) {
                 auxKey = keys[i];
@@ -122,7 +146,8 @@ void sort(Key *keys, int numKeys) {
     }
 }
 
-
+// ACHO q x é tipo o primeiro elemento? 
+// aqui começa a ficar louco! é a funcao que divide o nodo e os filhos quando o tamanho excede t
 
 //recebo um endereco pro nodo x que ta em arquivo e um int i 
 //suponho q int i na verdade seja uma Key newKey
@@ -148,7 +173,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
                                                         // encontro meio assim pois eh a key do meio [0,1, 2 ,3,4,5] ja q eh de ordem 6 (sao 6 keys)
         //zero o q estava no meio                                              
         nodeX.keys[2].ID = 0;
-        nodeX.keys[2].word.clear();
+        nodeX.keys[2].word = "";
         nodeX.keys[2].address = -1; 
 
         nodeX.numChildren = nodeX.numChildren--;        // zerei um, ja diminuo o numero de filhos
@@ -164,12 +189,12 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
             nodep3.numChildren = nodep3.numChildren+1;  // vou atualizar o numero de filhos
 
             nodeX.keys[j].ID = 0;                       // e cada vez que eu tiro uma key, eu zero/apago do antigo
-            nodeX.keys[j].word.clear();
+            nodeX.keys[j].word = "";
             nodeX.keys[j].address = -1; 
             nodeX.numChildren = nodeX.numChildren-1; 
         }
             
-        for (j = 0; j <= 6; j++) {       
+        for (j = 0; j < 6; j++) {       
             nodeX.children[j] = -1;                   // quando acabar isso, o antigo nao tera nenhum filho (desceu)
         }
 
@@ -198,7 +223,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
 
         nodeY.keys[2].ID = 0;                           // e cada vez que eu tiro uma key, eu zero/apago do antigo
-        nodeY.keys[2].word.clear();
+        nodeY.keys[2].word = "";
         nodeY.keys[2].address = -1;
         nodeY.numChildren = nodeY.numChildren-1;        // diminui o nro de filhos
 
@@ -208,7 +233,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
             nodep3.numChildren = nodep3.numChildren-1;  // tambem atualizo o numero de filhos de np3    
 
             nodeY.keys[j].ID = 0;                       // e tb limpo oq tava em y
-            nodeY.keys[j].word.clear();    
+            nodeY.keys[j].word = "";    
             nodeY.keys[j].address = -1;
 
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos
@@ -260,10 +285,10 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
 
             for (i = 0; i < (nodeX.numChildren); i++) {        // enquanto i for menor que o numero de elementos de x
 
-                strA  = key.word.toString(); 
-                strI  = nodeX.keys[i].word.toString(); 
-                strI1 = nodeX.keys[i+1].word.toString(); 
-                str0  = nodeX.keys[0].word.toString();
+                strA  = key.word; 
+                strI  = nodeX.keys[i].word; 
+                strI1 = nodeX.keys[i+1].word; 
+                str0  = nodeX.keys[0].word;
                 
 
                 if ((strA.compare(strI) > 0 ) && (strA.compare(strI1) < 0)) {    //ve se a string ta no intervalo
@@ -286,9 +311,9 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
                 for (i = 0; i < (nodeX.numChildren); i++) {         // percorro o nro de filhos
 
                     
-                    strI = nodeX.keys[i].word.toString();
-                    strI = nodeX.keys[i+1].word.toString();
-                    str0 = nodeX.keys[0].word.toString(); 
+                    strI = nodeX.keys[i].word;
+                    strI = nodeX.keys[i+1].word;
+                    str0 = nodeX.keys[0].word; 
 
 
                     if ((strA.compare(strI) > 0) && (strA.compare(strI1) < 0)) {// se a eh maior que o dado 1 e menor q o outro dado (ta no meio)
@@ -329,20 +354,17 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
     }
 }
 
-
-
 int main() {
     Key key1, key2, key3;
 
-//preenchendo teste ------------------------------------------------------------------------------------------
-    key1.word.fromString("dicionario"); 
-    key2.word.fromString("abajour"); 
-    key3.word.fromString("frogarm"); 
+    key1.ID = 33;
+    key1.word = "arthur";
+    key2.ID = 43;
+    key2.word = "caue";
+    key3.ID = 53;
+    key3.word = "caxias";
 
-    key1.ID = 20;
-    key2.ID = 30;
-    key3.ID = 40;
- 
+
   
     insert(key1);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
     insert(key2);
@@ -350,6 +372,5 @@ int main() {
 
     cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
     traverse(r);
-
-    return 0; 
 }
+

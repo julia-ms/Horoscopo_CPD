@@ -7,12 +7,11 @@
 #include <locale>
 #include <vector>
 
+#include "wordkey.h"
+
 using namespace std; 
 
-const int t = 3; 
-const int tamStr = 50; 
-
-
+const int t = 6; 
 
 //structs 
 struct Word {
@@ -26,16 +25,14 @@ struct Word {
 
 struct Key {
     int ID; 
-    //string word;            //talvez isso aqui prejudique no tamanho, se prejudicar usaremos char word[50] //string dizer q tem tamanho 
-    array<char, tamStr+1> word;
+    WordKey word;
     streampos address;       //endereço de uma struct dentro do arquivo //
 };
 
 //node declaration
 struct Node {    
-    //pensar melhor nessas estruturas
-    Key keys[t];              //array de keys 
-    streampos children[t+1];    //array de posicoes em arquivo
+    Key keys[t];              
+    streampos children[t+1];  
     streampos parent; 
     bool isLeaf; 
     int numChildren; 

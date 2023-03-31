@@ -1,4 +1,4 @@
-#include "../include/word.h"
+#include "../include/wordkey.h"
 
 //escrever duas structs, gravar em um arquivo binário e ler de volta
 
@@ -8,7 +8,7 @@ const int t = 3;
 
 struct Key {
     int ID; 
-    Word word;  
+    WordKey word;  
     streampos address;       //endereço de uma struct dentro do arquivo //
 };
 
