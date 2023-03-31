@@ -2,17 +2,27 @@
 
 using namespace std;
 
-const int t = 3;       // fazer com t = 3 para testes 
-streampos r, np, auxx; // por enquanto com esses nomes 
-bool rootIni = false; 
+streampos r = -1; 
+streampos np = -1; 
+streampos auxx = -1; 
 
 
 //r eh raiz, np eh novo nodo e x eh um generico q vou usar
 //funcao que cria/inicia nodo
 Node init() {
     Node node;
-    node.keys = new Key[t];              // Alocando espaço para t chaves
-    node.children = new streampos[t+1];  // Alocando espaço para t+1 posições de filhos
+
+    for (int i = 0; i < t; i++){
+        node.keys[i].ID = 0;  
+        node.keys[i].word = "";
+        node.keys[i].address = -1;   
+    }
+
+    //inicializando filhos em 1 
+    for (int i = 0; i < t+1; i++){
+        node.children[i] = -1 ;    
+    }
+    
     node.parent = 0;                     // Definindo a posição do pai como 0
     node.isLeaf = false;                 // Indicando que o nó não é folha
     node.numChildren = 0; 
@@ -22,17 +32,32 @@ Node init() {
 
 //funcao que coloca nodo no fim do arquivo e retorna endereço 
 streampos putInArq(Node node) {
-    streampos adressNode; 
+    streampos addressNode; 
     //criando o arquivo ou abro o arquivo que já existe e me posiciono ao final dele  ::append
     ofstream BTree("Btree.bin", ios::binary | ios::app);
 
     if (!BTree) {                                   //arquivo nao foi criado/aberto
         return 1;
     }
-    adressNode = BTree.tellp();                     //obtenho endereco atual de final do arquivo, que eh onde sera colocado o novo nodo
-    BTree.write((char*)&node, sizeof(Node));        //escrevo nodo no arquivo
+    
+    addressNode = BTree.tellp();                     //obtenho endereco atual de final do arquivo, que eh onde sera colocado o novo nodo
+         
+    //escrevo no arquivo 3
+
+    BTree.write((char*)&node, sizeof(Node)*t);
+
+    //BTree.write((char*)&node, sizeof(Node)*t);
+    //BTree.write(&node, sizeof(Node));       //seguir lógica 
+    //BTree.write((char*)&node.children, sizeof(streampos)*(t+1));
+    //BTree.write((char*)&node.parent, sizeof(streampos));
+    //BTree.write((char*)&node.isLeaf, sizeof(bool));
+    //BTree.write((char*)&node.numChildren, sizeof(int));
+    
+
+    cout << "errroooo";
+
     BTree.close(); 
-    return adressNode;                              // retorno a posicao do arquivo onde ta o nodo
+    return addressNode;                              // retorno a posicao do arquivo onde ta o nodo
 }
 
 //recebe uma posicao e retorna o nodo que ta la 
@@ -149,7 +174,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
         //zero o q estava no meio                                              
         nodeX.keys[2].ID = 0;
         nodeX.keys[2].word = "";
-        nodeX.keys[2].adress = NULL; 
+        nodeX.keys[2].address = -1; 
 
         nodeX.numChildren = nodeX.numChildren--;        // zerei um, ja diminuo o numero de filhos
 
@@ -165,12 +190,12 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
             nodeX.keys[j].ID = 0;                       // e cada vez que eu tiro uma key, eu zero/apago do antigo
             nodeX.keys[j].word = "";
-            nodeX.keys[j].adress = NULL; 
+            nodeX.keys[j].address = -1; 
             nodeX.numChildren = nodeX.numChildren-1; 
         }
             
         for (j = 0; j < 6; j++) {       
-            nodeX.children[j] = NULL;                   // quando acabar isso, o antigo nao tera nenhum filho (desceu)
+            nodeX.children[j] = -1;                   // quando acabar isso, o antigo nao tera nenhum filho (desceu)
         }
 
         nodep1.keys[0] = mid;                           // ja a primeira key de np1 sera o meio
@@ -199,7 +224,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
         nodeY.keys[2].ID = 0;                           // e cada vez que eu tiro uma key, eu zero/apago do antigo
         nodeY.keys[2].word = "";
-        nodeY.keys[2].adress = NULL;
+        nodeY.keys[2].address = -1;
         nodeY.numChildren = nodeY.numChildren-1;        // diminui o nro de filhos
 
         for (j = 3; j <6 ; j++) {                       // aqui lembrar de mudar tb pra quando tiver mais itens 
@@ -209,7 +234,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
             nodeY.keys[j].ID = 0;                       // e tb limpo oq tava em y
             nodeY.keys[j].word = "";    
-            nodeY.keys[j].adress = NULL;
+            nodeY.keys[j].address = -1;
 
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos
         }   
@@ -235,16 +260,16 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
     
     auxx = r;                           // o endereco do auxx eh o da raiz
 
-    if (!rootIni) {                     // ?
+    if (r == -1) {                      // ?
         Node nodeR;                     // crio o nodo raiz  
         nodeR = init();                 // inicio ele 
         r = putInArq(nodeR);            // coloco ele no arquivo, e salvo o endereco da raiz
         auxx = r;                       // guardo em auxx o endereco da raiz, pra nao perder a raiz por ai    
-        rootIni = true;                 // digo que a raiz esta inicializada
+
+        cout << "erro aq"; 
     } 
 
     else {
-
         string strA; 
         string strI;
         string strI1; 
@@ -333,9 +358,9 @@ int main() {
     Key key1, key2, key3;
 
     key1.ID = 33;
-    key1.word = "batata";
+    key1.word = "arthur";
     key2.ID = 43;
-    key2.word = "amendoim";
+    key2.word = "caue";
     key3.ID = 53;
     key3.word = "caxias";
 

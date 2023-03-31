@@ -9,6 +9,10 @@
 
 using namespace std; 
 
+const int t = 3; 
+const int tamStr = 50; 
+
+
 
 //structs 
 struct Word {
@@ -20,18 +24,18 @@ struct Word {
     string significado; 
 }; 
 
-
 struct Key {
     int ID; 
-    string word;            //talvez isso aqui prejudique no tamanho, se prejudicar usaremos char word[50]
-    streampos adress;       //endereço de uma struct dentro do arquivo 
+    //string word;            //talvez isso aqui prejudique no tamanho, se prejudicar usaremos char word[50] //string dizer q tem tamanho 
+    array<char, tamStr+1> word;
+    streampos address;       //endereço de uma struct dentro do arquivo //
 };
 
 //node declaration
 struct Node {    
     //pensar melhor nessas estruturas
-    Key* keys;              //array de keys 
-    streampos* children;    //array de posicoes em arquivo
+    Key keys[t];              //array de keys 
+    streampos children[t+1];    //array de posicoes em arquivo
     streampos parent; 
     bool isLeaf; 
     int numChildren; 
