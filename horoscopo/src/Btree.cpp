@@ -2,9 +2,11 @@
 
 using namespace std;
 
-streampos r = -1; 
-streampos np = -1; 
-streampos auxx = -1; 
+
+//comecando com enderecos vazios pra nodos 
+streampos r = -1;              //raiz 
+streampos np = -1;             //node pointer
+streampos auxx = -1;           //auxiliar x
 
 
 //r eh raiz, np eh novo nodo e x eh um generico q vou usar
@@ -24,7 +26,7 @@ Node init() {
     }
     
     node.parent = 0;                     // Definindo a posição do pai como 0
-    node.isLeaf = false;                 // Indicando que o nó não é folha
+    node.isLeaf = true;                 // Indicando que o nó não é folha
     node.numChildren = 0; 
     return node; 
 }
@@ -86,12 +88,14 @@ void traverse(streampos p) {
             traverse(node.children[i]);    // vou recursivamente entrar no nodo filho e repetir isso, ate chegar no ultimo filho
         }
         node.keys[i].word.wPrint(); 
+        cout <<endl;
     }
 
     if (node.isLeaf == false) {                  // faco isso de novo, nao sei pq, talvez seja pro pai e o do lado tb aparecerem
         traverse(node.children[i]);
     }
     cout<<endl;
+    //cout << "erro"; 
 }
 
 
@@ -234,43 +238,50 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
     Key t;                              // vai ser usada mais pra frente quando eu receber o meio 
     
     auxx = r;                           // o endereco do auxx eh o da raiz
+    Node nodeX;                         // vou usar esse nodo
 
-    if (r == -1) {                      // ?
-        Node nodeR;                     // crio o nodo raiz  
-        nodeR = init();                 // inicio ele 
-        r = putInArq(nodeR);            // coloco ele no arquivo, e salvo o endereco da raiz
-        auxx = r;                       // guardo em auxx o endereco da raiz, pra nao perder a raiz por ai    
 
-        cout << "erro aq"; 
+    if (auxx == -1) {                   // ?
+        nodeX = init();                 // inicio ele 
+        r = putInArq(nodeX);            // agora tenho endereco pra raiz 
+        auxx = r;                       // x eh o q to trabalhando, nesse caso trab c a raiz
+
+        //r sempre sera o endereco da raiz. sempree    
     } 
 
     else {
+
+        //cout << "erro aq dentro"; 
+
         string strA; 
         string strI;
         string strI1; 
         string str0;
                 
-        Node nodeX = readInArq(auxx);      // usarei um nodeX    
+        nodeX = readInArq(auxx);      // usarei um nodeX    
+                                      // a principio, no momento eh a raiz q eu smp vou usar
 
         if (nodeX.isLeaf== true && nodeX.numChildren == 6) {   // aqui, novamente, muda com a mudanca de tamanho 
             t = split_child(auxx, -1);                         // t eh o do meio, mandando -1?
-            auxx = r;                                          // o end de auxx recebe o endereco da raiz. no endereco o endereco do nodeX ficou ONDE?
-
+            auxx = r;                                          
             nodeX = readInArq(auxx); 
+            //sera q aqui eu to so mudando com quem eu to mexendo?
 
+        
             for (i = 0; i < (nodeX.numChildren); i++) {        // enquanto i for menor que o numero de elementos de x
-
                 strA  = key.word.toString(); 
+                //cout << "A: " << strA << endl; 
                 strI  = nodeX.keys[i].word.toString(); 
+                //cout << "I: " << strI << endl; 
                 strI1 = nodeX.keys[i+1].word.toString(); 
+                //cout << "I1: " << strI1 << endl; 
                 str0  = nodeX.keys[0].word.toString();
-                
+                //cout << "0 : " << str0 << endl; 
 
                 if ((strA.compare(strI) > 0 ) && (strA.compare(strI1) < 0)) {    //ve se a string ta no intervalo
                     i++;                                    // ou seja, se ta dentro do intervalo, aumento i, e saio  
                     break;
                 }
-
                 else if (strA.compare(str0) < 0) {          // mas se ele nao ta no intervalo e eh menor q o primeiro, eu tb saio  
                     break;
                 } 
@@ -281,15 +292,21 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
             auxx = nodeX.children[i]; 
             nodeX = readInArq(auxx); 
         } 
+
         else {                              
             while (nodeX.isLeaf == false) {                         // agr, caso x nao seja folha 
+                //cout << "infinito "; 
+                
                 for (i = 0; i < (nodeX.numChildren); i++) {         // percorro o nro de filhos
 
-                    
+                    strA = key.word.toString(); 
+                    //cout << "a: " << strA << endl; 
                     strI = nodeX.keys[i].word.toString();
-                    strI = nodeX.keys[i+1].word.toString();
+                    //cout << "I: " << strI << endl; 
+                    strI1 = nodeX.keys[i+1].word.toString();
+                    //cout << "I1: " << strI1 << endl; 
                     str0 = nodeX.keys[0].word.toString(); 
-
+                    //cout << "I0: " << str0 << endl; 
 
                     if ((strA.compare(strI) > 0) && (strA.compare(strI1) < 0)) {// se a eh maior que o dado 1 e menor q o outro dado (ta no meio)
                         i++;                                // break
@@ -301,52 +318,67 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
                     else {                                  // se nao, sigo procurando
                         continue;
                     }
-                
-                    Node childrenI; 
-
-                    childrenI = readInArq(nodeX.children[i]); 
-                
-                
-                    if (childrenI.numChildren == 6) {            // se o x tem 6 filhos
-                        t = split_child(auxx, i);                // ai tem q fazer a ladaia de separar e coloco o dado mid em t
-                    
-                        nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
-                        nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
-                        continue;
-                    }   
-                    else {                                      // se nao ta cheio  
-                        auxx = nodeX.children[i];               // aqui parece ser so uma dinamica com enderecos                    
-                    }
                 }
+
+                Node childrenI; 
+                childrenI = readInArq(nodeX.children[i]); 
+                if (childrenI.numChildren == 6) {            // se o x tem 6 filhos
+                    t = split_child(auxx, i);                // ai tem q fazer a ladaia de separar e coloco o dado mid em t
+                    
+                    nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
+                    nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
+                    continue;
+                }   
+                else {                                      // se nao ta cheio  
+                    auxx = nodeX.children[i];               // aqui parece ser so uma dinamica com enderecos                    
+                    nodeX = readInArq(auxx); 
+                }  
             }
         }
 
-        nodeX.keys[nodeX.numChildren] = key;                    // o ultimo recebe a   
-
-        sort(nodeX.keys, nodeX.numChildren);                    // ordeno tudo pra ficar bonitinho  
-        nodeX.numChildren = nodeX.numChildren+1;                // aumento o nro de itens em x
-        swapStruct(auxx, nodeX); 
     }
+    nodeX.keys[nodeX.numChildren] = key;                    // salvando a key  
+
+    sort(nodeX.keys, nodeX.numChildren);                    // ordeno tudo pra ficar bonitinho  
+    nodeX.numChildren = nodeX.numChildren+1;                // aumento o nro de itens em x
+    
+    swapStruct(auxx, nodeX);                                // atualizo minha mudanca
 }
 
 
 
 int main() {
-    Key key1, key2, key3;
+    Key key1, key2, key3, key4, key5, key6, key7, key8;
 
 //preenchendo teste ------------------------------------------------------------------------------------------
     key1.word.fromString("dicionario"); 
     key2.word.fromString("abajour"); 
     key3.word.fromString("frogarm"); 
+    key4.word.fromString("batata"); 
+    key5.word.fromString("marinho"); 
+    key6.word.fromString("hoje"); 
+    key7.word.fromString("amanha"); 
+    key8.word.fromString("ziterion"); 
+
 
     key1.ID = 20;
     key2.ID = 30;
     key3.ID = 40;
+    key4.ID = 50;
+    key5.ID = 60;
+    key6.ID = 70;
+    key7.ID = 80;
+    key8.ID = 90;
  
   
     insert(key1);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
     insert(key2);
     insert(key3);
+    insert(key4);
+    insert(key5);
+    insert(key6);
+    //insert(key7);
+    //insert(key8);
 
     cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
     traverse(r);
