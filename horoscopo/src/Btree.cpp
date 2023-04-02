@@ -38,7 +38,7 @@ streampos putInArq(Node node) {
     ofstream BTreePut("Btree.bin", ios::binary | ios::app);
 
     if (!BTreePut) {                                   //arquivo nao foi criado/aberto
-        return 1;
+        return -1;
     }
 
     BTreePut.write((char*)&node, sizeof(Node));
@@ -64,7 +64,7 @@ Node readInArq (streampos pos) {
 
 //vai ate uma posicao e coloca lá a struct recebida
 int swapStruct(streampos pos, Node node){
-    ofstream BTreeSwap("Btree.bin", ios::binary);
+    ofstream BTreeSwap("Btree.bin", ios::binary | ios::in);
         
     //move o ponteiro ate a posicao da string antiga 
     BTreeSwap.seekp(pos); 
@@ -94,8 +94,8 @@ void traverse(streampos p) {
     if (node.isLeaf == false) {                  // faco isso de novo, nao sei pq, talvez seja pro pai e o do lado tb aparecerem
         traverse(node.children[i]);
     }
+    cout << "sera"; 
     cout<<endl;
-    //cout << "erro"; 
 }
 
 
@@ -134,13 +134,15 @@ void sort(Key *keys, int numKeys) {
 // CONFERIR SE botei de volta TODOS OS NODOS ALTERADOS. PARA A MUDANÇA FICAR SALVA 
 Key split_child(streampos x, int i) {                   // recebo o ponteiro para um nodo e um int i talvez faça sentido receber um ponteiro, já que to lidando com arquivos 
     int j;                                              // j eh um contador
-    
     Key mid; 
-
-    streampos np1, np3, y;                           // aqui tenho 3 enderecos para nodos, talvez pq sejam 6 keys (mas e pra lidar com t maiores? possivelmente array)
+    streampos np1, np3, y;                              // aqui tenho 3 enderecos para nodos, talvez pq sejam 6 keys (mas e pra lidar com t maiores? possivelmente array)
     Node nodep1, nodep3, nodeY, nodeX;                  // aqui tenhos os 3 nodos auxiliares
     
-    nodep3 = init();                                       
+    //primeiro, vou inicializar tudo
+    nodep1 = init();
+    nodep3 = init();
+    nodeY = init();
+
     nodep3.isLeaf = true;                                       
 
     //tenho aqui o nodo do endereco que mandaram
@@ -148,50 +150,121 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
     //acho q esse -1 eh pra quando ta no inicio do arquivo
     if (i == -1) {                                           
-        mid = nodeX.keys[2];                            // novamente tenho q lembrar q isso vale pra 6 chaves, e nao pra 250 como teremos depois
-                                                        // encontro meio assim pois eh a key do meio [0,1, 2 ,3,4,5] ja q eh de ordem 6 (sao 6 keys)
-        //zero o q estava no meio                                              
+        mid = nodeX.keys[2];                            // novamente tenho q lembrar q isso vale pra 6 chaves, e nao pra 250 como teremos depois. 2 eh o meio de 0 a 5
+        
+        //zerando o nodo   
         nodeX.keys[2].ID = 0;
         nodeX.keys[2].word.clear();
         nodeX.keys[2].address = -1; 
 
+        //atualizando dados 
         nodeX.numChildren = nodeX.numChildren--;        // zerei um, ja diminuo o numero de filhos
-
-        nodep1 = init();                                // agora criei o nodo 1
-        nodep1.isLeaf = false;                          // ele nao eh folha
-
         nodeX.isLeaf = true; 
+
+        //criando nodo 1 mas ainda sem salvar em nenhum lugar
+        nodep1.isLeaf = false;                  
                 
         for (j = 3; j < 6; j++) {                       // agora do meio ao fim, parece q aqui ocorrem trocas importantes
             nodep3.keys[j-3] = nodeX.keys[j];           // as keys 0, 1, 2 de um novo nodo serao as 1,2,3 do antigo
             nodep3.children[j - 3] = nodeX.children[j]; // os filhos 0, 1, 2 do novo nodo serao 1,2,3 do antigo
             nodep3.numChildren = nodep3.numChildren+1;  // vou atualizar o numero de filhos
 
-            nodeX.keys[j].ID = 0;                       // e cada vez que eu tiro uma key, eu zero/apago do antigo
+
+            // e cada vez que eu tiro uma key, eu zero/apago do antigo
+            nodeX.keys[j].ID = 0;                       
             nodeX.keys[j].word.clear();
             nodeX.keys[j].address = -1; 
             nodeX.numChildren = nodeX.numChildren-1; 
-        }
-            
-        for (j = 0; j <= 6; j++) {       
+
+            //ate aqui, eu ainda nao precisei gravar p1 ou p
+            //estou carregando eles
+        }            
+        for (j = 0; j < 6; j++) {       
             nodeX.children[j] = -1;                   // quando acabar isso, o antigo nao tera nenhum filho (desceu)
         }
 
+        //agora fazendo mudancas em p1
         nodep1.keys[0] = mid;                           // ja a primeira key de np1 sera o meio
         nodep1.children[nodep1.numChildren] = x;        // x sera adicionado ao fim dos filhos de np1
 
+
+        //finalmente, criando lugar pra p3 
+        //e aguardando endereco
         np3 = putInArq(nodep3); 
 
         nodep1.children[nodep1.numChildren + 1] = np3;  // np3 sera adicionado ao fim tambem (note que eh o endereço no documento)
         nodep1.numChildren = nodep1.numChildren + 1;    // o numero de filhos de np1 aumenta em 1
         
-        //coloco nodop1 onde estava r               
-        //tem q ver se a raiz ta mesmo no lugar
-        //eh o mesmo q falar q o endereco r agora e o endereco de p1. 
-        swapStruct(r, nodep1);
+        cout << "infos nodep1:" << endl;
+        cout << "filhos: " << nodep1.numChildren;
+        cout << "sla: "; 
+        nodep1.keys[0].word.wPrint(); 
+        cout << endl; 
 
-        //atualizo node x   
-        swapStruct(x, nodeX); 
+        //salvo o endereco de np1 como o da raiz  
+        np1 = putInArq(nodep1); 
+        swapStruct(np1, nodep1);
+
+        cout << "o tal do endereco eh: " << np1;         
+        r = np1; 
+
+        //agora sim, atualizo so depois de todas as mudancas, pra nao perder nada
+        swapStruct(x, nodeX);  
+        swapStruct(np3, nodep3);     
+
+        Node testante, testante2, testante3; 
+        testante = readInArq(r);
+        testante2 = readInArq(np3); 
+        testante3 = readInArq(x); 
+        
+        //==============================================================================
+        cout << "node p1:" << endl;
+        testante.keys[0].word.wPrint();
+        cout << endl;
+        testante.keys[1].word.wPrint();
+        cout << endl;
+        testante.keys[2].word.wPrint();
+        cout << endl;
+        testante.keys[3].word.wPrint();
+        cout << endl;
+        testante.keys[4].word.wPrint();
+        cout << endl;
+        testante.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+
+        //==============================================================================
+        cout << "node x:" << endl;
+        testante3.keys[0].word.wPrint();
+        cout << endl;
+        testante3.keys[1].word.wPrint();
+        cout << endl;
+        testante3.keys[2].word.wPrint();
+        cout << endl;
+        testante3.keys[3].word.wPrint();
+        cout << endl;
+        testante3.keys[4].word.wPrint();
+        cout << endl;
+        testante3.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+
+        //==============================================================================
+        cout << "node p3:" << endl;
+        testante2.keys[0].word.wPrint();
+        cout << endl;
+        testante2.keys[1].word.wPrint();
+        cout << endl;
+        testante2.keys[2].word.wPrint();
+        cout << endl;
+        testante2.keys[3].word.wPrint();
+        cout << endl;
+        testante2.keys[4].word.wPrint();
+        cout << endl;
+        testante2.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+    
     } 
 
     else {
@@ -200,33 +273,47 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
         mid = nodeY.keys[2];                            // de novo, isso funciona pq sao 6 dados. aqui mid eh o do meio. se eu tiver mais, como vou ter, muda  
 
-
+        //limpando y ja q ja salvei a chave no mid  
         nodeY.keys[2].ID = 0;                           // e cada vez que eu tiro uma key, eu zero/apago do antigo
         nodeY.keys[2].word.clear();
         nodeY.keys[2].address = -1;
         nodeY.numChildren = nodeY.numChildren-1;        // diminui o nro de filhos
+
+        //atualizando o que eu mexi em y
+        swapStruct(y,nodeY);
 
         for (j = 3; j <6 ; j++) {                       // aqui lembrar de mudar tb pra quando tiver mais itens 
 
             nodep3.keys[j-3] = nodeY.keys[j];           // mesma coisa de antes, de encher np3 0,1,2 só que com y 3,4,5
             nodep3.numChildren = nodep3.numChildren-1;  // tambem atualizo o numero de filhos de np3    
 
-            nodeY.keys[j].ID = 0;                       // e tb limpo oq tava em y
+            //atualizando com as mudancas q fiz em p3
+            //mentira, nao atualizo pq nesse else ele ainda nao existe
+            //swapStruct(np3, nodep3);
+
+            //hora de zerar o que ja mudei
+            nodeY.keys[j].ID = 0;                       
             nodeY.keys[j].word.clear();    
             nodeY.keys[j].address = -1;
 
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos
         }   
 
+
+        //guardando np3 e suas mudancas  
         np3 = putInArq(nodep3); 
-        swapStruct(y, nodeY);                           // alguns dados de y foram alterados 
+
+        //guardado mudancas de y
+        swapStruct(y, nodeY);                            
 
         // y eh o dendereco de um nodo q ja ta e seu endereco nao foi alterado 
-        nodeX.children[i+1] = y;                        // dai y vira o ultimo filho de x  
-        nodeX.children[i+1] = np3;                      // e depois np3 vira o ultimo 
+        nodeX.children[i+1] = y;                          
+        nodeX.children[i+1] = np3;                       
 
-        //como fiz mudancas em node x, node p1 e node p3, preciso gravar essas mudancas
+        //atualizo x de novo
         swapStruct(x, nodeX); 
+
+        cout << "ELSE:" << endl; 
     }
     return mid;                                         // e o meio q eu retorno de qualquer jeito 
 }
@@ -240,19 +327,13 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
     auxx = r;                           // o endereco do auxx eh o da raiz
     Node nodeX;                         // vou usar esse nodo
 
-
     if (auxx == -1) {                   // ?
         nodeX = init();                 // inicio ele 
         r = putInArq(nodeX);            // agora tenho endereco pra raiz 
         auxx = r;                       // x eh o q to trabalhando, nesse caso trab c a raiz
-
-        //r sempre sera o endereco da raiz. sempree    
     } 
 
     else {
-
-        //cout << "erro aq dentro"; 
-
         string strA; 
         string strI;
         string strI1; 
@@ -261,13 +342,18 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
         nodeX = readInArq(auxx);      // usarei um nodeX    
                                       // a principio, no momento eh a raiz q eu smp vou usar
 
+
         if (nodeX.isLeaf== true && nodeX.numChildren == 6) {   // aqui, novamente, muda com a mudanca de tamanho 
             t = split_child(auxx, -1);                         // t eh o do meio, mandando -1?
-            auxx = r;                                          
+           
+            
+            cout << "t eh: "; 
+            t.word.wPrint();
+            cout << endl << endl; 
+            
+            auxx = r;  
             nodeX = readInArq(auxx); 
-            //sera q aqui eu to so mudando com quem eu to mexendo?
-
-        
+                                    
             for (i = 0; i < (nodeX.numChildren); i++) {        // enquanto i for menor que o numero de elementos de x
                 strA  = key.word.toString(); 
                 //cout << "A: " << strA << endl; 
@@ -345,10 +431,8 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
     swapStruct(auxx, nodeX);                                // atualizo minha mudanca
 }
 
-
-
 int main() {
-    Key key1, key2, key3, key4, key5, key6, key7, key8;
+    Key key1, key2, key3, key4, key5, key6, key7, key8, key9, key10;
 
 //preenchendo teste ------------------------------------------------------------------------------------------
     key1.word.fromString("dicionario"); 
@@ -359,6 +443,8 @@ int main() {
     key6.word.fromString("hoje"); 
     key7.word.fromString("amanha"); 
     key8.word.fromString("ziterion"); 
+    key9.word.fromString("problemas"); 
+    key10.word.fromString("alo"); 
 
 
     key1.ID = 20;
@@ -369,16 +455,20 @@ int main() {
     key6.ID = 70;
     key7.ID = 80;
     key8.ID = 90;
- 
-  
+    key9.ID = 100;
+    key10.ID = 10;
+
     insert(key1);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
     insert(key2);
     insert(key3);
     insert(key4);
     insert(key5);
     insert(key6);
-    //insert(key7);
-    //insert(key8);
+    insert(key7);
+    insert(key8);
+    insert(key9);
+    insert(key10);
+
 
     cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
     traverse(r);
