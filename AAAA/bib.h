@@ -23,7 +23,8 @@ struct Word {
 //functions
 int fillFile(string arq_data_is, string arq_binary_is);
 int readFile(string arq_binary_is);
-Word construct(string line, int ID);            
+Word construct(string line, int ID);      
+int invertido();      
 
 
 #endif // BIB_H
