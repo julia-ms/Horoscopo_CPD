@@ -94,7 +94,7 @@ void traverse(streampos p) {
     if (node.isLeaf == false) {                  // faco isso de novo, nao sei pq, talvez seja pro pai e o do lado tb aparecerem
         traverse(node.children[i]);
     }
-    cout << "sera"; 
+    //cout << "sera"; 
     cout<<endl;
 }
 
@@ -272,24 +272,21 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
         nodeY = readInArq(y); 
 
         mid = nodeY.keys[2];                            // de novo, isso funciona pq sao 6 dados. aqui mid eh o do meio. se eu tiver mais, como vou ter, muda  
+        cout << "midis: "; 
+        mid.word.wPrint();
+        cout << endl; 
 
         //limpando y ja q ja salvei a chave no mid  
         nodeY.keys[2].ID = 0;                           // e cada vez que eu tiro uma key, eu zero/apago do antigo
         nodeY.keys[2].word.clear();
         nodeY.keys[2].address = -1;
-        nodeY.numChildren = nodeY.numChildren-1;        // diminui o nro de filhos
 
-        //atualizando o que eu mexi em y
-        swapStruct(y,nodeY);
+        nodeY.numChildren = nodeY.numChildren-1;        // diminui o nro de filhos
 
         for (j = 3; j <6 ; j++) {                       // aqui lembrar de mudar tb pra quando tiver mais itens 
 
             nodep3.keys[j-3] = nodeY.keys[j];           // mesma coisa de antes, de encher np3 0,1,2 só que com y 3,4,5
-            nodep3.numChildren = nodep3.numChildren-1;  // tambem atualizo o numero de filhos de np3    
-
-            //atualizando com as mudancas q fiz em p3
-            //mentira, nao atualizo pq nesse else ele ainda nao existe
-            //swapStruct(np3, nodep3);
+            nodep3.numChildren = nodep3.numChildren+1;  // tambem atualizo o numero de filhos de np3    
 
             //hora de zerar o que ja mudei
             nodeY.keys[j].ID = 0;                       
@@ -299,9 +296,9 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos
         }   
 
-
         //guardando np3 e suas mudancas  
         np3 = putInArq(nodep3); 
+        swapStruct(np3,nodep3); 
 
         //guardado mudancas de y
         swapStruct(y, nodeY);                            
@@ -312,8 +309,6 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
         //atualizo x de novo
         swapStruct(x, nodeX); 
-
-        cout << "ELSE:" << endl; 
     }
     return mid;                                         // e o meio q eu retorno de qualquer jeito 
 }
@@ -424,15 +419,13 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
 
     }
     nodeX.keys[nodeX.numChildren] = key;                    // salvando a key  
-
     sort(nodeX.keys, nodeX.numChildren);                    // ordeno tudo pra ficar bonitinho  
     nodeX.numChildren = nodeX.numChildren+1;                // aumento o nro de itens em x
-    
     swapStruct(auxx, nodeX);                                // atualizo minha mudanca
 }
 
 int main() {
-    Key key1, key2, key3, key4, key5, key6, key7, key8, key9, key10;
+    Key key1, key2, key3, key4, key5, key6, key7, key8, key9, key10, key11, key12, key13, key14, key15, key16, key17, key18, key19, key20, key21, key22, key23, key24, key25, key26, key27, key28;
 
 //preenchendo teste ------------------------------------------------------------------------------------------
     key1.word.fromString("dicionario"); 
@@ -445,6 +438,24 @@ int main() {
     key8.word.fromString("ziterion"); 
     key9.word.fromString("problemas"); 
     key10.word.fromString("alo"); 
+    key11.word.fromString("futebol");
+    key12.word.fromString("vermelho");
+    key13.word.fromString("computador");
+    key14.word.fromString("jornal");
+    key15.word.fromString("teclado");
+    key16.word.fromString("guitarra");
+    key17.word.fromString("sorvete");
+    key18.word.fromString("aventura");
+    key19.word.fromString("felicidade");
+    key20.word.fromString("chocolate");
+    key21.word.fromString("melancia");
+    key22.word.fromString("fantasia");
+    key23.word.fromString("unicórnio");
+    key24.word.fromString("viagem");
+    key25.word.fromString("natureza");
+    key26.word.fromString("amor");
+    key27.word.fromString("liberdade");
+    key28.word.fromString("sabedoria");
 
 
     key1.ID = 20;
@@ -458,7 +469,7 @@ int main() {
     key9.ID = 100;
     key10.ID = 10;
 
-    insert(key1);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
+    insert(key1);
     insert(key2);
     insert(key3);
     insert(key4);
@@ -468,6 +479,24 @@ int main() {
     insert(key8);
     insert(key9);
     insert(key10);
+    insert(key11);
+    insert(key12);
+    insert(key13);
+    insert(key14);
+    insert(key15);
+    insert(key16);
+    insert(key17);
+    insert(key18);
+    insert(key19);
+    insert(key20);
+    insert(key21);
+    insert(key22);
+    insert(key23);
+    insert(key24);
+    insert(key25);
+    insert(key26);
+    insert(key27);
+    insert(key28);
 
 
     cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
