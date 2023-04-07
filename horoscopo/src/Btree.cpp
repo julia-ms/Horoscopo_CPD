@@ -289,10 +289,6 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
             nodeY.keys[j].address = -1;
 
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos        
-            cout << "nodep3: " << endl; 
-            printNodo(nodep3);
-            cout << "Y:" << endl; 
-            printNodo(nodeY);
         }   
         //guardado mudancas de y
         cout << "Segundo salvamento Y" << endl; 
@@ -301,13 +297,17 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
         //guardando np3 e suas mudancas  
         cout << "Salvando nodep3" << endl; 
-        printNodo(nodeY);
+        printNodo(nodep3);
         np3 = putInArq(nodep3); 
 
                                    
         // y eh o dendereco de um nodo q ja ta e seu endereco nao foi alterado 
-        nodeXParam.children[i+1] = y;                          
-        nodeXParam.children[i+1] = np3;                       
+        nodeXParam.children[i+1] = y;   
+        cout << "y" << endl; 
+        printNodo(nodeXParam);                      
+        nodeXParam.children[i+1] = np3;  
+        cout << "np3" << endl;
+        printNodo(nodeXParam);                     
 
         //atualizo x de novo
         cout << "Salvando nodeXParam" << endl; 
@@ -424,17 +424,27 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
 
                 Node childrenI; 
                 childrenI = readInArq(nodeX.children[i]); 
-
+                if (key.word.compareW("sorvete") == 0){
+                    cout << "childrenI" << endl;
+                    printNodo(childrenI);
+                    cout<<endl;
+                    traverse(r);
+                }
+                //EEEERROOOO POR AQUI
                 //testes
                 // cout << "filhos dos filhos" << childrenI.numChildren;
 
                 if (childrenI.numChildren == 6) {            // se o x tem 6 filhos
                     cout << "childrenI.numChildren == 6" << endl;
+                    cout << "auxx" << auxx << endl;
                     t = split_child(auxx, i);                // ai tem q fazer a ladaia de separar e coloco o dado mid em t
                     
                     nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
                     nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
-                    
+                    if (key.word.compareW("sorvete") == 0){
+                        cout << "nodeX:" << endl;
+                        printNodo(nodeX);
+                    }
                     swapStruct(auxx, nodeX);
                     continue;
                 }   
