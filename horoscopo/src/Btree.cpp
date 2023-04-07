@@ -178,12 +178,15 @@ void sort(Key *keys, int numKeys) {
             si = keys[i].word.toString(); 
             sj = keys[j].word.toString(); 
 
-            if ((si.compare(sj)) > 0) {
+            if (si.compare("") != 0 && sj.compare("") != 0) {
+                if ((si.compare(sj)) > 0) {
                 auxKey = keys[i];
                 keys[i] = keys[j];
                 keys[j] = auxKey;
             }
         }
+            }
+            
     }
 }
 
@@ -533,17 +536,35 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
                         cout << endl;
                     }
 
+                    //exatamente aq
+                    
                     nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
+                        
                     nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
+                    //BAH OH
+
+                    
+                    
 
                     if (key.word.compareW("abelhinha") == 0){
+
+                        cout << "ANTES DA SORTE... azar....";
+                        printNodo(nodeX); 
+
+                        swapStruct(auxx, nodeX);
+                        sort(nodeX.keys, nodeX.numChildren); 
+
+                        cout << "DEPOIS DO SORT DEU... azar....";
+                        printNodo(nodeX); 
+
+
                         cout << "nodeX depois do split:" << endl;
                         printNodo(nodeX);
 
                         cout << "t eh: ";
                         t.word.wPrint(); 
                     }
-                    
+                    //MUDEI AQUI
                     swapStruct(auxx, nodeX);
                     continue;
                 }   
@@ -709,8 +730,8 @@ int main() {
     insert(key24);
     insert(key25);
     insert(key26);
-    /*insert(key27);
-    insert(key28);*/
+    insert(key27);
+    insert(key28);
 
     Node auxPrint; 
 
