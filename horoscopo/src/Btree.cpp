@@ -10,7 +10,9 @@ streampos auxx = -1;           //auxiliar x
 
 
 void printNodo(Node nodo){ 
-    cout << endl << endl; 
+    Node nodeFilho; 
+    cout << endl;
+    cout << "*************" << endl;
     cout << "Chaves: " << endl; 
     
     int i = 0; 
@@ -25,12 +27,36 @@ void printNodo(Node nodo){
     
     i = 0; 
     for (auto children:nodo.children){
-        cout << "End filho["<< i << "]"<< children << endl;
+        cout << "End filho["<< i << "] = "<< children << " - ";
+        nodeFilho = readInArq(children); 
+        nodeFilho.keys[0].word.wPrint();
+        cout << ", "; 
+        nodeFilho.keys[1].word.wPrint(); 
+        cout << ", "; 
+        nodeFilho.keys[2].word.wPrint(); 
+        cout << ", "; 
+        nodeFilho.keys[3].word.wPrint(); 
+        cout << ", "; 
+        nodeFilho.keys[4].word.wPrint(); 
+        cout << ", "; 
+        nodeFilho.keys[5].word.wPrint(); 
+        
+        cout << "->"; 
+        for (auto children:nodeFilho.children){
+            if (children != -1)
+                cout << children << " ";
+        } 
+        cout << endl; 
         i++;
+
+
     }
 
     cout << "Eh folha? " << nodo.isLeaf << endl;
     cout << "Qnt chaves:" << nodo.numChildren << endl;
+    cout << "*************";
+    cout << endl; 
+
 }
 
 
@@ -45,7 +71,7 @@ Node init() {
         node.keys[i].address = -1;   
     }
 
-    //inicializando filhos em 1 
+    //inicializando filhos em -1 
     for (int i = 0; i < t+1; i++){
         node.children[i] = -1 ;    
     }
@@ -122,6 +148,7 @@ void traverse(streampos p) {
         if (node.isLeaf == false) {              // se o nodo nao eh folha, ou seja, se nao acabou e ainda tem filhos   
             traverse(node.children[i]);    // vou recursivamente entrar no nodo filho e repetir isso, ate chegar no ultimo filho
         }
+        cout << "- "; 
         node.keys[i].word.wPrint(); 
         cout <<endl;
     }
@@ -254,8 +281,12 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
         r = np1;   
     } 
 
-    else {
+    else { 
         cout << "Fui pro else" << endl;                                        
+        
+        cout << "E to trabalhando com esse nodo aqui: "; 
+        printNodo(nodeXParam); 
+        
         y = nodeXParam.children[i];                          // y recebe o endereco de um dos filhos q eu recebi
         nodeY = readInArq(y); 
         mid = nodeY.keys[2];                            // de novo, isso funciona pq sao 6 dados. aqui mid eh o do meio. se eu tiver mais, como vou ter, muda  
@@ -290,29 +321,74 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 
             nodeY.numChildren = nodeY.numChildren - 1;  // e tambem diminuo o nro de filhos        
         }   
+        //OIOIOI burrices
+        //nodeXParam = readInArq(x); 
         //guardado mudancas de y
         cout << "Segundo salvamento Y" << endl; 
+        
         printNodo(nodeY);
         swapStruct(y, nodeY); 
 
         //guardando np3 e suas mudancas  
         cout << "Salvando nodep3" << endl; 
         printNodo(nodep3);
+        
         np3 = putInArq(nodep3); 
 
-                                   
+
+    //AQUI CLARAMENTO TEM UM ERRO POIS PERCO UM NODO        
         // y eh o dendereco de um nodo q ja ta e seu endereco nao foi alterado 
-        nodeXParam.children[i+1] = y;   
-        cout << "y" << endl; 
-        printNodo(nodeXParam);                      
-        nodeXParam.children[i+1] = np3;  
+    //OI
+        for (int j = nodeXParam.numChildren; j >= i+1; j--){
+            nodeXParam.children[j+1] = nodeXParam.children[j];
+        }
+            // Link the new child to this node
+            nodeXParam.children[i+1] = y;
+
+
+       // for (int j = nodeXParam.numChildren; j > i+1; j--){
+       //     nodeXParam.children[j+1] = nodeXParam.children[j];
+       // }
+            // Link the new child to this node
+            nodeXParam.children[i+1] = np3;
+    
+    
+    //TCHAU
+
+    //**************epa epa epa 
+        //mudei i + 1 
+    //    cout << "to apagando o endereco: " << nodeXParam.children[i+1] << "e colocando " << y; 
+    //    nodeXParam.children[i+1] = y;   
+    //    cout << "y" << endl; 
+    //   printNodo(nodeY);    
+
+    //    cout << "to apagando o endereco: " << nodeXParam.children[i+1] << "e colocando " << np3; 
+    //    nodeXParam.children[i+1] = np3;  
+        
+
+    //**************epa epa epa 
+        //print x debug
+        cout << "x" << endl;
+        printNodo(nodeXParam);    
+
         cout << "np3" << endl;
         printNodo(nodeXParam);                     
 
         //atualizo x de novo
         cout << "Salvando nodeXParam" << endl; 
-        printNodo(nodeXParam);
+        //oioioi
         swapStruct(x, nodeXParam); 
+        printNodo(nodeXParam);
+/*
+        cout << "olha so to imprimindo oq ta em x: " << endl; 
+        Node auxTestesBala; 
+        auxTestesBala = readInArq(x);
+        printNodo(auxTestesBala); 
+
+        cout << "olha so to imprimindo oq ta em auxx: " << endl; 
+        auxTestesBala = readInArq(auxx);
+        printNodo(auxTestesBala);  */
+        
     }
     return mid;                                         // e o meio q eu retorno de qualquer jeito 
 }
@@ -321,9 +397,9 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
 //agr o bixo pega como q insere
 void insert(Key key) {                  // o inteiro a eh o novo dado
     cout << "Estou inserindo" << endl;
-    if (key.word.compareW("sorvete") == 0){
+    if (key.word.compareW("abelhinha") == 0){
         cout << "-------" << endl;
-        cout << "SORVETE" << endl;
+        cout << "ABELHINHA" << endl;
         cout << "-------" << endl;
     }
     int i;                              // ints q eu nao sei devem ser dados
@@ -400,6 +476,8 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
             swapStruct(auxx, nodeX); 
         }
         else {    
+            //PERIGO MUDADO
+            //nodeX = readInArq(auxx); 
             cout << "else 402" << endl;                         
             while (nodeX.isLeaf == false) {                         // agr, caso x nao seja folha 
                 
@@ -424,7 +502,7 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
 
                 Node childrenI; 
                 childrenI = readInArq(nodeX.children[i]); 
-                if (key.word.compareW("sorvete") == 0){
+                if (key.word.compareW("abelinha") == 0){
                     cout << "childrenI" << endl;
                     printNodo(childrenI);
                     cout<<endl;
@@ -433,39 +511,86 @@ void insert(Key key) {                  // o inteiro a eh o novo dado
                 //EEEERROOOO POR AQUI
                 //testes
                 // cout << "filhos dos filhos" << childrenI.numChildren;
-
+                cout << "------------------------------------------------------------" << endl;
                 if (childrenI.numChildren == 6) {            // se o x tem 6 filhos
-                    cout << "childrenI.numChildren == 6" << endl;
-                    cout << "auxx" << auxx << endl;
-                    t = split_child(auxx, i);                // ai tem q fazer a ladaia de separar e coloco o dado mid em t
+                    cout << "childrenI.numChildren == 6 e end eh" << auxx << endl;
                     
-                    nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
-                    nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
-                    if (key.word.compareW("sorvete") == 0){
-                        cout << "nodeX:" << endl;
+                    if (key.word.compareW("abelhinha") == 0){
+                        cout << "nodeX antes do split:" << endl;
                         printNodo(nodeX);
                     }
+                    
+                    t = split_child(auxx, i);                // ai tem q fazer a ladaia de separar e coloco o dado mid em t
+                    
+                    //A MUDANCA DE MILHOES
+                    nodeX = readInArq(auxx); 
+
+                    if (key.word.compareW("abelhinha") == 0){
+                        cout << "nodeX depois do SPLIT UM... CONTANDO:" << endl;
+                        printNodo(nodeX);
+                        cout << "t eh: ";
+                        t.word.wPrint(); 
+                        cout << endl;
+                    }
+
+                    nodeX.keys[nodeX.numChildren] = t;       // dai o ultimo dado eh esse do meio
+                    nodeX.numChildren = nodeX.numChildren+1; // aumento o nro de dados do x
+
+                    if (key.word.compareW("abelhinha") == 0){
+                        cout << "nodeX depois do split:" << endl;
+                        printNodo(nodeX);
+
+                        cout << "t eh: ";
+                        t.word.wPrint(); 
+                    }
+                    
                     swapStruct(auxx, nodeX);
                     continue;
                 }   
                 else {                                      // se nao ta cheio  
+                    //OUTRA MUDANCA MILHONARIA
+                    //nodeX = readInArq(auxx); 
+
                     cout << "else 440" << endl;
+
                     auxx = nodeX.children[i]; 
                     nodeX = readInArq(auxx); 
+                    if (key.word.compareW("abelhinha") == 0){
+                        cout << "no else node x virou: " << endl;
+                        printNodo(nodeX);
+                    }
 
                     //atualizando nodo X onde esta guardado updates
                     //DUVIDAS 
                     swapStruct(auxx, nodeX); 
                 }  
+
                 nodeX = readInArq(auxx); 
+
+                if (key.word.compareW("abelhinha") == 0){
+                        cout << "saindo do perigo"<<endl<<"nodeX depois de tudo eh:" << endl;
+                        printNodo(nodeX);
+                }
+                cout << "------------------------------------------------------------" << endl;
             }
         }
     }
+
+
     
     nodeX.keys[nodeX.numChildren] = key;                    // salvando a key  
+    
+    cout << "INSERI ESSE AQUI OLHA"; 
+    printNodo(nodeX);
+
+    cout << "ORDENEI ESSE AQUI OLHA"; 
     sort(nodeX.keys, nodeX.numChildren);                    // ordeno tudo pra ficar bonitinho  
+    
+    printNodo(nodeX);
+
     nodeX.numChildren = nodeX.numChildren+1;                // aumento o nro de itens em x
     swapStruct(auxx, nodeX);                                // atualizo minha mudanca
+
 }
 
 int main() {
@@ -494,6 +619,12 @@ int main() {
     key20.word.fromString("amor");
     key21.word.fromString("liberdade");
     key22.word.fromString("sabedoria");
+    key23.word.fromString("espera");
+    key24.word.fromString("testes");
+    key25.word.fromString("multi");
+    key26.word.fromString("abelhinha");
+    key27.word.fromString("jogos");
+    key28.word.fromString("zebra");
 
 
     key1.ID = 20;
@@ -549,23 +680,24 @@ int main() {
     // cout << endl;
 
     insert(key11);
-    cout << endl;
-    traverse(r);
-    cout << endl;
+    //cout << endl;
+    //traverse(r);
+    //cout << endl;
 
-    // insert(key12);
+    insert(key12);
     // traverse(r);
     // cout << endl;
 
-    // insert(key13);
+     insert(key13);
     // traverse(r);
     // cout << endl;
 
-    // insert(key14);
+     insert(key14);
     // traverse(r);
     // cout << endl;
 
-    /*insert(key15);
+
+    insert(key15);
     insert(key16);
     insert(key17);
     insert(key18);
@@ -577,7 +709,7 @@ int main() {
     insert(key24);
     insert(key25);
     insert(key26);
-    insert(key27);
+    /*insert(key27);
     insert(key28);*/
 
     Node auxPrint; 
@@ -586,7 +718,7 @@ int main() {
     printNodo(auxPrint); 
 
     // cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
-    // traverse(r);
+    traverse(r);
 
     return 0; 
 }
