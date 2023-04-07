@@ -1,0 +1,54 @@
+
+
+        Node testante, testante2, testante3; 
+        testante = readInArq(r);
+        testante2 = readInArq(np3); 
+        testante3 = readInArq(x); 
+        //==============================================================================
+        cout << "node p1:" << endl;
+        testante.keys[0].word.wPrint();
+        cout << endl;
+        testante.keys[1].word.wPrint();
+        cout << endl;
+        testante.keys[2].word.wPrint();
+        cout << endl;
+        testante.keys[3].word.wPrint();
+        cout << endl;
+        testante.keys[4].word.wPrint();
+        cout << endl;
+        testante.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+
+        //==============================================================================
+        cout << "node x:" << endl;
+        testante3.keys[0].word.wPrint();
+        cout << endl;
+        testante3.keys[1].word.wPrint();
+        cout << endl;
+        testante3.keys[2].word.wPrint();
+        cout << endl;
+        testante3.keys[3].word.wPrint();
+        cout << endl;
+        testante3.keys[4].word.wPrint();
+        cout << endl;
+        testante3.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+
+        //==============================================================================
+        cout << "node p3:" << endl;
+        testante2.keys[0].word.wPrint();
+        cout << endl;
+        testante2.keys[1].word.wPrint();
+        cout << endl;
+        testante2.keys[2].word.wPrint();
+        cout << endl;
+        testante2.keys[3].word.wPrint();
+        cout << endl;
+        testante2.keys[4].word.wPrint();
+        cout << endl;
+        testante2.keys[5].word.wPrint();
+        cout << endl << endl;
+        //============================================================================== 
+    

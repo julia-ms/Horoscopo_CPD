@@ -33,7 +33,6 @@ struct Key {
 struct Node {    
     Key keys[t];              
     streampos children[t+1];  
-    streampos parent; 
     bool isLeaf; 
     int numChildren; 
 }; 

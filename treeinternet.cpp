@@ -72,6 +72,7 @@ int split_child(BTree *x, int i) {      // recebo o ponteiro para um nodo e um i
                                         // eu salvei o dado já como mid (note q mid deve ser struct na outra implementacao)
         x->d[2] = 0;                    // como o meio e tudo q tem depois dele sai, posso ate zerar o dado q tava ali         
         x->n--;                         // zerei um, ja diminuo o numero de filhos
+        
         np1 = init();                   // agora criei o nodo 1  
         np1->l= false;                  // ele nao eh folha 
         x->l= true;                     // mas x virará folha (e as keys? oq ta contecendo) (sera um nodo sem filhos?) 
@@ -112,7 +113,9 @@ int split_child(BTree *x, int i) {      // recebo o ponteiro para um nodo e um i
 //agr o bixo pega como q insere
 void insert(int a) {                    // o inteiro a eh o novo dado
     int i, t;                           // ints q eu nao sei devem ser dados
+    
     x = r;                              // ?
+    
     if (x == NULL) {                    // ?
         r = init();
         x = r;                          // criei dois nodos   
@@ -120,7 +123,8 @@ void insert(int a) {                    // o inteiro a eh o novo dado
     else {
         if (x->l== true && x->n == 6) {                     // se ele é folha (nao eh criado sempre como?) e o numero de filhos eh 6 (como?)
             t = split_child(x, -1);                         // t eh o do meio, mandando -1?
-            x = r;                                          // ? de novo meu Deus  
+            x = r; 
+                                                     // ? de novo meu Deus  
             for (i = 0; i < (x->n); i++) {                  // enquanto i for menor que o numero de elementos de x
                 if ((a >x->d[i]) && (a < x->d[i + 1])) {    //se o dado q quero colocar for maior q o do filho do x e menor q do prox filho
                     i++;                                    // ou seja, se ta dentro do intervalo, aumento i, e saio  
