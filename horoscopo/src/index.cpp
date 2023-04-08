@@ -1,4 +1,4 @@
-#include "bib.h"
+#include "../include/bib.h"
 
 using namespace std;
 /*
@@ -20,7 +20,7 @@ int invertido() {
     int id;
 
 
-    fstream arquivo_dicionario("dictionary.bin", ios::in | ios::binary);
+    fstream arquivo_dicionario("../data/dictionary.bin", ios::in | ios::binary);
     Word pWord;
     int ID;
 
@@ -42,7 +42,7 @@ int invertido() {
         cout << "ID: " << pWord.ID << endl;
         cout << endl;
 
-        ifstream arquivo_inv("arqinvertido.csv");
+        ifstream arquivo_inv("../data/arqinvertido.csv");
         //ofstream arquivo_temporario("temp.csv");
 /*
         cin >> classe;
@@ -112,7 +112,7 @@ int invertido() {
 
         arquivo_inv.close();
 
-        ofstream arquivo_inv2("arqinvertido.csv");
+        ofstream arquivo_inv2("../data/arqinvertido.csv");
 
         if(arquivo_inv2.fail()){
             cout << "error aa" << endl;
