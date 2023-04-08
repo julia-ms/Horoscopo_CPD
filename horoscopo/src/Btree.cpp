@@ -813,8 +813,8 @@ int main() {
     insert(key21);
     insert(key22);
     insert(key23);
-    /*insert(key24);
-    insert(key25);
+    insert(key24);
+    /*insert(key25);
     insert(key26);
     insert(key27);
     insert(key28);
