@@ -1,76 +1,7 @@
 #include "bib.h"
 
 using namespace std;
-
-int invertido() {
-
-
-    int linha_desejada = 5;
-    int linha_atual = 1;
-
-    char classe[50];
-    int id;
-
-    for(int i=0;i<5;i++){
-
-        ifstream arquivo_original("arqinvertido.csv");
-        ofstream arquivo_temporario("temp.csv");
-
-        cin >> classe;
-        cin >> id;
-
-        if(strcmp(classe, "sub")==0) linha_desejada = 1;
-        if(strcmp(classe, "ver")==0) linha_desejada = 2;
-
-
-        // copia as primeiras linhas até a linha desejada
-        string linha;
-        while (getline(arquivo_original, linha)) {
-            if (linha_atual == linha_desejada) {
-                // escreve a nova linha no arquivo temporário
-                arquivo_temporario << linha << ";" << id << endl;
-                break;
-            }
-            arquivo_temporario << linha << endl;
-            linha_atual++;
-        }
-
-        // copia o restante das linhas
-        while (getline(arquivo_original, linha)) {
-            arquivo_temporario << linha << endl;
-        }
-
-        arquivo_original.close();
-        arquivo_temporario.close();
-
-        // renomeia o arquivo temporário para o nome original do arquivo CSV
-        remove("arqinvertido.csv");
-        rename("temp.csv", "arqinvertido.csv");
-    }
-
-
-    /*// file pointer
-    fstream arq;
-  
-    // opens an existing csv file or creates a new file.
-    arq.open("arqinvertido.csv", ios::out | ios::app);
-*/
 /*
-    char ala[50];
-    Word auxWord;
-
-    cout << "oiiii" << endl;
-    cin >> ala;
-    for(int i=0;i<5;i++){
-        if(strcmp(ala, "oi")==0) arq << "vamo caralho" << endl;
-        else arq << "f :(" << ala << endl;
-    }*/
-    return 0;
-}
-
-/*
-if (strcmp(favoriteDairyProduct, "cheese") == 0)
-{
 struct Word {
     int ID; 
     string palavra; 
@@ -79,203 +10,174 @@ struct Word {
     string numero;  
     string significado; 
 }; 
+*/
+int invertido() {
 
-ler word.classe
-se for substantivo -> linha 1, contador incrementa
-
-//escrever na linha que quer: 
- ifstream arquivo_original("arquivo.csv");
-    ofstream arquivo_temporario("temp.csv");
-
-    int linha_desejada = 3;
+    int linha_desejada = 5;
     int linha_atual = 1;
 
-    // copia as primeiras linhas até a linha desejada
-    string linha;
-    while (getline(arquivo_original, linha)) {
-        if (linha_atual == linha_desejada) {
-            // escreve a nova linha no arquivo temporário
-            arquivo_temporario << "nova linha a ser escrita na linha desejada" << endl;
-            break;
+    char classe[50];
+    int id;
+
+
+    fstream arquivo_dicionario("dictionary.bin", ios::in | ios::binary);
+    Word pWord;
+    int ID;
+
+    if (!arquivo_dicionario.is_open()) {
+        cout << "deu ruim";
+        return 1;  
+    }
+
+    while (arquivo_dicionario.read((char*)&pWord.ID, sizeof(int))){  
+
+        getline(arquivo_dicionario, pWord.palavra, '\0');
+        getline(arquivo_dicionario, pWord.classe, '\0');
+        getline(arquivo_dicionario, pWord.genero, '\0');
+        getline(arquivo_dicionario, pWord.numero, '\0');
+        getline(arquivo_dicionario, pWord.significado, '\0');
+
+        cout << "Palavra: " << pWord.palavra << endl;
+        cout << "Classe: " << pWord.classe << endl;
+        cout << "ID: " << pWord.ID << endl;
+        cout << endl;
+
+        ifstream arquivo_inv("arqinvertido.csv");
+        //ofstream arquivo_temporario("temp.csv");
+/*
+        cin >> classe;
+        cin >> id;
+*/
+        string auxclasse = pWord.classe;
+        const char* auxchar = auxclasse.c_str();
+
+        if(strcmp(auxchar, "adj")==0) linha_desejada = 1;
+        if(strcmp(auxchar, "adj.,num.")==0) linha_desejada = 2;
+        if(strcmp(auxchar, "adj.,num.,frac.,s.")==0) linha_desejada = 3;
+        if(strcmp(auxchar, "adj.,num.,mult.")==0) linha_desejada = 4;
+        if(strcmp(auxchar, "adj.,pron.,adv.")==0) linha_desejada = 5;
+        if(strcmp(auxchar, "adj.,s.")==0) linha_desejada = 6;
+        if(strcmp(auxchar, "adv.")==0) linha_desejada = 7;
+        if(strcmp(auxchar, "adv.,interr.")==0) linha_desejada = 8;
+        if(strcmp(auxchar, "adv.,s.")==0) linha_desejada = 9;
+        if(strcmp(auxchar, "al.,abrev.")==0) linha_desejada = 10;
+        if(strcmp(auxchar, "art.,def.")==0) linha_desejada = 11;
+        if(strcmp(auxchar, "conj.")==0) linha_desejada = 12;
+        if(strcmp(auxchar, "conj.,concess.")==0) linha_desejada = 13;
+        if(strcmp(auxchar, "conj.,coord.")==0) linha_desejada = 14;
+        if(strcmp(auxchar, "conj.,disj.")==0) linha_desejada = 15;
+        if(strcmp(auxchar, "contr.")==0) linha_desejada = 16;
+        if(strcmp(auxchar, "det.,pron.,dem.")==0) linha_desejada = 17;
+        if(strcmp(auxchar, "det.,pron.,indef.")==0) linha_desejada = 18;
+        if(strcmp(auxchar, "det.,pron.,poss.")==0) linha_desejada = 19;
+        if(strcmp(auxchar, "ex.,abrev.")==0) linha_desejada = 20;
+        if(strcmp(auxchar, "interj.")==0) linha_desejada = 21;
+        if(strcmp(auxchar, "interj.,s.")==0) linha_desejada = 22;
+        if(strcmp(auxchar, "m.,abrev.")==0) linha_desejada = 23;
+        if(strcmp(auxchar, "pref.")==0) linha_desejada = 24;
+        if(strcmp(auxchar, "prep.")==0) linha_desejada = 25;
+        if(strcmp(auxchar, "pron.")==0) linha_desejada = 26;
+        if(strcmp(auxchar, "pron.,dem.")==0) linha_desejada = 27;
+        if(strcmp(auxchar, "pron.,indef.")==0) linha_desejada = 28;
+        if(strcmp(auxchar, "pron.,indef.,s.")==0) linha_desejada = 29;
+        if(strcmp(auxchar, "pron.,interr.")==0) linha_desejada = 30;
+        if(strcmp(auxchar, "pron.,pess.")==0) linha_desejada = 31;
+        if(strcmp(auxchar, "pron.,poss.")==0) linha_desejada = 32;
+        if(strcmp(auxchar, "pron.,rel.")==0) linha_desejada = 33;
+        if(strcmp(auxchar, "s.")==0) linha_desejada = 34;
+        if(strcmp(auxchar, "v.")==0) linha_desejada = 35;
+        if(strcmp(auxchar, "símb.")==0) linha_desejada = 36;
+        if(strcmp(auxchar, "suf.")==0) linha_desejada = 37;
+        if(strcmp(auxchar, "v.")==0) linha_desejada = 38;
+        if(strcmp(auxchar, "v.,cop.")==0) linha_desejada = 39;
+        if(strcmp(auxchar, "v.,intr.")==0) linha_desejada = 40;
+        if(strcmp(auxchar, "v.,intr.,pron.")==0) linha_desejada = 41;
+        if(strcmp(auxchar, "v.,pron.")==0) linha_desejada = 42;
+        if(strcmp(auxchar, "v.,s.")==0) linha_desejada = 43;
+        if(strcmp(auxchar, "v.,tr.")==0) linha_desejada = 44;
+        if(strcmp(auxchar, "v.,tr.,,intr.,pron.")==0) linha_desejada = 45;
+        if(strcmp(auxchar, "v.,tr.,intr.")==0) linha_desejada = 46;
+        if(strcmp(auxchar, "v.,tr.,pron.")==0) linha_desejada = 47;
+        
+
+
+
+
+        vector<string>lines;
+        string line;
+
+        while (getline(arquivo_inv, line)){
+            lines.push_back(line);
         }
-        arquivo_temporario << linha << endl;
-        linha_atual++;
-    }
 
-    // copia o restante das linhas
-    while (getline(arquivo_original, linha)) {
-        arquivo_temporario << linha << endl;
-    }
+        arquivo_inv.close();
 
-    arquivo_original.close();
-    arquivo_temporario.close();
+        ofstream arquivo_inv2("arqinvertido.csv");
 
-    // renomeia o arquivo temporário para o nome original do arquivo CSV
-    remove("arquivo.csv");
-    rename("temp.csv", "arquivo.csv");
+        if(arquivo_inv2.fail()){
+            cout << "error aa" << endl;
+            return 1;
+        }
 
+        linha_desejada--;
 
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <locale>
-
-using namespace std; 
-
-int main(int arqc, char* argv[]) {
-    switch (classe)
-    {
-    case 'adj':
-     
-        break;
-    case 'adj.,num.':
-      
-        break;
-    case 'adj.,num.,frac.,s.':
-        
-        break;
-    case 'adj.,num.,mult.':
-       
-        break;
-    case 'adj.,num.,ord.,s.':
-        
-        break;
-    case 'adj.,pron.,adv.':
-        
-        break;
-    case 'adj.,s.':
-        
-        break;
-    case 'adv.':
-        
-        break;
-    case 'adv.,interr.':
-      
-        break;
-    case 'adv.,s.':
-        
-        break;
-    case 'al.,abrev.':
-      
-        break;
-    case 'art.,def.':
-        
-        break;
-    case 'conj.':
-       
-        break;
-    case 'conj.,concess.':
-        
-        break;
-    case 'conj.,coord.':
-        
-        break;
-    case 'conj.,disj.':
-       
-        break;
-    case 'contr.':
-       
-        break;
-    case 'det.,pron.,dem.':
-        
-        break;
-    case 'det.,pron.,indef.':
-       
-        break;
-    case 'det.,pron.,poss.':
-        
-        break;
-    case 'ex.,abrev.':
-        
-        break;
-    case 'interj.':
-       
-        break;
-    case 'interj.,s.':
-        
-        break;
-    case 'm.,abrev.':
-        
-        break;
-    case 'pref.':
-        
-        break;
-    case 'prep.':
-       
-        break;
-    case 'pron.':
-       
-        break;
-    case 'pron.,dem.':
-        
-        break;
-    case 'pron.,indef.':
-        
-        break;
-    case 'pron.,indef.,s.':
-        
-        break;
-    case 'pron.,interr.':
-        
-        break;
-    case 'pron.,pess.':
-        
-        break;
-    case 'pron.,poss.':
-        
-        break;
-    case 'pron.,rel.':
-       
-        break;
-    case 's.':
-        
-        break;
-    case 'sigla':
-        
-        break;
-    case 'símb.':
-        
-        break;
-    case 'suf.':
-        
-        break;
-    case 'v.':
-        
-        break;
-    case 'v.,cop.':
-        
-        break;
-    case 'v.,intr.':
-        
-        break;
-    case 'v.,intr.,pron.':
-        
-        break;
-    case 'v.,pron.':
-       
-        break;
-    case 'v.,s.':
-       
-        break;
-    case 'v.,tr.':
-        
-        break;
-    case 'v.,tr.,,intr.,pron.':
-       
-        break;
-    case 'v.,tr.,intr.':
-        
-        break;
-    case 'v.,tr.,pron.':
-        
-        break;
-    default:
-        break;
+        for(int i = 0; i < lines.size(); i++){
+            if(i != linha_desejada) arquivo_inv2 << lines[i] << endl;
+            else arquivo_inv2 << lines[i] << ";" << pWord.ID << endl;
+        }
     }
     
-    
-    cout << "oi" << endl;
     return 0;
 }
+
+/*
+
+linha 1: adj
+linha 2: adj.,num.
+linha 3: adj.,num.,frac.,s.
+linha 4: adj.,num.,mult.
+linha 5: adj.,pron.,adv.
+linha 6: adj.,s.
+linha 7: adv.
+linha 8: adv.,interr.
+linha 9: adv.,s.
+linha 10: al.,abrev.
+linha 11: art.,def.
+linha 12: conj.
+linha 13: conj.,concess. 
+linha 14: conj.,coord.
+linha 15: conj.,disj.
+linha 16: contr.
+linha 17: det.,pron.,dem.
+linha 18: det.,pron.,indef.
+linha 19: det.,pron.,poss.
+linha 20: ex.,abrev.
+linha 21: interj.
+linha 22: interj.,s.
+linha 23: m.,abrev.
+linha 24: pref.
+linha 25: prep.
+linha 26: pron.
+linha 27: pron.,dem.
+linha 28: pron.,indef.
+linha 29: pron.,indef.,s.
+linha 30: pron.,interr.
+linha 31: pron.,pess.
+linha 32: pron.,poss.
+linha 33: pron.,rel.
+linha 34: s.
+linha 35: sigla
+linha 36: símb.
+linha 37: suf.
+linha 38: v.
+linha 39: v.,cop.
+linha 40: v.,intr.
+linha 41: v.,intr.,pron.
+linha 42: v.,pron.
+linha 43: v.,s.
+linha 44: v.,tr.
+linha 45: v.,tr.,,intr.,pron.
+linha 46: v.,tr.,intr.
+linha 47: v.,tr.,pron.  
 
 */
