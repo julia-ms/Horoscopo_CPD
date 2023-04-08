@@ -1,4 +1,6 @@
 #include<iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 //node declaration
@@ -172,12 +174,12 @@ void insert(int a) {                    // o inteiro a eh o novo dado
 
 int main() {
    int i, n, t;
-   cout<<"enter the no of elements to be inserted\n";
-   cin>>n;
-   for(i = 0; i < n; i++) {
-      cout<<"enter the element\n";  
-      cin>>t;
-      insert(t);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
+   srand(time(NULL));
+
+   for(i = 0; i < 75; i++) {
+        t = rand() % 100;
+        cout << "t eh" << t; 
+        insert(t);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
    }
    cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
    traverse(r);
