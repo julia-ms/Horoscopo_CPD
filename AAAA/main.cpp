@@ -17,5 +17,6 @@ int main(int arqc, char* argv[]) {
 
   fillFile(arq_data_is, arq_binary_is);
   readFile(arq_binary_is); 
+  invertido();
   return 0;
 }
