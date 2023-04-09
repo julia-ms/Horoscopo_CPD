@@ -41,6 +41,12 @@ struct Node {
     int numChildren; 
 }; 
 
+struct Entry {
+    WordKey entryWord;
+    streampos pos; 
+    int ID; 
+};
+
 
 
 //functions
@@ -70,7 +76,9 @@ void sort(Key *keys, int numKeys);
 Key split_child(streampos x, int i); 
 void insert(Key key);
 
-
+//emotional breakdown
+int generateInverted(string classe, string nomeArq);
+int readInverted(string arq); 
 
 //functions index
 int invertido();    

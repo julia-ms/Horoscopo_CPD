@@ -5,13 +5,31 @@
 using namespace std;
 
 // Declaração de função principal
-int main(int arqc, char* argv[]) {
+//int main(int arqc, char* argv[]) {
   
-//int main(){  
+int main(){  
   //para funcionar em portugues corretamente, eh necessario digitar no terminal antes de rodar: chcp 65001
   setlocale(LC_ALL, "Portuguese_Brasil");
 
-  
+  //string arq_data_is = argv[1];
+  //string arq_binary_is = argv[2];
+  fillFile("../data/data.csv", "..data/dictionary.bin");
+
+  generateInverted("adj.", "../invertidos/adjetivos.bin");
+  //generateInverted("s.", "../invertidos/substantivos.bin");
+  //generateInverted("v.", "../invertidos/verbos.bin");
+  //generateInverted("prep.", "../invertidos/preposicoes.bin");
+
+  readInverted("../invertidos/adjetivos.bin"); 
+
+  return 0;
+}
+
+
+
+
+
+  /*
   string arq_data_is = argv[1];
   string arq_binary_is = argv[2];
   fillFile(arq_data_is, arq_binary_is);
@@ -20,8 +38,8 @@ int main(int arqc, char* argv[]) {
 
   readFile(arq_binary_is); 
   invertido(); 
+
   
-  /*
   ifstream arq_qtd("quantidade.bin", ios::binary);
   int qtd = 0; 
   int soma = 0; 
@@ -53,6 +71,3 @@ int main(int arqc, char* argv[]) {
   }
 
   */ 
-
-  return 0;
-}
