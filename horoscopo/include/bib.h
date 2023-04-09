@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <unistd.h>
+
 #include "wordkey.h"
 
 using namespace std; 
@@ -66,6 +68,9 @@ Word searchWordID(int id);
 Word searchWordAdress(streampos pos); 
 Word searchWord(string word);
 
+void saveInt(int a, int b, int c, int d); 
+void lerInteiros(int& a, int& b, int& c, int& d);
+
 //functions Btree
 Node init(); 
 streampos putInArq(Node node); 
@@ -79,6 +84,10 @@ void insert(Key key);
 //emotional breakdown
 int generateInverted(string classe, string nomeArq);
 int readInverted(string arq); 
+int generateInvertedVerb(string nomeArq);
+int insertInverted(Entry entryToInsert , string nomeArq);
+Entry findInverted(streampos pos, string nomeArq); 
+tuple<streampos, streampos, streampos, streampos, string> generateFrase (int fator, int op);
 
 //functions index
 int invertido();    
@@ -86,6 +95,8 @@ int classeInt(string auxclasse);
 int lerIndex(string classe, int id);
 
 //functions horoscopo
+int horoscopo();
+int generateRandom(int fator, int tam); 
 
 
 //functions adm

@@ -48,10 +48,10 @@ int fillFile(string arq_data_is, string arq_binary_is){
 
 
     //escrevo o numero de entradas no inicio do arquivo
-    fstream dic_binary_entrys("../data/dictionary.bin", ios_base::binary | ios::in | ios::out);
-    dic_binary_entrys.seekp(0), ios::beg; 
-    dic_binary_entrys.write((char*)&IDAux, sizeof(int));
-    dic_binary_entrys.close(); 
+    //fstream dic_binary_entrys("../data/dictionary.bin", ios_base::binary | ios::in | ios::out);
+    //dic_binary_entrys.seekp(0), ios::beg; 
+    //dic_binary_entrys.write((char*)&IDAux, sizeof(int));
+    //dic_binary_entrys.close(); 
 
 
 
@@ -74,8 +74,8 @@ int readFile(string arq_binary_is){
     }
 
     //lendo numero de entradas pra nao me atrapalhar
-    int numEntrys = 0; 
-    dic_binary.read((char*)&numEntrys, sizeof(int));
+    //int numEntrys = 0; 
+    //dic_binary.read((char*)&numEntrys, sizeof(int));
 
     while(dic_binary.read((char*)&wordAux.ID, sizeof(int))){
         getline(dic_binary, wordAux.palavra, '\0');
@@ -102,7 +102,7 @@ int readFile(string arq_binary_is){
         return 1;
     }
 
-    cout << "numero de entradas eh: " << numEntrys; 
+    //cout << "numero de entradas eh: " << numEntrys; 
     //fechando arquivos
     dic_binary.close();
     return 0; 
@@ -116,12 +116,12 @@ streampos insertWordFinal(Word word) {
     int ID; 
 
     //leio o numero de entradas no inicio do arquivo e adiciono 1, colocando isso como ID
-    ifstream dic_binary_insert_entrys("../data/dictionary.bin", ios_base::binary);
-    dic_binary_insert_entrys.read((char*)&ID, sizeof(int));
-    dic_binary_insert_entrys.close(); 
-    ID++;
+    //ifstream dic_binary_insert_entrys("../data/dictionary.bin", ios_base::binary);
+    //dic_binary_insert_entrys.read((char*)&ID, sizeof(int));
+    //dic_binary_insert_entrys.close(); 
+    //ID++;
 
-    updateNumEntrys(ID);
+    //updateNumEntrys(ID);
 
 
     //atualizo o ID da palavra a ser inserida
@@ -134,13 +134,18 @@ streampos insertWordFinal(Word word) {
     }                
     dic_binary_insert.write((char*)&word, sizeof(Word));
 
+    int ba;
     addressWord = dic_binary_insert.tellp();
-    addressWord = addressWord - sizeof(Word);
+    ba = addressWord; 
+
+    //addressWord = addressWord - sizeof(Word);
+    ba = ba - sizeof(Word);
     dic_binary_insert.close(); 
 
+    addressWord = ba; 
     return addressWord;                              
 }
-
+/*
 void deleteWord (string classe, int id) {
     Word auxWord; 
     streampos pos; 
@@ -153,7 +158,7 @@ void deleteWord (string classe, int id) {
 
     updateWord(pos, auxWord); 
 }
-
+*/
 int updateNumEntrys(int actualID) {
     Word wordAux; 
 
@@ -290,8 +295,8 @@ Word searchWordID(int id) {
     ifstream dic_binary_searchID("../data/dictionary.bin", ios::binary);
 
 
-    int numEntrys = 0; 
-    dic_binary_searchID.read((char*)&numEntrys, sizeof(int));
+    //int numEntrys = 0; 
+    //dic_binary_searchID.read((char*)&numEntrys, sizeof(int));
 
     while (dic_binary_searchID.read((char*)&wordAux, sizeof(Word))){
         idAux = wordAux.ID; 
@@ -310,16 +315,26 @@ Word searchWordID(int id) {
 //pega uma struct palavra pelo seu endereco
 Word searchWordAdress(streampos pos) {
     Word wordAux; 
-
-    
     
     ifstream dic_binary_searchAdress("../data/dictionary.bin", ios::binary);
 
-    int numEntrys = 0; 
-    dic_binary_searchAdress.read((char*)&numEntrys, sizeof(int));
+    //int numEntrys = 0; 
+    //dic_binary_searchAdress.read((char*)&numEntrys, sizeof(int));
 
     dic_binary_searchAdress.seekg(pos); 
-    dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
+
+    dic_binary_searchAdress.read((char*)&wordAux.ID, sizeof(int));
+    getline(dic_binary_searchAdress, wordAux.palavra, '\0');
+    getline(dic_binary_searchAdress, wordAux.classe, '\0');
+    getline(dic_binary_searchAdress, wordAux.genero, '\0');
+    getline(dic_binary_searchAdress, wordAux.numero, '\0');
+    getline(dic_binary_searchAdress, wordAux.significado, '\0');  
+    dic_binary_searchAdress.read((char*)&wordAux.deleted, sizeof(bool)); 
+
+    cout << "aqui"; 
+    cout << wordAux.palavra << endl; 
+    
+    //dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
     dic_binary_searchAdress.close(); 
 
     return wordAux; 
@@ -335,8 +350,8 @@ Word searchWord(string word) {
     
     //leio o primeiro int pra nao atrapalhar
     ifstream dic_binary_search("../data/dictionary.bin", ios::binary);
-    int numEntrys = 0; 
-    dic_binary_search.read((char*)&numEntrys, sizeof(int));
+    //int numEntrys = 0; 
+    //dic_binary_search.read((char*)&numEntrys, sizeof(int));
 
     while (dic_binary_search.read((char*)&wordAux, sizeof(Word))){
         strAux = wordAux.palavra; 
@@ -353,6 +368,33 @@ Word searchWord(string word) {
 }
 
 
+//GUARDA TAMANHOS  ------------------------------------------------------------------------------------------------------------
 
+void saveInt(int a, int b, int c, int d) {
+  // criar um objeto de fluxo de saída para o arquivo
+  std::ofstream arquivo("../data/int.bin", std::ios::binary);
 
+  // escrever os 4 inteiros no arquivo
+  arquivo.write((char*)&a, sizeof(int));
+  arquivo.write((char*)&b, sizeof(int));
+  arquivo.write((char*)&c, sizeof(int));
+  arquivo.write((char*)&d, sizeof(int));
+
+  // fechar o arquivo
+  arquivo.close();
+}
+
+void lerInteiros(int& a, int& b, int& c, int& d) {
+  // criar um objeto de fluxo de entrada para o arquivo
+  std::ifstream arquivoLeitura("../data/int.bin", std::ios::binary);
+
+  // ler os 4 inteiros do arquivo
+  arquivoLeitura.read((char*)&a, sizeof(int));
+  arquivoLeitura.read((char*)&b, sizeof(int));
+  arquivoLeitura.read((char*)&c, sizeof(int));
+  arquivoLeitura.read((char*)&d, sizeof(int));
+
+  // fechar o arquivo
+  arquivoLeitura.close();
+}
 

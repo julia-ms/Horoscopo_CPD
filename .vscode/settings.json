@@ -5,6 +5,7 @@
         "*.tcc": "cpp",
         "iostream": "cpp",
         "array": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "tuple": "cpp"
     }
 }
