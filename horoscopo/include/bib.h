@@ -7,6 +7,7 @@
 #include <locale>
 #include <vector>
 #include <string>
+#include <sstream>
 #include "wordkey.h"
 
 using namespace std; 
@@ -22,6 +23,7 @@ struct Word {
     string genero;
     string numero;  
     string significado; 
+    bool deleted; 
 }; 
 
 
@@ -45,7 +47,18 @@ struct Node {
 int fillFile(string arq_data_is, string arq_binary_is);
 int readFile(string arq_binary_is);
 Word construct(string line, int ID); 
-int invertido();    
+
+Word searchWordID(int id); 
+Word searchWordAdress(streampos pos); 
+Word searchWord(string word); 
+streampos insertWordFinal(Word word); 
+void deleteWord (string classe, int id); 
+int updateNumEntrys(int actualID); 
+int updateWord (streampos pos, Word updated); 
+Word doUserWord(); 
+Word searchWordID(int id); 
+Word searchWordAdress(streampos pos); 
+Word searchWord(string word);
 
 //functions Btree
 Node init(); 
@@ -55,7 +68,20 @@ int swapStruct(streampos pos, Node node);
 void traverse(streampos p); 
 void sort(Key *keys, int numKeys); 
 Key split_child(streampos x, int i); 
-void insert(Key key); 
+void insert(Key key);
+
+
+
+//functions index
+int invertido();    
+int classeInt(string auxclasse);
+int lerIndex(string classe, int id);
+
+//functions horoscopo
+
+
+//functions adm
+int adm();
 
 
 #endif // BIB_H
