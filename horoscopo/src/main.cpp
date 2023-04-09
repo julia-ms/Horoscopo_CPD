@@ -19,8 +19,8 @@ int main(int arqc, char* argv[]) {
   cout << "atualizou"; 
 
   readFile(arq_binary_is); 
+  invertido(); 
   
-  //invertido(); 
   /*
   ifstream arq_qtd("quantidade.bin", ios::binary);
   int qtd = 0; 

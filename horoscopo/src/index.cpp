@@ -55,10 +55,10 @@ int invertido() {
         addressNode = addressNode - sizeof(Word); 
 
         
-        cout << "Palavra: " << pWord.palavra << endl;
-        cout << "Classe: " << pWord.classe << endl;
-        cout << "ID: " << pWord.ID << endl;
-        cout << endl;
+        // cout << "Palavra: " << pWord.palavra << endl;
+        // cout << "Classe: " << pWord.classe << endl;
+        // cout << "ID: " << pWord.ID << endl;
+        // cout << endl;
 
         ifstream arquivo_inv("../data/arqinvertido.csv");
         //ofstream arquivo_temporario("temp.csv");
@@ -102,6 +102,7 @@ int invertido() {
             if(i != linha_desejada) arquivo_inv2 << lines[i] << endl;
             else arquivo_inv2 << lines[i] << pWord.ID << "," << addressNode << ";" << endl;
         }
+        arquivo_inv2.close(); 
     }
 
     ofstream arquivo_qtd ("../data/quantidade.bin", std::ios::binary);
@@ -122,15 +123,15 @@ int invertido() {
 }
 
 
-int lerIndex(string classe, int id){
+streampos lerIndexpos(string classe, int posicao){
     int nro = classeInt(classe);
     cout << "linha: " << nro << endl;
     ifstream file("../data/arqinvertido.csv");
     string linha;
+    streampos endereco; 
 
     if (file.is_open()) {
         
-
         for (int i = 0; i < nro-1; i++) {
             getline(file, linha);
         }
@@ -142,27 +143,17 @@ int lerIndex(string classe, int id){
 
         // iterar através dos elementos da linha, separados por vírgula
         string element;
-    
-        while (getline(ss, element, ',')) {
-            int id_arq = stoi(element);
-            if(id_arq == id){
-                getline(ss, element, ';');
-                int endereco = stoi(element);
-                cout << "endereco: " << endereco << endl;
-                return endereco;
-            }
-            else{
-                getline(ss, element, ';');
-            }
-            // cout << "a: ";
-            // cout << element << endl;
-            // cout << "b: ";
-            // cout << element << endl;    
-        }
+        
+        for(int i=0; i<posicao; i++){
+            getline(ss, element, ',');
+            endereco = stoi(element);
+            getline(ss, element, ';');
+        } 
 
         // fechar o arquivo
         file.close();
     }
+    return endereco; 
     
 }
 
@@ -171,7 +162,7 @@ int classeInt(string auxclasse){
         const char* auxchar = auxclasse.c_str();
         int linha_desejada; 
 
-        if(strcmp(auxchar, "adj")==0) linha_desejada = 1;
+        if(strcmp(auxchar, "adj.")==0) linha_desejada = 1;
         if(strcmp(auxchar, "adj.,num.")==0) linha_desejada = 2;
         if(strcmp(auxchar, "adj.,num.,frac.,s.")==0) linha_desejada = 3;
         if(strcmp(auxchar, "adj.,num.,mult.")==0) linha_desejada = 4;

@@ -48,8 +48,8 @@ int fillFile(string arq_data_is, string arq_binary_is){
 
 
     //escrevo o numero de entradas no inicio do arquivo
-    ofstream dic_binary_entrys("../data/dictionary.bin", ios_base::binary | ios_base::app);
-    dic_binary_entrys.seekp(0); 
+    fstream dic_binary_entrys("../data/dictionary.bin", ios_base::binary | ios::in | ios::out);
+    dic_binary_entrys.seekp(0), ios::beg; 
     dic_binary_entrys.write((char*)&IDAux, sizeof(int));
     dic_binary_entrys.close(); 
 
@@ -87,13 +87,13 @@ int readFile(string arq_binary_is){
 
 
         //e aqui vou printar a struct pra mostrar que deu certo
-        cout << "ID:" << wordAux.ID << endl; 
-        cout << "palavra:" << wordAux.palavra << endl; 
-        cout << "classe:"  << wordAux.classe  << endl;
-        cout << "genero:"  << wordAux.genero  << endl;
-        cout << "numero:"  << wordAux.numero  << endl;
-        cout << "significado:" << wordAux.significado << endl;
-        cout << "deleted:" << wordAux.deleted << endl << endl; 
+        // cout << "ID:" << wordAux.ID << endl; 
+        // cout << "palavra:" << wordAux.palavra << endl; 
+        // cout << "classe:"  << wordAux.classe  << endl;
+        // cout << "genero:"  << wordAux.genero  << endl;
+        // cout << "numero:"  << wordAux.numero  << endl;
+        // cout << "significado:" << wordAux.significado << endl;
+        // cout << "deleted:" << wordAux.deleted << endl << endl; 
 
     }
     
@@ -108,7 +108,7 @@ int readFile(string arq_binary_is){
     return 0; 
 }
 
-/*
+
 //FUNCAO DE INSERCAO E EXCLUSAO ---------------------------------------------------------------------------------------------
 //insere Word ao final e retorna o endereco de insercao
 streampos insertWordFinal(Word word) {
@@ -140,7 +140,7 @@ streampos insertWordFinal(Word word) {
 
     return addressWord;                              
 }
-*/
+
 void deleteWord (string classe, int id) {
     Word auxWord; 
     streampos pos; 
@@ -245,6 +245,8 @@ Word construct(string line, int IDAux) {
     wordAux.deleted = 0; 
     return wordAux; 
 }
+
+
 
 Word doUserWord() {
     Word userWord; 
