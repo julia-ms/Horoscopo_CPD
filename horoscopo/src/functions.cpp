@@ -2,6 +2,21 @@
 
 using namespace std;
 
+/*PASSOS
+- ler o arquivo de texto 
+- colocar cada linha em uma struct palavra
+- printar essa struct palavra pra ver se ta okay
+- guardar a struct palavra no arquivo binário
+- depois reler a struct do arquivo binário
+- printar essa struct lida de novo
+*/
+/*DUVIDAS
+- o arquivo de índice aponta o ID de onde está a palavra que eu quero, mas..
+    - sabendo o ID, eu preciso procurar a palavra no arquivo de dados original
+        -> como? por busca binária?
+    - e quando eu quiser, por exemplo, um SUBSTANTIVO FEMININO, eu procuro nos dois arquivos invertidos? 
+*/
+
 
 // funcao que abre o arquivo csv e coloca os itens em um arquivo binário com ID
 int fillFile(string arq_data_is, string arq_binary_is){
@@ -134,6 +149,7 @@ Word construct(string line, int IDAux) {
     }
     return wordAux; 
 }
+
 
 
 int newUserWord() {

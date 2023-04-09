@@ -12,9 +12,10 @@ int main(int arqc, char* argv[]) {
   string arq_data_is = argv[1];
   string arq_binary_is = argv[2];
 
-
-
   fillFile(arq_data_is, arq_binary_is);
   readFile(arq_binary_is); 
+   invertido();
+
+
   return 0;
 }

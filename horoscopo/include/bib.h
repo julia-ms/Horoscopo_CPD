@@ -6,7 +6,7 @@
 #include <cstring>
 #include <locale>
 #include <vector>
-
+#include <string>
 #include "wordkey.h"
 
 using namespace std; 
@@ -14,6 +14,7 @@ using namespace std;
 const int t = 6; 
 
 //structs 
+
 struct Word {
     int ID; 
     string palavra; 
@@ -22,6 +23,7 @@ struct Word {
     string numero;  
     string significado; 
 }; 
+
 
 struct Key {
     int ID; 
@@ -43,6 +45,7 @@ struct Node {
 int fillFile(string arq_data_is, string arq_binary_is);
 int readFile(string arq_binary_is);
 Word construct(string line, int ID); 
+int invertido();    
 
 //functions Btree
 Node init(); 
@@ -53,5 +56,6 @@ void traverse(streampos p);
 void sort(Key *keys, int numKeys); 
 Key split_child(streampos x, int i); 
 void insert(Key key); 
+
 
 #endif // BIB_H
