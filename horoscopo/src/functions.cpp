@@ -17,6 +17,7 @@ using namespace std;
     - e quando eu quiser, por exemplo, um SUBSTANTIVO FEMININO, eu procuro nos dois arquivos invertidos? 
 */
 
+
 // funcao que abre o arquivo csv e coloca os itens em um arquivo binário com ID
 int fillFile(string arq_data_is, string arq_binary_is){
 
@@ -148,3 +149,38 @@ Word construct(string line, int IDAux) {
     }
     return wordAux; 
 }
+
+
+
+int newUserWord() {
+    //printa perguntas aos usuarios
+    //controi string com elas 
+    //insere
+    return 0; 
+}
+
+string doStringWord() {
+    //faz string com as informacoes recebidas do usuario
+
+    return "todoo"; 
+}
+
+int insertWord(string line, string arq_binary_is, string arq_Btree_is) {
+    //recebe line
+    //chama funcao q transforma em struct
+    //insere no final do arquivo e pega endereço
+    //insere em B tree
+    return 0; 
+}
+
+int deleteWord(string word, string arq_binary_is, string arq_Btree_is) {
+    //retira da BTree
+    //retira dos arquivos de índice
+    return 0; 
+}
+
+//funcao de apagar e incluir devem ser feitas a partir da existencia de arquivos invertidos
+
+
+
+
