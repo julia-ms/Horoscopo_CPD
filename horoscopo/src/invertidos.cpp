@@ -41,7 +41,7 @@ int generateInverted(string classe, string nomeArq){
         int endChato; 
         endLegal = dic_binary.tellg();
         endChato = endLegal; 
-        endChato = endChato - sizeof(Entry);
+        endChato = endChato - sizeof(wordAux);
         endLegal = endChato; 
 
         if (classe == wordAux.classe) {
@@ -135,7 +135,7 @@ int generateInvertedVerb(string nomeArq){
         int endChato; 
         endLegal = dic_binary.tellg();
         endChato = endLegal; 
-        endChato = endChato - sizeof(Entry);
+        endChato = endChato - sizeof(wordAux);
         endLegal = endChato; 
 
         if (wordAux.classe == "v." |wordAux.classe == "v.,intr."|wordAux.classe =="v.,tr.,intr."|wordAux.classe =="v.,tr.") {

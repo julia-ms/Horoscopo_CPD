@@ -3,13 +3,15 @@
 using namespace std;
 
 int generateRandom(int fator, int tam){
+    //gera uma entrada aleatoria; 
+    
     int random; 
 
     srand(time(NULL));
     
     int aleatorio; 
     aleatorio = rand(); 
-    random = (fator*aleatorio) % tam; 
+    random = (fator*aleatorio) % tam-1; 
     random = random*sizeof(Entry); 
 
     return random;
@@ -43,19 +45,19 @@ tuple<streampos, streampos, streampos, streampos, string> generateFrase(int fato
     //ID -1 eh excluido
 
     do {
-    addressAdj = generateRandom(fator, tamAdj); 
+    addressAdj = generateRandom(fator, tamAdj-1); 
     } while (findInverted(addressAdj, "../invertidos/adjetivos.bin").ID == -1);
     
     do {
-    addressSub = generateRandom(fator, tamSub); 
+    addressSub = generateRandom(fator, tamSub-1); 
     } while (findInverted(addressSub, "../invertidos/substantivos.bin").ID == -1);
     
     do {
-    addressVer = generateRandom(fator, tamVer); 
+    addressVer = generateRandom(fator, tamVer-1); 
     } while (findInverted(addressVer, "../invertidos/verbos.bin").ID == -1);
     
     do {
-    addressPrep = generateRandom(fator, tamPrep); 
+    addressPrep = generateRandom(fator, tamPrep-1); 
     } while (findInverted(addressPrep, "../invertidos/preposicoes.bin").ID == -1);
     
 

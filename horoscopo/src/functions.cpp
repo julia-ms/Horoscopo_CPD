@@ -73,6 +73,9 @@ int readFile(string arq_binary_is){
         return 1;  
     }
 
+    ofstream testePraga("../data/praga.txt");
+
+
     //lendo numero de entradas pra nao me atrapalhar
     //int numEntrys = 0; 
     //dic_binary.read((char*)&numEntrys, sizeof(int));
@@ -87,15 +90,17 @@ int readFile(string arq_binary_is){
 
 
         //e aqui vou printar a struct pra mostrar que deu certo
-        // cout << "ID:" << wordAux.ID << endl; 
-        // cout << "palavra:" << wordAux.palavra << endl; 
-        // cout << "classe:"  << wordAux.classe  << endl;
-        // cout << "genero:"  << wordAux.genero  << endl;
-        // cout << "numero:"  << wordAux.numero  << endl;
-        // cout << "significado:" << wordAux.significado << endl;
-        // cout << "deleted:" << wordAux.deleted << endl << endl; 
+        testePraga << "ID:" << wordAux.ID << endl; 
+        testePraga << "palavra:" << wordAux.palavra << endl; 
+        testePraga << "classe:"  << wordAux.classe  << endl;
+        testePraga << "genero:"  << wordAux.genero  << endl;
+        testePraga << "numero:"  << wordAux.numero  << endl;
+        testePraga << "significado:" << wordAux.significado << endl;
+        testePraga << "deleted:" << wordAux.deleted << endl << endl; 
 
     }
+
+    testePraga.close(); 
     
     if (!dic_binary.eof()) {
         cout << "Não foi possível ler todo o arquivo.\n";
@@ -331,8 +336,16 @@ Word searchWordAdress(streampos pos) {
     getline(dic_binary_searchAdress, wordAux.significado, '\0');  
     dic_binary_searchAdress.read((char*)&wordAux.deleted, sizeof(bool)); 
 
-    cout << "aqui"; 
+    cout << "palavra = "; 
     cout << wordAux.palavra << endl; 
+    cout << "classe = "; 
+    cout << wordAux.classe << endl; 
+    cout << "genero = "; 
+    cout << wordAux.classe << endl;
+    cout << "numero = "; 
+    cout << wordAux.classe << endl;
+    cout << "significado = "; 
+    cout << wordAux.classe << endl;
     
     //dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
     dic_binary_searchAdress.close(); 
@@ -343,6 +356,7 @@ Word searchWordAdress(streampos pos) {
 
 //pesquiso palavra no arquivo por palavra. se nao encontra essa palavra, retorna erro
 Word searchWord(string word) {
+    //essa tem erro de tamanho
     Word wordAux; 
     Word wordError; 
     string strAux = ""; 

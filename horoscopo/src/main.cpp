@@ -5,9 +5,9 @@
 using namespace std;
 
 // Declaração de função principal
-int main(int arqc, char* argv[]) {
+//int main(int arqc, char* argv[]) {
   
-//int main(){  
+int main(){  
   setlocale(LC_ALL, "Portuguese_Brasil");
 
   //variaveis de controle de arquivos invertidos
@@ -28,14 +28,16 @@ int main(int arqc, char* argv[]) {
   
 
 //precisa as vezes
-  // string arq_data_is = argv[1];
-  // string arq_binary_is = argv[2];
+   //string arq_data_is = argv[1];
+   //string arq_binary_is = argv[2];
   // fillFile(arq_data_is, arq_binary_is);
-  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-  //readInverted("../invertidos/adjetivos.bin"); 
+  //  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+  //  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+  //  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+  //  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+  //  readInverted("../invertidos/adjetivos.bin"); 
+  //  readFile(arq_binary_is); 
+
 
 
 //lembrar do que eu precisar zerar
@@ -111,9 +113,21 @@ home:
 
       //addressAdj, addressSub, addressVer, addressPrep;
       pos0 = findInverted(get<0>(posTuple), "../invertidos/adjetivos.bin").pos; 
+      findInverted(get<0>(posTuple), "../invertidos/adjetivos.bin").entryWord.wPrint();
+      cout << endl;
+
       pos1 = findInverted(get<1>(posTuple), "../invertidos/substantivos.bin").pos; 
+      findInverted(get<1>(posTuple), "../invertidos/substantivos.bin").entryWord.wPrint(); 
+      cout << endl;
+
       pos2 = findInverted(get<2>(posTuple), "../invertidos/verbos.bin").pos; 
+      findInverted(get<2>(posTuple), "../invertidos/verbos.bin").entryWord.wPrint(); 
+      cout << endl;
+
       pos3 = findInverted(get<3>(posTuple), "../invertidos/preposicoes.bin").pos; 
+      findInverted(get<3>(posTuple), "../invertidos/preposicoes.bin").entryWord.wPrint(); 
+      cout << endl;
+
 
       cout << pos0 << " " << pos1 << " " << pos2 << " " << pos3 << " ";
 
@@ -123,10 +137,10 @@ home:
       word2 = searchWordAdress(pos2); 
       word3 = searchWordAdress(pos3); 
 
-      cout << word0.palavra << " = " << word0.significado << endl << endl; 
-      cout << word1.palavra << " = " << word1.significado << endl << endl; 
-      cout << word2.palavra << " = " << word2.significado << endl << endl; 
-      cout << word3.palavra << " = " << word3.significado << endl << endl;
+      // cout << word0.palavra << " = " << word0.significado << endl << endl; 
+      // cout << word1.palavra << " = " << word1.significado << endl << endl; 
+      // cout << word2.palavra << " = " << word2.significado << endl << endl; 
+      // cout << word3.palavra << " = " << word3.significado << endl << endl;
     }
 
 
@@ -146,7 +160,7 @@ if (modo == 2) {
 
   saida:
   saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
-
+  
   cout << "Fim do programa!";
   return 0;
 }
