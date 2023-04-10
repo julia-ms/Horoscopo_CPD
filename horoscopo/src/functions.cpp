@@ -326,6 +326,7 @@ Word searchWordAdress(streampos pos) {
     //int numEntrys = 0; 
     //dic_binary_searchAdress.read((char*)&numEntrys, sizeof(int));
 
+    //aq nao pega certo
     dic_binary_searchAdress.seekg(pos); 
 
     dic_binary_searchAdress.read((char*)&wordAux.ID, sizeof(int));

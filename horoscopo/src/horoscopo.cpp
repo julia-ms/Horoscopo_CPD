@@ -3,15 +3,16 @@
 using namespace std;
 
 int generateRandom(int fator, int tam){
-    //gera uma entrada aleatoria; 
-    
+    //gera uma entrada aleatoria;     
     int random; 
 
     srand(time(NULL));
     
     int aleatorio; 
     aleatorio = rand(); 
-    random = (fator*aleatorio) % tam-1; 
+    random = (fator*aleatorio) % tam-1;
+
+    //ver aqui depois 
     random = random*sizeof(Entry); 
 
     return random;

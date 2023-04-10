@@ -10,11 +10,8 @@ int generateInverted(string classe, string nomeArq){
 
     Entry auxEntry;
     Word wordAux; 
-
-    int ID; 
-    streampos endLegal; 
-
     int numEntrysWrite = 0; 
+    int ID;
 
     ifstream dic_binarya("../data/dictionary.bin", ios::binary);
 
@@ -24,55 +21,53 @@ int generateInverted(string classe, string nomeArq){
         return 1;  
     }
 
+    // Posicionar o ponteiro de leitura no final do arquivo
+    dic_binarya.seekg(0, std::ios::end);
+
+    // Obter o tamanho do arquivo em bytes
+    std::streampos fileSize = dic_binarya.tellg();
+
+    // Voltar ao início do arquivo
+    dic_binarya.seekg(0, std::ios::beg);
+
     ofstream inverted(nomeArq, ios::binary);
+    
+    streampos enderecoInicio;
+    streampos enderecoFim;
+    int tamanho; 
 
-    //lendo numero de entradas pra nao me atrapalhar
-    // int numEntrys = 0; 
-    // dic_binary.read((char*)&numEntrys, sizeof(int));
+    //todo um role pra ler e pegar os enderecos  
+    while(dic_binarya.tellg() < fileSize){
+        // Obter o endereço do início da estrutura
+        enderecoInicio = dic_binarya.tellg();
 
-    while(dic_binarya.read((char*)&wordAux.ID, sizeof(int))){
+        // Ler a estrutura
+        dic_binarya.read((char*)&wordAux.ID, sizeof(int));
         getline(dic_binarya, wordAux.palavra, '\0');
         getline(dic_binarya, wordAux.classe, '\0');
         getline(dic_binarya, wordAux.genero, '\0');
         getline(dic_binarya, wordAux.numero, '\0');
         getline(dic_binarya, wordAux.significado, '\0');  
-        dic_binarya.read((char*)&wordAux.deleted, sizeof(bool)); 
+        dic_binarya.read((char*)&wordAux.deleted, sizeof(bool));
 
-        int endChato; 
-        endLegal = dic_binarya.tellg();
-        endChato = endLegal; 
-        endChato = endChato - sizeof(wordAux.palavra);
-        endChato = endChato - sizeof(wordAux.classe);
-        endChato = endChato - sizeof(wordAux.genero);
-        endChato = endChato - sizeof(wordAux.numero);
-        endChato = endChato - sizeof(wordAux.palavra);
-        endChato = endChato - sizeof(wordAux.significado);
-        endChato = endChato - sizeof(int);
-        endChato = endChato - sizeof(bool);
-        //endChato = endChato - sizeof(wordAux);
-        endLegal = endChato; 
-        
+        // Obter o endereço do final da estrutura
+        enderecoFim = dic_binarya.tellg();
+
+        // Calcular o tamanho da estrutura em bytes
+        tamanho = enderecoFim - enderecoInicio;
 
         if (classe == wordAux.classe) {
             auxEntry.entryWord.clear();
             auxEntry.entryWord.fromString(wordAux.palavra);
-            //cout << "escrevi: "; 
-            //auxEntry.entryWord.wPrint(); 
             auxEntry.ID = wordAux.ID; 
-            auxEntry.pos = endLegal;
+            auxEntry.pos = enderecoInicio;
 
             inverted.write((char*)&auxEntry, sizeof(Entry));
             numEntrysWrite++; 
         }
     }
     
-    if (!dic_binarya.eof()) {
-        cout << "Não foi possível ler todo o arquivo.\n";
-        return 1;
-    }
-
     dic_binarya.close(); 
-
     return numEntrysWrite; 
 }
 
@@ -91,18 +86,19 @@ int readInverted(string arq) {
     //lendo numero de entradas pra nao me atrapalhar
     //int numEntrys = 0; 
     //inverted_read.read((char*)&numEntrys, sizeof(int));
-
     //cout << "num entradas: " << numEntrys << endl << endl; 
 
+    string aux; 
+    ofstream inverted_read_teste("../data/testereadinverted.txt");
     while(inverted_read.read((char*)&entryAux, sizeof(Entry))){
         //e aqui vou printar a struct pra mostrar que deu certo
-        cout << entryAux.ID << endl;
-        entryAux.entryWord.wPrint();
-        cout << endl; 
-        cout << entryAux.pos << endl << endl;
+        inverted_read_teste << entryAux.ID << endl;
+        aux = entryAux.entryWord.toString(); 
+        inverted_read_teste << aux << endl;         
+        inverted_read_teste << entryAux.pos << endl << endl;
     }
 
-
+    inverted_read_teste.close(); 
     inverted_read.close();
 
     return 0; 
@@ -113,10 +109,7 @@ int generateInvertedVerb(string nomeArq){
 
     Entry auxEntry;
     Word wordAux; 
-
     int ID; 
-    streampos endLegal; 
-
     int numEntrysWrite = 0; 
 
     ifstream dic_binary("../data/dictionary.bin", ios::binary);
@@ -129,42 +122,49 @@ int generateInvertedVerb(string nomeArq){
 
     ofstream inverted(nomeArq, ios::binary);
 
-    // //lendo numero de entradas pra nao me atrapalhar
-    // int numEntrys = 0; 
-    // dic_binary.read((char*)&numEntrys, sizeof(int));
+    // Posicionar o ponteiro de leitura no final do arquivo
+    dic_binary.seekg(0, std::ios::end);
 
-    while(dic_binary.read((char*)&wordAux.ID, sizeof(int))){
+    // Obter o tamanho do arquivo em bytes
+    streampos fileSize = dic_binary.tellg();
+
+    // Voltar ao início do arquivo
+    dic_binary.seekg(0, std::ios::beg);
+    
+    streampos enderecoInicio;
+    streampos enderecoFim;
+    int tamanho; 
+
+    //todo um role pra ler e pegar os enderecos  
+    while(dic_binary.tellg() < fileSize){
+        // Obter o endereço do início da estrutura
+        enderecoInicio = dic_binary.tellg();
+
+        // Ler a estrutura
+        dic_binary.read((char*)&wordAux.ID, sizeof(int));
         getline(dic_binary, wordAux.palavra, '\0');
         getline(dic_binary, wordAux.classe, '\0');
         getline(dic_binary, wordAux.genero, '\0');
         getline(dic_binary, wordAux.numero, '\0');
         getline(dic_binary, wordAux.significado, '\0');  
-        dic_binary.read((char*)&wordAux.deleted, sizeof(bool)); 
+        dic_binary.read((char*)&wordAux.deleted, sizeof(bool));
 
-        int endChato; 
-        endLegal = dic_binary.tellg();
-        endChato = endLegal; 
-        endChato = endChato - sizeof(wordAux);
-        endLegal = endChato; 
+        // Obter o endereço do final da estrutura
+        enderecoFim = dic_binary.tellg();
 
+        // Calcular o tamanho da estrutura em bytes
+        tamanho = enderecoFim - enderecoInicio;
+        
         if (wordAux.classe == "v." |wordAux.classe == "v.,intr."|wordAux.classe =="v.,tr.,intr."|wordAux.classe =="v.,tr.") {
             auxEntry.entryWord.clear();
             auxEntry.entryWord.fromString(wordAux.palavra);
-            //cout << "escrevi: "; 
-            //auxEntry.entryWord.wPrint(); 
             auxEntry.ID = wordAux.ID; 
-            auxEntry.pos = endLegal;
+            auxEntry.pos = enderecoInicio;
 
             inverted.write((char*)&auxEntry, sizeof(Entry));
             numEntrysWrite++; 
         }
     }
-    
-    if (!dic_binary.eof()) {
-        cout << "Não foi possível ler todo o arquivo.\n";
-        return 1;
-    }
-
     dic_binary.close(); 
 
     return numEntrysWrite; 

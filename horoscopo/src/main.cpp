@@ -10,11 +10,23 @@ using namespace std;
 int main(){  
   setlocale(LC_ALL, "Portuguese_Brasil");
 
-  //variaveis de controle de arquivos invertidos
+//TESTANDO AQUI SE EU CONSIGO LER CORRETAMENTE ENDERECOS DO DICIONARIO 
   int fator; 
-
-  tuple<int, int, int, int> tam;                            //tamAdj, tamSub, tamVer, tamPrep; 
+  tuple<int, int, int, int> tam;            //tamAdj, tamSub, tamVer, tamPrep; 
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
+
+  //get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+  //get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+  //get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+  //get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+  //readInverted("../invertidos/adjetivos.bin"); 
+  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+
+ 
+ 
+  //TODO O TRABALHO AQUI 
+
+  //variaveis de controle de arquivos invertidos
   //fluxo do menu
   int modo = 0; 
   int newTry = 0; 
@@ -23,23 +35,9 @@ int main(){
   //structs auxiliares
   Entry auxPrint; 
   
-  //lerInteiros(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
-  
-  
+  lerInteiros(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
-//precisa as vezes
-   //string arq_data_is = argv[1];
-   //string arq_binary_is = argv[2];
-   //fillFile(arq_data_is, arq_binary_is);
-   get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-   get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-   get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-   get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-   //readInverted("../invertidos/adjetivos.bin"); 
-   //readFile(arq_binary_is); 
-
-  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
-
+    
 //lembrar do que eu precisar zerar
 home: 
   do {
@@ -177,8 +175,10 @@ if (modo == 2) {
   saida:
   //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
   
+
   cout << "Fim do programa!";
   return 0;
+
 }
 
 
