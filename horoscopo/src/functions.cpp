@@ -73,7 +73,7 @@ int readFile(string arq_binary_is){
         return 1;  
     }
 
-    ofstream testePraga("../data/praga.txt");
+    ofstream testePraga("../debug/dictionary.txt");
 
 
     //lendo numero de entradas pra nao me atrapalhar
@@ -150,30 +150,43 @@ streampos insertWordFinal(Word word) {
     addressWord = ba; 
     return addressWord;                              
 }
-/*
-void deleteWord (string classe, int id) {
+
+void deleteWord (streampos posInverted, string name_Arq) {
     Word auxWord; 
-    streampos pos; 
+    Entry auxEntry; 
+    streampos posDictionary;
 
-    pos = lerIndex(classe, id); 
-    // busca palavra no invertido, que retorna endereco
+    //deletando do arquivo invertido (coloco ID = -1)
+    
+    auxEntry = findInverted(posInverted, name_Arq);
+    cout << "Vou deletar a palavra: ";
+    auxEntry.entryWord.wPrint();  
+    cout << endl; 
+    auxEntry.ID = -1; 
+    updateEntry(auxEntry, name_Arq, posInverted); 
 
-    auxWord = searchWordAdress(pos); 
+
+
+
+    //deletando no dicionario (coloco deleted = TRUE)
+    posDictionary = auxEntry.pos; 
+    auxWord = searchWordAdress(posDictionary); 
     auxWord.deleted = true; 
 
-    updateWord(pos, auxWord); 
+    //confio que to mandando aqui de MESMO tamanho, só mudo o deleted
+    updateWord(posDictionary, auxWord);
 }
-*/
+
+
+//escreve no arquivo de inteiros qual o ID que ta
 int updateNumEntrys(int actualID) {
     Word wordAux; 
 
-    ofstream update_entrys("../data/dictionary.bin", ios::binary | ios::in);
+    ofstream update_entrys("../data/NumEntrys.bin", ios::binary);
      
     if (!update_entrys) {
         return -1; 
     }
-
-    update_entrys.seekp(0); 
 
     //escrevo novo tamanho
     update_entrys.write((char*)&actualID, sizeof(int));        
@@ -182,6 +195,24 @@ int updateNumEntrys(int actualID) {
     return 0; 
 }
 
+//le no arquivo de inteiros qual o ID que ta
+int readNumEntry() {
+    Word wordAux; 
+    int actualID = 0; 
+
+    ifstream update_entrys("../data/NumEntrys.bin", ios::binary);
+     
+    if (!update_entrys) {
+        return -1; 
+    }
+    //le tamanho
+    update_entrys.read((char*)&actualID, sizeof(int));        
+    update_entrys.close();
+    return actualID; 
+}
+
+
+//preciso CONFIAR q to recebendo uma struct de mesmo tamanho (ou seja, so altero o bool ou o ID)
 int updateWord (streampos pos, Word updated) {
     Word wordAux; 
     wordAux = updated; 
@@ -191,12 +222,18 @@ int updateWord (streampos pos, Word updated) {
     if (!dic_binary_update) {
         return -1; 
     }
-
+    
     //move o ponteiro ate a posicao da string antiga 
     dic_binary_update.seekp(pos); 
 
-    //escrevo nodo no arquivo nessa posicao
-    dic_binary_update.write((char*)&wordAux, sizeof(Word));        
+    //escrevo palavra nova arquivo nessa posicao        
+    dic_binary_update.write((char*)&wordAux.ID, sizeof(int));
+    dic_binary_update.write(wordAux.palavra.c_str(), wordAux.palavra.size() + 1);
+    dic_binary_update.write(wordAux.classe.c_str(), wordAux.classe.size() + 1);
+    dic_binary_update.write(wordAux.genero.c_str(), wordAux.genero.size() + 1);
+    dic_binary_update.write(wordAux.numero.c_str(), wordAux.numero.size() + 1);
+    dic_binary_update.write(wordAux.significado.c_str(), wordAux.significado.size() + 1);
+    dic_binary_update.write((char*)&wordAux.deleted, sizeof(bool));     
     
     dic_binary_update.close();
     return 0; 
@@ -287,23 +324,24 @@ Word doUserWord() {
 
 //FUNCOES PARA PESQUISA ------------------------------------------------------------------------------------------------------------
 
-//pesquiso palavra no arquivo por ID. se nao encontra esse ID, retorna erro
+// pesquiso palavra no arquivo por ID. se nao encontra esse ID, retorna erro
+// fazer verificacao la fora de excluida ou nao 
 Word searchWordID(int id) {
     Word wordAux; 
     Word wordError; 
     int idAux = -1; 
     wordError.ID = -1; 
-    
-    //le o numero de entradas no inicio pra nao atrapalhar 
-
-    
+        
     ifstream dic_binary_searchID("../data/dictionary.bin", ios::binary);
 
-
-    //int numEntrys = 0; 
-    //dic_binary_searchID.read((char*)&numEntrys, sizeof(int));
-
-    while (dic_binary_searchID.read((char*)&wordAux, sizeof(Word))){
+    while (dic_binary_searchID.read((char*)&wordAux.ID, sizeof(int))){
+        getline(dic_binary_searchID, wordAux.palavra, '\0');
+        getline(dic_binary_searchID, wordAux.classe, '\0');
+        getline(dic_binary_searchID, wordAux.genero, '\0');
+        getline(dic_binary_searchID, wordAux.numero, '\0');
+        getline(dic_binary_searchID, wordAux.significado, '\0');  
+        dic_binary_searchID.read((char*)&wordAux.deleted, sizeof(bool)); 
+        
         idAux = wordAux.ID; 
         if (idAux == id) 
             break; 
@@ -318,12 +356,12 @@ Word searchWordID(int id) {
 }
 
 //pega uma struct palavra pelo seu endereco
+//se ela foi excluida deleted vai estar como 1
 Word searchWordAdress(streampos pos) {
     Word wordAux; 
     
     ifstream dic_binary_searchAdress("../data/dictionary.bin", ios::binary);
 
-    //aq nao pega certo
     dic_binary_searchAdress.seekg(pos); 
 
     dic_binary_searchAdress.read((char*)&wordAux.ID, sizeof(int));
@@ -334,21 +372,21 @@ Word searchWordAdress(streampos pos) {
     getline(dic_binary_searchAdress, wordAux.significado, '\0');  
     dic_binary_searchAdress.read((char*)&wordAux.deleted, sizeof(bool)); 
 
-/*
-    cout << "procurando pela palavra, encontrei"; 
-    cout << "ID = " << wordAux.ID; 
-    cout << "palavra = "; 
-    cout << wordAux.palavra << endl; 
-    cout << "classe = "; 
-    cout << wordAux.classe << endl; 
-    cout << "genero = "; 
-    cout << wordAux.genero << endl;
-    cout << "numero = "; 
-    cout << wordAux.numero << endl;
-    cout << "significado = "; 
-    cout << wordAux.significado << endl;
-*/
-    //dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
+    /*
+        cout << "procurando pela palavra, encontrei"; 
+        cout << "ID = " << wordAux.ID; 
+        cout << "palavra = "; 
+        cout << wordAux.palavra << endl; 
+        cout << "classe = "; 
+        cout << wordAux.classe << endl; 
+        cout << "genero = "; 
+        cout << wordAux.genero << endl;
+        cout << "numero = "; 
+        cout << wordAux.numero << endl;
+        cout << "significado = "; 
+        cout << wordAux.significado << endl;
+    */
+        //dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
     dic_binary_searchAdress.close(); 
 
     return wordAux; 
@@ -357,6 +395,7 @@ Word searchWordAdress(streampos pos) {
 
 //pesquiso palavra no arquivo por palavra. se nao encontra essa palavra, retorna erro
 //AQUI VIRIA A ÁRVORE
+//TA ERRADO
 Word searchWord(string word) {
     //essa tem erro de tamanho
     Word wordAux; 
@@ -364,10 +403,8 @@ Word searchWord(string word) {
     string strAux = ""; 
     wordError.ID = -1; 
     
-    //leio o primeiro int pra nao atrapalhar
+    
     ifstream dic_binary_search("../data/dictionary.bin", ios::binary);
-    //int numEntrys = 0; 
-    //dic_binary_search.read((char*)&numEntrys, sizeof(int));
 
     while (dic_binary_search.read((char*)&wordAux, sizeof(Word))){
         strAux = wordAux.palavra; 
@@ -377,10 +414,12 @@ Word searchWord(string word) {
 
     dic_binary_search.close(); 
 
+    //se tiver excluida, nao retorno  
     if (strAux == word) {
-        return wordAux; 
+        if (wordAux.deleted != 1)
+            return wordAux; 
     }
-    else return wordError; 
+    return wordError; 
 }
 
 

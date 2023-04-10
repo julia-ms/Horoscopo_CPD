@@ -166,19 +166,23 @@ home:
 
         switch (opDelete) {
           case 1:
-            /* code */
+            deleteWord(get<0>(posTuple), "../invertidos/adjetivos.bin"); 
+            cout << "Palavra " << '\"' << word0.palavra << '\"' << " deletada."; 
             break;
 
           case 2:
-            /* code */
+            deleteWord(get<1>(posTuple), "../invertidos/substantivos.bin"); 
+            cout << "Palavra " << '\"' << word1.palavra << '\"' << " deletada."; 
             break;
 
           case 3:
-            /* code */
+            deleteWord(get<2>(posTuple), "../invertidos/verbos.bin"); 
+            cout << "Palavra " << '\"' << word2.palavra << '\"' << " deletada. "; 
             break;
 
           case 4:
-            /* code */
+            deleteWord(get<3>(posTuple), "../invertidos/preposicoes.bin"); 
+            cout << "Palavra " << '\"' << word3.palavra << '\"' << " deletada. "; 
             break;
 
           default:
@@ -191,15 +195,16 @@ home:
             break;
         }
 
-        
+        cout << "Mais sorte na proxima. Digite 1 para tentar novamente." << endl; 
+        cin >> newTry; 
+        if (newTry ==  1)
+          goto home; 
+        else 
+          goto saida; 
 
       }
 
-
     }
-
-
-
 
   }
 
@@ -209,7 +214,7 @@ home:
 
 else if (modo == 2) {
   int op;
-  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palvra nova\n2 - Excluir uma palvra existente\n3- Listar todas as palvras presentes no banco de daodos" << endl;
+  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palvra nova\n2 - Excluir uma palvra existente\n3 - Listar todas as palvras presentes no banco de daodos" << endl;
   cout << "Para sair aperte qualquer tecla." << endl;
   cout << "Insira opção: ";
   cin >> op;
@@ -236,6 +241,15 @@ else if (modo == 2) {
   
 
   cout << "Fim do programa!";
+
+
+  //atualizando arquivos ao fim do programa, para debug
+  readInverted("../invertidos/adjetivos.bin", "../debug/adjetivos.txt"); 
+  readInverted("../invertidos/preposicoes.bin", "../debug/preposicoes.txt"); 
+  readInverted("../invertidos/substantivos.bin", "../debug/substantivos.txt"); 
+  readInverted("../invertidos/verbos.bin", "../debug/verbos.txt"); 
+  readFile("../data/dictionary.bin"); 
+
   return 0;
 
 }

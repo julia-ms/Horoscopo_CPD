@@ -71,7 +71,7 @@ int generateInverted(string classe, string nomeArq){
     return numEntrysWrite; 
 }
 
-int readInverted(string arq) {
+int readInverted(string arq, string arqTxt) {
     ifstream inverted_read(arq, ios::binary);
 
     Entry entryAux; 
@@ -89,7 +89,7 @@ int readInverted(string arq) {
     //cout << "num entradas: " << numEntrys << endl << endl; 
 
     string aux; 
-    ofstream inverted_read_teste("../data/testereadinverted.txt");
+    ofstream inverted_read_teste(arqTxt);
     while(inverted_read.read((char*)&entryAux, sizeof(Entry))){
         //e aqui vou printar a struct pra mostrar que deu certo
         inverted_read_teste << entryAux.ID << endl;
@@ -171,8 +171,11 @@ int generateInvertedVerb(string nomeArq){
 }
 
 //INSERINDO EM INVERTIDO ********************************************************************************************************************
+
+//aqui insiro um NOVO registro
 int insertInverted(Entry entryToInsert , string nomeArq){
     //fazer busca binaria pra inserir em ordem alfabetica
+    //aí usa um seekg combinado com ter aumentando a funcao em size of antes e insere com appende
     Entry auxEntry;
 
     ofstream inverted(nomeArq, ios::binary | ios::app);
@@ -180,6 +183,19 @@ int insertInverted(Entry entryToInsert , string nomeArq){
         
     inverted.close(); 
 
+    return  0; 
+}
+
+//diferente do append, escreve em cima
+int updateEntry (Entry newEntryValue, string nomeArq, streampos pos)  {
+    Entry auxEntry;
+
+    ofstream invertedUpdate(nomeArq, ios::binary | ios::in);
+
+    invertedUpdate.seekp(pos); 
+    invertedUpdate.write((char*)&auxEntry, sizeof(Entry));
+
+    invertedUpdate.close(); 
     return  0; 
 }
 
