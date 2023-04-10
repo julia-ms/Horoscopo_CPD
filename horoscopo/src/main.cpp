@@ -31,13 +31,14 @@ int main(){
   int modo = 0; 
   int newTry = 0; 
   int badTip = 0; 
+  int stillBad = 0; 
 
   //structs auxiliares
   Entry auxPrint; 
   
   lerInteiros(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
-    
+
 //lembrar do que eu precisar zerar
 home: 
   do {
@@ -111,41 +112,48 @@ home:
 
       //addressAdj, addressSub, addressVer, addressPrep;
       pos0 = findInverted(get<0>(posTuple), "../invertidos/adjetivos.bin").pos; 
-      findInverted(get<0>(posTuple), "../invertidos/adjetivos.bin").entryWord.wPrint();
-      cout << endl;
-
       pos1 = findInverted(get<1>(posTuple), "../invertidos/substantivos.bin").pos; 
-      findInverted(get<1>(posTuple), "../invertidos/substantivos.bin").entryWord.wPrint(); 
-      cout << endl;
-
       pos2 = findInverted(get<2>(posTuple), "../invertidos/verbos.bin").pos; 
-      findInverted(get<2>(posTuple), "../invertidos/verbos.bin").entryWord.wPrint(); 
-      cout << endl;
-
       pos3 = findInverted(get<3>(posTuple), "../invertidos/preposicoes.bin").pos; 
-      findInverted(get<3>(posTuple), "../invertidos/preposicoes.bin").entryWord.wPrint(); 
-      cout << endl;
-
-
-      cout << pos0 << " " << pos1 << " " << pos2 << " " << pos3 << " ";
-
 
       word0 = searchWordAdress(pos0); 
       word1 = searchWordAdress(pos1); 
       word2 = searchWordAdress(pos2); 
       word3 = searchWordAdress(pos3); 
 
-      // cout << word0.palavra << " = " << word0.significado << endl << endl; 
-      // cout << word1.palavra << " = " << word1.significado << endl << endl; 
-      // cout << word2.palavra << " = " << word2.significado << endl << endl; 
-      // cout << word3.palavra << " = " << word3.significado << endl << endl;
+      cout << endl <<"Essas são as palavras usadas na sua frase: " << endl << endl; 
+
+      cout << word0.palavra << ": " << word0.significado << endl; 
+      cout << word1.palavra << ": " << word1.significado << endl; 
+      cout << word2.palavra << ": " << word2.significado << endl; 
+      cout << word3.palavra << ": " << word3.significado << endl << endl;
+    
+      cout << "Ainda acha o seu horóscopo ruim? Digite 1. Caso não, digite outro número" << endl; 
+      cout << "Entre com a opção: ";
+      cin >> stillBad; 
+
+      if(stillBad != 1) {
+        cout << "Certo. Obrigada pelo feedback! Mais sorte na proxima. Digite 1 para tentar novamente." << endl; 
+        cin >> newTry; 
+        if (newTry ==  1)
+          goto home; 
+        else 
+          goto saida; 
+      }
+
+
     }
 
 
+
+
   }
+
 }
 
-if (modo == 2) {
+
+
+else if (modo == 2) {
   int op;
   cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palvra nova\n2 - Excluir uma palvra existente\n3- Listar todas as palvras presentes no banco de daodos" << endl;
   cout << "Para sair aperte qualquer tecla." << endl;
@@ -159,11 +167,8 @@ if (modo == 2) {
   }else if(op == 3){
     listWords();
   }else goto saida;
-
-
-
-
 }
+
 
 
    

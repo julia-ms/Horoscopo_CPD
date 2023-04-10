@@ -323,9 +323,6 @@ Word searchWordAdress(streampos pos) {
     
     ifstream dic_binary_searchAdress("../data/dictionary.bin", ios::binary);
 
-    //int numEntrys = 0; 
-    //dic_binary_searchAdress.read((char*)&numEntrys, sizeof(int));
-
     //aq nao pega certo
     dic_binary_searchAdress.seekg(pos); 
 
@@ -337,17 +334,20 @@ Word searchWordAdress(streampos pos) {
     getline(dic_binary_searchAdress, wordAux.significado, '\0');  
     dic_binary_searchAdress.read((char*)&wordAux.deleted, sizeof(bool)); 
 
+/*
+    cout << "procurando pela palavra, encontrei"; 
+    cout << "ID = " << wordAux.ID; 
     cout << "palavra = "; 
     cout << wordAux.palavra << endl; 
     cout << "classe = "; 
     cout << wordAux.classe << endl; 
     cout << "genero = "; 
-    cout << wordAux.classe << endl;
+    cout << wordAux.genero << endl;
     cout << "numero = "; 
-    cout << wordAux.classe << endl;
+    cout << wordAux.numero << endl;
     cout << "significado = "; 
-    cout << wordAux.classe << endl;
-    
+    cout << wordAux.significado << endl;
+*/
     //dic_binary_searchAdress.read((char*)&wordAux, sizeof(Word)); 
     dic_binary_searchAdress.close(); 
 

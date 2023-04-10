@@ -191,7 +191,13 @@ Entry findInverted(streampos pos, string nomeArq){
 
     invertedRead.seekg(pos); 
     invertedRead.read((char*)&auxEntry, sizeof(Entry));
-    invertedRead.close(); 
+
+/*
+    cout << "Fui no endereco " << pos << " e ";  
+    cout << " encontrei a palavra: "; 
+    auxEntry.entryWord.wPrint();
+    cout << endl; 
+    invertedRead.close(); */
 
     return auxEntry; 
 }

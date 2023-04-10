@@ -10,7 +10,7 @@ int generateRandom(int fator, int tam){
     
     int aleatorio; 
     aleatorio = rand(); 
-    random = (fator*aleatorio) % tam-1;
+    random = abs((fator*aleatorio) % tam-1);
 
     //ver aqui depois 
     random = random*sizeof(Entry); 
