@@ -356,6 +356,7 @@ Word searchWordAdress(streampos pos) {
 
 
 //pesquiso palavra no arquivo por palavra. se nao encontra essa palavra, retorna erro
+//AQUI VIRIA A ÁRVORE
 Word searchWord(string word) {
     //essa tem erro de tamanho
     Word wordAux; 

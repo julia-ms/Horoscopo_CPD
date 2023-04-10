@@ -32,6 +32,7 @@ int main(){
   int newTry = 0; 
   int badTip = 0; 
   int stillBad = 0; 
+  int opDelete = 0; 
 
   //structs auxiliares
   Entry auxPrint; 
@@ -104,6 +105,7 @@ home:
       else 
         goto saida; 
     } 
+
     else if(badTip == 1) {
       
       //funcao pra ler do dicionario socorro
@@ -121,6 +123,7 @@ home:
       word2 = searchWordAdress(pos2); 
       word3 = searchWordAdress(pos3); 
 
+      system("cls"); 
       cout << endl <<"Essas são as palavras usadas na sua frase: " << endl << endl; 
 
       cout << word0.palavra << ": " << word0.significado << endl; 
@@ -132,6 +135,8 @@ home:
       cout << "Entre com a opção: ";
       cin >> stillBad; 
 
+      cout << endl; 
+
       if(stillBad != 1) {
         cout << "Certo. Obrigada pelo feedback! Mais sorte na proxima. Digite 1 para tentar novamente." << endl; 
         cin >> newTry; 
@@ -139,6 +144,55 @@ home:
           goto home; 
         else 
           goto saida; 
+      }
+
+      else if (stillBad == 1) { 
+        system("cls");
+         
+        cout << endl; 
+        cout << word0.palavra << ": " << word0.significado << endl; 
+        cout << word1.palavra << ": " << word1.significado << endl; 
+        cout << word2.palavra << ": " << word2.significado << endl; 
+        cout << word3.palavra << ": " << word3.significado << endl << endl;
+
+        cout << "Deseja excluir alguma das palavras abaixo?" << endl; 
+        cout << "1 - " << word0.palavra << endl; 
+        cout << "2 - " << word1.palavra << endl; 
+        cout << "3 - " << word2.palavra << endl; 
+        cout << "4 - " << word3.palavra << endl << endl;
+
+        cout << "Caso deseje excluir, insira o número correspondente. Se não deseja, insira outro número: ";
+        cin >> opDelete;  
+
+        switch (opDelete) {
+          case 1:
+            /* code */
+            break;
+
+          case 2:
+            /* code */
+            break;
+
+          case 3:
+            /* code */
+            break;
+
+          case 4:
+            /* code */
+            break;
+
+          default:
+            cout << "Certo. Obrigada pelo feedback! Mais sorte na proxima. Digite 1 para tentar novamente." << endl; 
+            cin >> newTry; 
+            if (newTry ==  1)
+              goto home; 
+            else 
+              goto saida; 
+            break;
+        }
+
+        
+
       }
 
 
