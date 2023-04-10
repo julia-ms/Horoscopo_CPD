@@ -101,6 +101,9 @@ int generateRandom(int fator, int tam);
 
 //functions adm
 int adm();
+int includeWord();
+int excludeWord();
+int listWords();
 
 
 #endif // BIB_H

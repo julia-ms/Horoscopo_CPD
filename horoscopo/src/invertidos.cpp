@@ -16,10 +16,10 @@ int generateInverted(string classe, string nomeArq){
 
     int numEntrysWrite = 0; 
 
-    ifstream dic_binary("../data/dictionary.bin", ios::binary);
+    ifstream dic_binarya("../data/dictionary.bin", ios::binary);
 
     //verifica se o arquivo abriu ou não 
-    if (!dic_binary.is_open()) {
+    if (!dic_binarya.is_open()) {
         cout << "deu ruim";
         return 1;  
     }
@@ -30,19 +30,28 @@ int generateInverted(string classe, string nomeArq){
     // int numEntrys = 0; 
     // dic_binary.read((char*)&numEntrys, sizeof(int));
 
-    while(dic_binary.read((char*)&wordAux.ID, sizeof(int))){
-        getline(dic_binary, wordAux.palavra, '\0');
-        getline(dic_binary, wordAux.classe, '\0');
-        getline(dic_binary, wordAux.genero, '\0');
-        getline(dic_binary, wordAux.numero, '\0');
-        getline(dic_binary, wordAux.significado, '\0');  
-        dic_binary.read((char*)&wordAux.deleted, sizeof(bool)); 
+    while(dic_binarya.read((char*)&wordAux.ID, sizeof(int))){
+        getline(dic_binarya, wordAux.palavra, '\0');
+        getline(dic_binarya, wordAux.classe, '\0');
+        getline(dic_binarya, wordAux.genero, '\0');
+        getline(dic_binarya, wordAux.numero, '\0');
+        getline(dic_binarya, wordAux.significado, '\0');  
+        dic_binarya.read((char*)&wordAux.deleted, sizeof(bool)); 
 
         int endChato; 
-        endLegal = dic_binary.tellg();
+        endLegal = dic_binarya.tellg();
         endChato = endLegal; 
-        endChato = endChato - sizeof(wordAux);
+        endChato = endChato - sizeof(wordAux.palavra);
+        endChato = endChato - sizeof(wordAux.classe);
+        endChato = endChato - sizeof(wordAux.genero);
+        endChato = endChato - sizeof(wordAux.numero);
+        endChato = endChato - sizeof(wordAux.palavra);
+        endChato = endChato - sizeof(wordAux.significado);
+        endChato = endChato - sizeof(int);
+        endChato = endChato - sizeof(bool);
+        //endChato = endChato - sizeof(wordAux);
         endLegal = endChato; 
+        
 
         if (classe == wordAux.classe) {
             auxEntry.entryWord.clear();
@@ -57,12 +66,12 @@ int generateInverted(string classe, string nomeArq){
         }
     }
     
-    if (!dic_binary.eof()) {
+    if (!dic_binarya.eof()) {
         cout << "Não foi possível ler todo o arquivo.\n";
         return 1;
     }
 
-    dic_binary.close(); 
+    dic_binarya.close(); 
 
     return numEntrysWrite; 
 }

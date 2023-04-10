@@ -23,22 +23,22 @@ int main(){
   //structs auxiliares
   Entry auxPrint; 
   
-  lerInteiros(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+  //lerInteiros(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
   
   
 
 //precisa as vezes
    //string arq_data_is = argv[1];
    //string arq_binary_is = argv[2];
-  // fillFile(arq_data_is, arq_binary_is);
-  //  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  //  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  //  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  //  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-  //  readInverted("../invertidos/adjetivos.bin"); 
-  //  readFile(arq_binary_is); 
+   //fillFile(arq_data_is, arq_binary_is);
+   get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+   get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+   get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+   get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+   //readInverted("../invertidos/adjetivos.bin"); 
+   //readFile(arq_binary_is); 
 
-
+  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
 //lembrar do que eu precisar zerar
 home: 
@@ -148,6 +148,22 @@ home:
 }
 
 if (modo == 2) {
+  int op;
+  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palvra nova\n2 - Excluir uma palvra existente\n3- Listar todas as palvras presentes no banco de daodos" << endl;
+  cout << "Para sair aperte qualquer tecla." << endl;
+  cout << "Insira opção: ";
+  cin >> op;
+
+  if(op == 1){
+    includeWord();
+  }else if(op == 2){
+    excludeWord();
+  }else if(op == 3){
+    listWords();
+  }else goto saida;
+
+
+
 
 }
 
@@ -159,7 +175,7 @@ if (modo == 2) {
   //cout << tamAdj << "," << tamSub << "," << tamVer << "," << tamPrep; 
 
   saida:
-  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
   
   cout << "Fim do programa!";
   return 0;
