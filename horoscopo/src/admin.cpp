@@ -129,38 +129,24 @@ int writeListReverse(int op){
     std::size_t num_records = size / sizeof(Entry);
 
     // Posicione o ponteiro de leitura/gravação no final do arquivo.
-    file.seekg(0, std::ios::end);
+    file.seekg(-static_cast<std::streamoff>(sizeof(Entry)), std::ios::end);
 
     // Leia os registros do final para o início.
     for (std::size_t i = num_records; i > 0; --i) {
         Entry entry;
 
-        // Posicione o ponteiro de leitura/gravação no início do registro atual.
-        file.seekg(-(static_cast<std::streamoff>(sizeof(Entry))), std::ios::cur);
+        std::streampos posic = static_cast<std::streampos>(i-1) * sizeof(Entry);
+        file.seekg(posic);
 
-        // Leia o registro atual.
         file.read(reinterpret_cast<char*>(&entry), sizeof(Entry));
 
-        // Faça algo com o registro lido (imprimir no console, por exemplo).
-        cout << "Registro " << i << ": ID=" << entry.ID << endl;
+        string palavra;
+        palavra = entry.entryWord.toString();
+
+        arquivo << palavra << endl;
     }
-
-    /*string aux; 
-    while(inverted_read.read((char*)&entryAux, sizeof(Entry))){
-        //e aqui vou printar a struct pra mostrar que deu certo
-        //arquivo << entryAux.ID << endl;
-        aux = entryAux.entryWord.toString(); 
-        arquivo << aux << endl;         
-        //arquivo << entryAux.pos << endl << endl;
-    }*/
-
 
     arquivo.close(); 
-    
-    if (!file.eof()) {
-        cout << "Não foi possível ler todo o arquivo.\n";
-        return 1;
-    }
 
     file.close();
 

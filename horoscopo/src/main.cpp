@@ -15,16 +15,16 @@ int main(int arqc, char* argv[]) {
   tuple<int, int, int, int> tam;            //tamAdj, tamSub, tamVer, tamPrep; 
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
 
-  string arq_data_is = argv[1];
-  string arq_binary_is = argv[2];
-  fillFile(arq_data_is, arq_binary_is);
+  // string arq_data_is = argv[1];
+  // string arq_binary_is = argv[2];
+  // fillFile(arq_data_is, arq_binary_is);
   
-  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-  //readInverted("../invertidos/adjetivos.bin"); 
-  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+  // get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+  // get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+  // get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+  // get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+  // //readInverted("../invertidos/adjetivos.bin"); 
+  // saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
  
  
