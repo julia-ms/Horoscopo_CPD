@@ -17,17 +17,14 @@ int main(int arqc, char* argv[]) {
 
   string arq_data_is = argv[1];
   string arq_binary_is = argv[2];
-  
-  //colocar uns ifs posteriormente para preencher os arquivos caso estejam vazios
-  
   fillFile(arq_data_is, arq_binary_is);
   
-  //get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  //get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  //get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  //get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
   //readInverted("../invertidos/adjetivos.bin"); 
-  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
  
  

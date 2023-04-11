@@ -274,51 +274,45 @@ int writeListReverse(int op){
     string arqbin = "../invertidos/" + classe + ".bin";
     //cout << arqbin << endl;
 
-    ifstream inverted_read(arqbin, ios::binary);
+    ifstream file(arqbin, ios::binary);
 
     Entry entryAux; 
 
     int ID; 
     //verifica se o arquivo abriu ou não 
-    if (!inverted_read.is_open()) {
+    if (!file.is_open()) {
         cout << "deu ruim";
         return 1;  
     }
 
-    inverted_read.seekg(0, std::ios::end);
-    int tamanho = inverted_read.tellg() / sizeof(Entry);
+    // Obtenha o tamanho do arquivo em bytes.
+    file.seekg(0, std::ios::end);
+    std::streampos size = file.tellg();
 
-    vector<Entry> registros(tamanho);
+    // Calcule o número de registros no arquivo.
+    std::size_t num_records = size / sizeof(Entry);
 
-    inverted_read.seekg(0, std::ios::beg);
-    for (int i = 0; i < tamanho; i++) {
-        inverted_read.read(reinterpret_cast<char*>(&registros[i]), sizeof(Entry));
+    // Posicione o ponteiro de leitura/gravação no final do arquivo.
+    file.seekg(-static_cast<std::streamoff>(sizeof(Entry)), std::ios::end);
+
+    // Leia os registros do final para o início.
+    for (std::size_t i = num_records; i > 0; --i) {
+        Entry entry;
+
+        std::streampos posic = static_cast<std::streampos>(i-1) * sizeof(Entry);
+        file.seekg(posic);
+
+        file.read(reinterpret_cast<char*>(&entry), sizeof(Entry));
+
+        string palavra;
+        palavra = entry.entryWord.toString();
+
+        arquivo << palavra << endl;
     }
-    string aux;
-
-    for (auto it = registros.rbegin(); it != registros.rend(); ++it) {
-        aux = entryAux.entryWord.toString();
-        cout << aux << endl;
-    }
-
-    /*string aux; 
-    while(inverted_read.read((char*)&entryAux, sizeof(Entry))){
-        //e aqui vou printar a struct pra mostrar que deu certo
-        //arquivo << entryAux.ID << endl;
-        aux = entryAux.entryWord.toString(); 
-        arquivo << aux << endl;         
-        //arquivo << entryAux.pos << endl << endl;
-    }*/
-
 
     arquivo.close(); 
-    
-    if (!inverted_read.eof()) {
-        cout << "Não foi possível ler todo o arquivo.\n";
-        return 1;
-    }
 
-    inverted_read.close();
+    file.close();
 
 
     return 0;
