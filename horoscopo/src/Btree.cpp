@@ -217,6 +217,22 @@ void sort(Key *keys, int numKeys) {
     //for ()
 }
 
+//print nodo 
+void printNodos() {
+    Node node; 
+    ifstream BTreeRead("Btree.bin", ios::binary);
+
+    cout << "Estou printando os nodos: " << endl; 
+    //vou ate o endereco desse nodo e leio
+
+    while (BTreeRead.read((char*)&node, sizeof(Node))){
+        printNodo(node); 
+    }
+
+    BTreeRead.close();
+}
+
+
 
 
 //recebo um endereco pro nodo x que ta em arquivo e um int i 
@@ -334,6 +350,7 @@ Key split_child(streampos x, int i) {                   // recebo o ponteiro par
     } 
 
     else { 
+        //TALVEZ FAZER RECURSIVO
         /*DEBUG
         cout << "Fui pro else" << endl;                                        
         cout << "E to trabalhando com esse nodo aqui: "; 
@@ -814,8 +831,8 @@ int main() {
     insert(key22);
     insert(key23);
     insert(key24);
-    /*insert(key25);
-    insert(key26);
+    insert(key25);
+    /*insert(key26);
     insert(key27);
     insert(key28);
     insert(key29);
@@ -875,8 +892,11 @@ int main() {
     auxPrint = readInArq(r); 
     printNodo(auxPrint); 
 
+
     // cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
     traverse(r);
 
+
+    printNodos(); 
     return 0; 
 }

@@ -14,20 +14,27 @@ int main(int arqc, char* argv[]) {
   tuple<int, int, int, int> tam;            //tamAdj, tamSub, tamVer, tamPrep; 
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
 
-  //PARTE PARA CRIACAO 
-  //string arq_data_is = argv[1];
-  //string arq_binary_is = argv[2];
-  //fillFile(arq_data_is, arq_binary_is);
-  
-  //get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  //get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  //get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  //get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-  //readInverted("../invertidos/adjetivos.bin"); 
-  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
- 
- 
+  //cria os arquivos binarios e de índice caso eles nao existam
+
+  ifstream arquivo("dictionary.bin", ios::binary);
+  if (arquivo.is_open()) {
+      //ja existe
+      arquivo.close();
+  } 
+  else {
+    //PARTE PARA CRIACAO 
+    string arq_data_is = argv[1];
+    string arq_binary_is = argv[2];
+    fillFile(arq_data_is, arq_binary_is);
+    get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+    get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+    get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+    get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+    //readInverted("../invertidos/adjetivos.bin"); 
+    saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));     
+  }
+
   //TODO O TRABALHO AQUI 
 
   //variaveis de controle de arquivos invertidos
@@ -273,9 +280,9 @@ else if (modo == 2) {
   readFile("../data/dictionary.bin"); 
 
 
-  cout << "testando"; 
-  int posDelete = binarySearchPos("../invertidos/adjetivos.bin", "torrejano");
-  cout << posDelete; 
+  //cout << "testando"; 
+  //int posDelete = binarySearchPos("../invertidos/adjetivos.bin", "torrejano");
+  //cout << posDelete; 
 
   return 0;
 

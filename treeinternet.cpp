@@ -180,7 +180,7 @@ int main() {
         t = rand() % 100;
         cout << "t eh" << t; 
         insert(t);                                            // vou inserindo todos os elementos na arvore (IMPORTANTE, usarei)
-   }
+    }
    cout<<"traversal of constructed B tree\n";               // printo todos os elementos (IMPORTANTE, usarei)
    traverse(r);
 }
