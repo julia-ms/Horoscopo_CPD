@@ -176,14 +176,83 @@ int generateInvertedVerb(string nomeArq){
 int insertInverted(Entry entryToInsert , string nomeArq){
     //fazer busca binaria pra inserir em ordem alfabetica
     //aí usa um seekg combinado com ter aumentando a funcao em size of antes e insere com appende
+    streampos positionIn; 
     Entry auxEntry;
+    string busca; 
+    int posicaoAux; 
 
-    ofstream inverted(nomeArq, ios::binary | ios::app);
-    inverted.write((char*)&auxEntry, sizeof(Entry));
-        
-    inverted.close(); 
-
+    auxEntry = entryToInsert; 
+    busca = entryToInsert.entryWord.toString(); 
+    //a posicao de entrada eh onde estava o primeiro maior
+    //se a palavra ja existe, eu reescrevo só, entao de boa
+    positionIn = binarySearchPos(nomeArq, busca); 
+    writeEntryPosition(nomeArq, entryToInsert, positionIn);
     return  0; 
+}
+
+//faco escrever na posicao que quero
+
+void writeEntryPosition(string filename, Entry newEntry, streampos pos) {
+
+    fstream file(filename, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file) {
+        std::cerr << "Erro ao abrir o arquivo." << std::endl;
+        return;
+    }
+
+    // Calcule o tamanho do arquivo em bytes.
+    file.seekg(0, std::ios::end);
+    streampos file_size = file.tellg();
+
+    // Verifique se a posição de escrita está dentro do arquivo.
+    if (pos > file_size / sizeof(Entry)) {
+        std::cerr << "Posição de escrita inválida." << std::endl;
+        return;
+    }
+
+    // Desloque os registros existentes para baixo a partir da posição de escrita.
+    std::size_t num_records_to_shift = file_size / sizeof(Entry) - pos;
+
+    //coloco ponteiro de escrita final do arquivo 
+    
+    // Obtém o tamanho atual do arquivo
+    file.seekp(0, std::ios::end);
+    std::streampos tamanhoAtual = file.tellp();
+
+    //coloca o ponteiro de leitura no final menos 1 entrada
+    file.seekg(tamanhoAtual-sizeof(Entry)); 
+
+    streampos posAtual; 
+
+    for (size_t i = 0; i < num_records_to_shift; i++) {
+        // Posicione o ponteiro de leitura/gravação no registro anterior.
+        // file.seekg((pos + num_records_to_shift - i - 1) * sizeof(Entry));
+        // Entry prev_entry;
+        // file.read((char*)&prev_entry, sizeof(Entry));
+
+        // // Posicione o ponteiro de gravação no registro atual.
+        // file.seekp((pos + num_records_to_shift - i) * sizeof(Entry));
+        // file.write((char*)&prev_entry, sizeof(Entry));
+
+        Entry prev_entry; 
+        
+        //leio o ultimo e guardo onde li
+        posAtual = file.tellg(); 
+        file.read((char*)&prev_entry, sizeof(Entry));
+
+        //vou um na frente e escrevo la  
+        file.seekp(posAtual + sizeof(Entry)); 
+        file.write((char*)&prev_entry, sizeof(Entry)); 
+
+        //volto pra ler um atras
+        file.seekg(posAtual-sizeof(Entry)); 
+    }
+
+    // Posicione o ponteiro de gravação no novo registro.
+    file.seekp(pos * sizeof(Entry));
+    file.write((char*)&newEntry, sizeof(Entry));
+
+    file.close();
 }
 
 //diferente do append, escreve em cima
@@ -196,10 +265,9 @@ int updateEntry (Entry newEntryValue, string nomeArq, streampos pos)  {
     fstream invertedUpdate(nomeArq, ios::binary | ios::in | ios::out) ;
 
     //lendo o que ta dentro só pra teste
-    invertedUpdate.seekg(pos); 
-    invertedUpdate.read((char*)&readEntry, sizeof(Entry));
-    readEntry.entryWord.wPrint(); 
-
+    //invertedUpdate.seekg(pos); 
+    //invertedUpdate.read((char*)&readEntry, sizeof(Entry));
+    //readEntry.entryWord.wPrint(); 
 
     //agora sim escrevendo em cima
     invertedUpdate.seekp(pos); 
@@ -225,4 +293,143 @@ Entry findInverted(streampos pos, string nomeArq){
     invertedRead.close(); */
 
     return auxEntry; 
+}
+
+//BUSCA BINÁRIA EM INVERTIDO **************************************
+//busca por palavra
+
+
+// Função de comparação para busca binária
+bool compare( Entry a, Entry b) {
+    string bstr;
+    int compare; 
+    int retorno = 0; 
+
+    //retorna > 0 quando a eh maior 
+    //retorna 0 quando eh igual
+    //retorna < 0 quando a eh menor
+
+    bstr = b.entryWord.toString(); 
+    
+    compare = a.entryWord.compareW(bstr); 
+
+    if (compare < 0 )
+        retorno = 1; 
+    return retorno;
+}
+
+// Função de busca binária em arquivo invertido
+Entry binarySearchWord(string nomeArq, string targetWord) {
+
+    Entry errorEntry; 
+
+    errorEntry.ID = -1; 
+
+    //abrindo arquivo de índice
+    ifstream file_binary_search(nomeArq, ios::binary);
+
+    if (!file_binary_search.is_open()) {
+        cerr << "Erro ao abrir arquivo" << endl;
+        return errorEntry;
+    }
+
+    // Verifica o tamanho do arquivo
+    file_binary_search.seekg(0, ios::end);
+    streampos fileSize = file_binary_search.tellg();
+
+    // Define os limites da busca
+    int low = 0;
+    int high = fileSize / sizeof(Entry) - 1;
+
+    while (low <= high) {
+        // Calcula o meio do intervalo
+        int mid = (low + high) / 2;
+
+        // Posiciona o ponteiro no registro do meio
+        file_binary_search.seekg(mid * sizeof(Entry));
+        Entry midEntry;
+
+        file_binary_search.read((char*)&midEntry, sizeof(Entry));
+
+        // Compara a palavra-chave do registro do meio com a palavra-alvo
+        if (midEntry.entryWord.compareW(targetWord) == 0 ) {
+            // Encontrou o registro, retorna a posição dele no arquivo
+            return midEntry;
+        } 
+        else if (midEntry.entryWord.compareW(targetWord) < 0) {
+
+            // target eh maior que midEntry quando retorna menor que 0
+            // A palavra-alvo é maior que a palavra-chave do registro do meio,
+            // portanto a busca deve continuar na metade superior do intervalo
+            low = mid + 1;
+        } else {
+            // A palavra-alvo é menor que a palavra-chave do registro do meio,
+            // portanto a busca deve continuar na metade inferior do intervalo
+            high = mid - 1;
+        }
+    }
+
+    file_binary_search.close();
+
+
+    // Não encontrou o registro, retorna -1
+    return errorEntry;
+}
+
+// Função de busca binária em arquivo invertido
+// Uso pra buscar a posicao de insercao
+streampos binarySearchPos(string nomeArq, string targetWord) {
+
+    streampos pos; 
+    //abrindo arquivo de índice
+    ifstream file_binary_search(nomeArq, ios::binary);
+
+    if (!file_binary_search.is_open()) {
+        cerr << "Erro ao abrir arquivo" << endl;
+        return -1;
+    }
+
+    // Verifica o tamanho do arquivo
+    file_binary_search.seekg(0, ios::end);
+    streampos fileSize = file_binary_search.tellg();
+
+    // Define os limites da busca
+    int low = 0;
+    int high = fileSize / sizeof(Entry) - 1;
+
+    int mid; 
+
+    while (low <= high) {
+        // Calcula o meio do intervalo
+        mid = (low + high) / 2;
+
+        // Posiciona o ponteiro no registro do meio
+        file_binary_search.seekg(mid * sizeof(Entry));
+        Entry midEntry;
+
+        file_binary_search.read((char*)&midEntry, sizeof(Entry));
+
+        // Compara a palavra-chave do registro do meio com a palavra-alvo
+        if (midEntry.entryWord.compareW(targetWord) == 0 ) {
+            // Encontrou o registro, retorna a posição dele no arquivo
+            return mid * sizeof(Entry);
+        } 
+        else if (midEntry.entryWord.compareW(targetWord) < 0) {
+
+            // target eh maior que midEntry quando retorna menor que 0
+            // A palavra-alvo é maior que a palavra-chave do registro do meio,
+            // portanto a busca deve continuar na metade superior do intervalo
+            low = mid + 1;
+        } else {
+            // A palavra-alvo é menor que a palavra-chave do registro do meio,
+            // portanto a busca deve continuar na metade inferior do intervalo
+            high = mid - 1;
+        }
+    }
+
+    file_binary_search.close();
+
+
+    // Não encontrou o registro, retorna -1
+    return mid;
 }

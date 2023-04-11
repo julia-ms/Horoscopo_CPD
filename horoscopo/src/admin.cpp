@@ -2,19 +2,172 @@
 
 using namespace std;
 
-int newUserWord() {
-    //printa perguntas aos usuarios
-    //controi string com elas 
-    //insere
-    return 0; 
+Word newUserWord() {
+    Word newWord;
+    string palavra;
+    string genero;
+    string numero;
+    string significado;
+
+    int ID = 0; 
+
+    cout << "Qual palavra você deseja incluir? Preencha as informações: " << endl;
+
+    cout << "Palavra: "; 
+    getchar(); 
+    getline(cin, palavra);
+    cout << endl; 
+    
+    cout << "Genero: "; 
+    getchar(); 
+    getline(cin, genero);
+    cout << endl; 
+    
+    getchar(); 
+    cout << "Numero: "; 
+    getline(cin, numero);
+    cout << endl; 
+    
+    getchar(); 
+    cout << "Significado: "; 
+    getline(cin, significado);
+    cout << endl; 
+
+
+    newWord.palavra = palavra; 
+    newWord.genero = genero; 
+    newWord.numero = numero; 
+    newWord.significado = significado; 
+    newWord.deleted = false;
+
+    ID = readNumEntry() + 1; 
+    newWord.ID = ID;
+    updateNumEntrys(ID);
+    
+    return newWord; 
 }
 
 int includeWord(){
-    cout << "Incluir" << endl;
+    Word word;
+    streampos posicao; 
+    Entry newEntry; 
+    int classe; 
+
+    cout << "Você escolheu incluir palavra." << endl;
+    cout << "A qual classe ela pertence?" << endl; 
+    cout << "1 - Adjetivo" << endl; 
+    cout << "2 - Substantivo" << endl; 
+    cout << "3 - Verbo" << endl; 
+    cout << "4 - Preposição" << endl; 
+    cout << "Insira a opçao: "; 
+    cin >> classe; 
+    cout << endl << endl; 
+
+    word = newUserWord(); 
+    posicao = insertWordFinal(word); 
+
+    newEntry.entryWord.fromString(word.palavra); 
+    newEntry.ID = word.ID;
+    newEntry.pos = posicao; 
+
+    switch (classe) {
+    case 1:
+        word.classe = "adj."; 
+        insertInverted(newEntry, "../invertidos/adjetivos.bin"); 
+
+        break;
+    case 2 :
+        word.classe = "s.."; 
+        insertInverted(newEntry, "../invertidos/substantivos.bin"); 
+
+        break;
+    case 3 :
+        word.classe = "v."; 
+        insertInverted(newEntry, "../invertidos/verbos.bin"); 
+
+        break;
+    case 4 :
+        word.classe = "prep."; 
+        insertInverted(newEntry, "../invertidos/preposicoes.bin"); 
+
+        break;
+    
+    default:
+        break;
+    }
+
+    cout << "Arquivo inserido com sucesso!"; 
+
     return 0;
 }
+
+
 int excludeWord(){
-    cout << "excluir" << endl;
+    string wordToDelete; 
+    int classe; 
+    streampos posDelete; 
+    Entry auxEntry; 
+
+    //streampos posInverted, string name_Arq
+
+    //1 - pede a palavra para o usuário  
+    cout << "Qual palavra você deseja deletar?" << endl;
+    getline(cin, wordToDelete);
+
+    cout << "A qual classe ela pertence?" << endl; 
+    cout << "1 - Adjetivo" << endl; 
+    cout << "2 - Substantivo" << endl; 
+    cout << "3 - Verbo" << endl; 
+    cout << "4 - Preposição" << endl; 
+    cout << "Insira a opçao: "; 
+    cin >> classe; 
+    cout << endl << endl; 
+
+    switch (classe){
+    case 1:
+        posDelete = binarySearchPos("../invertidos/adjetivos.bin", wordToDelete);
+        auxEntry = findInverted(posDelete, "../invertidos/adjetivos.bin"); 
+
+        if(auxEntry.entryWord.compareW(wordToDelete) == 0) {
+            deleteWord(posDelete, "../invertidos/adjetivos.bin"); 
+            cout << "Palavra " << wordToDelete << " deletada com sucesso!" << endl;
+        } 
+        break;
+
+    case 2:
+        posDelete = binarySearchPos("../invertidos/substantivos.bin", wordToDelete); 
+        auxEntry = findInverted(posDelete, "../invertidos/substantivos.bin"); 
+
+        if(auxEntry.entryWord.compareW(wordToDelete) == 0) {
+            deleteWord(posDelete, "../invertidos/substantivos.bin"); 
+            cout << "Palavra " << wordToDelete << " deletada com sucesso!" << endl;
+        } 
+        break;
+
+    case 3:
+        posDelete = binarySearchPos("../invertidos/verbos.bin", wordToDelete);
+        auxEntry = findInverted(posDelete, "../invertidos/verbos.bin"); 
+
+        if(auxEntry.entryWord.compareW(wordToDelete) == 0) {
+            deleteWord(posDelete, "../invertidos/verbos.bin"); 
+            cout << "Palavra " << wordToDelete << " deletada com sucesso!" << endl;
+        } 
+
+        break; 
+    case 4: 
+        posDelete = binarySearchPos("../invertidos/preposicoes.bin", wordToDelete); 
+        auxEntry = findInverted(posDelete, "../invertidos/preposicoes.bin"); 
+       
+        if(auxEntry.entryWord.compareW(wordToDelete) == 0) {
+            deleteWord(posDelete, "../invertidos/preposicoes.bin"); 
+            cout << "Palavra " << wordToDelete << " deletada com sucesso!" << endl;
+        } 
+        break; 
+    
+    default:
+        break;
+    }
+    
     return 0;
 }
 int listWords(){
@@ -29,8 +182,11 @@ int listWords(){
     cin >> op2;
     if(op2 == 1) writeList(op);
     if(op2 == 2) writeListReverse(op);
+
+    cout << "Arquivo gerado com sucesso!" << endl; 
     return 0;
 }
+
 
 
 

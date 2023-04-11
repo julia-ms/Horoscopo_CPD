@@ -7,6 +7,8 @@ using namespace std;
 // funcao que abre o arquivo csv e coloca os itens em um arquivo binário com ID
 int fillFile(string arq_data_is, string arq_binary_is){
 
+    int ID = 0;
+
     ifstream arq_data(arq_data_is);
     ofstream dic_binary(arq_binary_is, ios::binary);
 
@@ -40,7 +42,10 @@ int fillFile(string arq_data_is, string arq_binary_is){
         dic_binary.write(wordAux.significado.c_str(), wordAux.significado.size() + 1);
         dic_binary.write((char*)&wordAux.deleted, sizeof(bool));
 
+        ID++; 
     }
+
+    updateNumEntrys(ID); 
     
     //fechamento de todos os arquivos abertos 
     arq_data.close();
@@ -137,7 +142,7 @@ streampos insertWordFinal(Word word) {
     if (!dic_binary_insert) {                                  
         return -1;
     }                
-    dic_binary_insert.write((char*)&word, sizeof(Word));
+
 
     int ba;
     addressWord = dic_binary_insert.tellp();
@@ -145,9 +150,19 @@ streampos insertWordFinal(Word word) {
 
     //addressWord = addressWord - sizeof(Word);
     ba = ba - sizeof(Word);
-    dic_binary_insert.close(); 
 
     addressWord = ba; 
+
+    dic_binary_insert.write((char*)&word.ID, sizeof(int));
+    dic_binary_insert.write(word.palavra.c_str(), word.palavra.size() + 1);
+    dic_binary_insert.write(word.classe.c_str(), word.classe.size() + 1);
+    dic_binary_insert.write(word.genero.c_str(), word.genero.size() + 1);
+    dic_binary_insert.write(word.numero.c_str(), word.numero.size() + 1);
+    dic_binary_insert.write(word.significado.c_str(), word.significado.size() + 1);
+    dic_binary_insert.write((char*)&word.deleted, sizeof(bool));
+
+    dic_binary_insert.close(); 
+
     return addressWord;                              
 }
 
@@ -159,14 +174,11 @@ void deleteWord (streampos posInverted, string name_Arq) {
     //deletando do arquivo invertido (coloco ID = -1)
     
     auxEntry = findInverted(posInverted, name_Arq);
-    cout << "Vou deletar a palavra: ";
-    auxEntry.entryWord.wPrint();  
-    cout << endl; 
+    //cout << "Vou deletar a palavra: ";
+    //auxEntry.entryWord.wPrint();  
+    //cout << endl; 
     auxEntry.ID = -1; 
     updateEntry(auxEntry, name_Arq, posInverted); 
-
-
-
 
     //deletando no dicionario (coloco deleted = TRUE)
     posDictionary = auxEntry.pos; 

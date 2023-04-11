@@ -100,7 +100,9 @@ int generateInvertedVerb(string nomeArq);
 int insertInverted(Entry entryToInsert , string nomeArq);
 Entry findInverted(streampos pos, string nomeArq); 
 int updateEntry (Entry newEntryValue, string nomeArq, streampos pos);
-
+Entry binarySearchWord(string nomeArq, string targetWord);
+streampos binarySearchPos(string nomeArq, string targetWord); 
+void writeEntryPosition(string filename, Entry newEntry, streampos pos); 
 //FUNCTIONS HOROSCOPO
 int horoscopo();
 int generateRandom(int fator, int tam); 
@@ -108,7 +110,7 @@ tuple<streampos, streampos, streampos, streampos, string> generateFrase(int fato
 
 
 //FUNCTIONS ADM
-int adm();
+//int adm();
 int includeWord();
 int excludeWord();
 int listWords();
