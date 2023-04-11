@@ -189,12 +189,21 @@ int insertInverted(Entry entryToInsert , string nomeArq){
 //diferente do append, escreve em cima
 int updateEntry (Entry newEntryValue, string nomeArq, streampos pos)  {
     Entry auxEntry;
+    Entry readEntry; 
 
-    ofstream invertedUpdate(nomeArq, ios::binary | ios::in);
+    auxEntry = newEntryValue; 
 
+    fstream invertedUpdate(nomeArq, ios::binary | ios::in | ios::out) ;
+
+    //lendo o que ta dentro só pra teste
+    invertedUpdate.seekg(pos); 
+    invertedUpdate.read((char*)&readEntry, sizeof(Entry));
+    readEntry.entryWord.wPrint(); 
+
+
+    //agora sim escrevendo em cima
     invertedUpdate.seekp(pos); 
     invertedUpdate.write((char*)&auxEntry, sizeof(Entry));
-
     invertedUpdate.close(); 
     return  0; 
 }
