@@ -125,15 +125,6 @@ streampos insertWordFinal(Word word) {
     streampos addressWord; 
     int ID; 
 
-    //leio o numero de entradas no inicio do arquivo e adiciono 1, colocando isso como ID
-    //ifstream dic_binary_insert_entrys("../data/dictionary.bin", ios_base::binary);
-    //dic_binary_insert_entrys.read((char*)&ID, sizeof(int));
-    //dic_binary_insert_entrys.close(); 
-    //ID++;
-
-    //updateNumEntrys(ID);
-
-
     //atualizo o ID da palavra a ser inserida
     word.ID = ID; 
 
