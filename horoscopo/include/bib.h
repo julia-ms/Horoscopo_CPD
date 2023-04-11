@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <unistd.h>
+#include <algorithm>
 
 #include "wordkey.h"
 
