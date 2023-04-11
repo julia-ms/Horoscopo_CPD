@@ -22,12 +22,12 @@ int main(int arqc, char* argv[]) {
   
   fillFile(arq_data_is, arq_binary_is);
   
-  get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+  //get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+  //get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+  //get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+  //get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
   //readInverted("../invertidos/adjetivos.bin"); 
-  saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
+  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
  
  
@@ -221,7 +221,7 @@ home:
 
 else if (modo == 2) {
   int op;
-  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palvra nova\n2 - Excluir uma palvra existente\n3 - Listar todas as palvras presentes no banco de daodos" << endl;
+  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palavra nova\n2 - Excluir uma palavra existente\n3 - Listar todas as palavras presentes no banco de dados" << endl;
   cout << "Para sair aperte qualquer tecla." << endl;
   cout << "Insira opção: ";
   cin >> op;
@@ -237,7 +237,6 @@ else if (modo == 2) {
   }
   else if(op == 2){
     excludeWord();
-    includeWord();
     cout << "Digite 1 para voltar para Home. Outro valor para sair." << endl; 
     cin >> newTry; 
     if (newTry ==  1)
@@ -247,7 +246,6 @@ else if (modo == 2) {
   }
   else if(op == 3){
     listWords();
-    includeWord();
     cout << "Digite 1 para voltar para Home. Outro valor para sair." << endl; 
     cin >> newTry; 
     if (newTry ==  1)
@@ -276,6 +274,11 @@ else if (modo == 2) {
   readInverted("../invertidos/substantivos.bin", "../debug/substantivos.txt"); 
   readInverted("../invertidos/verbos.bin", "../debug/verbos.txt"); 
   readFile("../data/dictionary.bin"); 
+
+
+  cout << "testando"; 
+  int posDelete = binarySearchPos("../invertidos/adjetivos.bin", "torrejano");
+  cout << posDelete; 
 
   return 0;
 

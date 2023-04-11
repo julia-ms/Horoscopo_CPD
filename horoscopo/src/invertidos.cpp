@@ -187,6 +187,7 @@ int insertInverted(Entry entryToInsert , string nomeArq){
     //se a palavra ja existe, eu reescrevo só, entao de boa
     positionIn = binarySearchPos(nomeArq, busca); 
     writeEntryPosition(nomeArq, entryToInsert, positionIn);
+    
     return  0; 
 }
 
@@ -394,10 +395,10 @@ streampos binarySearchPos(string nomeArq, string targetWord) {
     streampos fileSize = file_binary_search.tellg();
 
     // Define os limites da busca
-    int low = 0;
-    int high = fileSize / sizeof(Entry) - 1;
+    streampos low = 0;
+    streampos high = fileSize / sizeof(Entry) - 1;
 
-    int mid; 
+    streampos mid; 
 
     while (low <= high) {
         // Calcula o meio do intervalo
@@ -412,6 +413,7 @@ streampos binarySearchPos(string nomeArq, string targetWord) {
         // Compara a palavra-chave do registro do meio com a palavra-alvo
         if (midEntry.entryWord.compareW(targetWord) == 0 ) {
             // Encontrou o registro, retorna a posição dele no arquivo
+            cout << "encontrei"; 
             return mid * sizeof(Entry);
         } 
         else if (midEntry.entryWord.compareW(targetWord) < 0) {
@@ -431,5 +433,5 @@ streampos binarySearchPos(string nomeArq, string targetWord) {
 
 
     // Não encontrou o registro, retorna -1
-    return mid;
+    return mid*sizeof(Entry);
 }

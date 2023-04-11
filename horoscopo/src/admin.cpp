@@ -12,23 +12,23 @@ Word newUserWord() {
     int ID = 0; 
 
     cout << "Qual palavra você deseja incluir? Preencha as informações: " << endl;
-
-    cout << "Palavra: "; 
+    
     getchar(); 
+    cout << "Palavra: "; 
     getline(cin, palavra);
     cout << endl; 
     
     cout << "Genero: "; 
-    getchar(); 
+    //getchar(); 
     getline(cin, genero);
     cout << endl; 
     
-    getchar(); 
     cout << "Numero: "; 
+    //getchar(); 
     getline(cin, numero);
     cout << endl; 
     
-    getchar(); 
+    //getchar(); 
     cout << "Significado: "; 
     getline(cin, significado);
     cout << endl; 
@@ -112,7 +112,10 @@ int excludeWord(){
 
     //1 - pede a palavra para o usuário  
     cout << "Qual palavra você deseja deletar?" << endl;
+    getchar();
     getline(cin, wordToDelete);
+
+    cout <<wordToDelete; 
 
     cout << "A qual classe ela pertence?" << endl; 
     cout << "1 - Adjetivo" << endl; 
@@ -121,6 +124,7 @@ int excludeWord(){
     cout << "4 - Preposição" << endl; 
     cout << "Insira a opçao: "; 
     cin >> classe; 
+    cout << classe; 
     cout << endl << endl; 
 
     switch (classe){
@@ -137,6 +141,10 @@ int excludeWord(){
     case 2:
         posDelete = binarySearchPos("../invertidos/substantivos.bin", wordToDelete); 
         auxEntry = findInverted(posDelete, "../invertidos/substantivos.bin"); 
+
+        cout << posDelete; 
+        auxEntry.entryWord.wPrint();
+        cout << "funfou"; 
 
         if(auxEntry.entryWord.compareW(wordToDelete) == 0) {
             deleteWord(posDelete, "../invertidos/substantivos.bin"); 
