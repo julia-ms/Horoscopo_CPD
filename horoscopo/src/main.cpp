@@ -15,6 +15,7 @@ int main(int arqc, char* argv[]) {
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
 
 
+
   //cria os arquivos binarios e de índice caso eles nao existam
 
   ifstream arquivo("../data/dictionary.bin", ios::binary);
@@ -45,7 +46,17 @@ int main(int arqc, char* argv[]) {
   int stillBad = 0; 
   int opDelete = 0; 
 
+  criaTrie(); 
 
+  Trie auxPrint; 
+  streampos auxPos = -1; 
+  
+  auxPos = searchT("com");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " "; 
+/*
 
 // INICIO DO TESTEEEEE
 
@@ -283,7 +294,7 @@ else if (modo == 2) {
   readInverted("../invertidos/verbos.bin", "../debug/verbos.txt"); 
   readFile("../data/dictionary.bin"); 
 
-
+*/
 //FIM DE TESTEEEE
 
 /*

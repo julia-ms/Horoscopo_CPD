@@ -163,14 +163,87 @@ streampos searchT(string key) {
 int criaTrie() {
     //root ja existe e esta definida la em cima
 
+    Trie rootTrie = initT(); 
+    root = putInArqT(rootTrie);
+
+    Word wordAux; 
+
+    ofstream testeTRIE("../debug/TRIE.txt");
+
+    ifstream dic_binarya("../data/dictionary.bin", ios::binary);
+
+    streampos posicaoTrie;
+    string palavraTrie; 
+
+    //verifica se o arquivo abriu ou não 
+    if (!dic_binarya.is_open()) {
+        cout << "deu ruim";
+        return 1;  
+    }
+
+    // Posicionar o ponteiro de leitura no final do arquivo
+    dic_binarya.seekg(0, std::ios::end);
+
+    // Obter o tamanho do arquivo em bytes
+    std::streampos fileSize = dic_binarya.tellg();
+
+    // Voltar ao início do arquivo
+    dic_binarya.seekg(0, std::ios::beg);
+    
+    streampos enderecoInicio;
+    streampos enderecoFim;
+    int tamanho; 
+
+    //todo um role pra ler e pegar os enderecos  
+    while(dic_binarya.tellg() < fileSize){
+        // Obter o endereço do início da estrutura
+        enderecoInicio = dic_binarya.tellg();
+
+        // Ler a estrutura
+        dic_binarya.read((char*)&wordAux.ID, sizeof(int));
+        getline(dic_binarya, wordAux.palavra, '\0');
+        getline(dic_binarya, wordAux.classe, '\0');
+        getline(dic_binarya, wordAux.genero, '\0');
+        getline(dic_binarya, wordAux.numero, '\0');
+        getline(dic_binarya, wordAux.significado, '\0');  
+        dic_binarya.read((char*)&wordAux.deleted, sizeof(bool));
+
+        // Obter o endereço do final da estrutura
+        enderecoFim = dic_binarya.tellg();
+
+        // Calcular o tamanho da estrutura em bytes
+        tamanho = enderecoFim - enderecoInicio;
+
+        palavraTrie = wordAux.palavra; 
+        posicaoTrie = enderecoInicio; 
+        
+        insertT(palavraTrie, posicaoTrie); 
+
+
+        Trie auxPrint; 
+        streampos auxPos = -1; 
+        
+        testeTRIE << palavraTrie << endl;
+        auxPos = searchT(palavraTrie);
+        //testeTRIE << auxPos; 
+        auxPrint = readInArqT(auxPos); 
+        testeTRIE << auxPrint.pos << endl << endl; 
+    
+    }
+
+    testeTRIE.close();
+    
+    dic_binarya.close(); 
+    return 0;
+
+
+/*
     Trie auxPrint; 
     streampos auxPos = -1; 
 
-    Trie rootTrie = initT(); 
 
-    root = putInArqT(rootTrie);
 
-    insert("hello",2);
+    insertT("hello",2);
 
     auxPos = searchT("hello");
     cout << "o "; 
@@ -179,7 +252,7 @@ int criaTrie() {
     cout << auxPrint.pos << " ";  
 
  
-    insert("helloworld",4);
+    insertT("helloworld",4);
     auxPos = searchT("helloworld");
     cout << "o "; 
     //cout << auxPos; 
@@ -187,21 +260,21 @@ int criaTrie() {
     cout << auxPrint.pos << " ";  
  
  
-    insert("hell",5);
+    insertT("hell",5);
     auxPos = searchT("hell");
     cout << "o "; 
     //cout << auxPos;     
     auxPrint = readInArqT(auxPos); 
     cout << auxPrint.pos << " ";
  
-    insert("h",6);
+    insertT("h",6);
     auxPos = searchT("h");
     cout << "o "; 
     //cout << auxPos;     
     auxPrint = readInArqT(auxPos); 
     cout << auxPrint.pos << " "; 
     cout << endl;
- 
+ */
  
     return 0;
 }
