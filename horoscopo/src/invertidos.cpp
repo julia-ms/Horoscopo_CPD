@@ -201,6 +201,9 @@ void writeEntryPosition(string filename, Entry newEntry, streampos pos) {
         return;
     }
 
+    pos = pos/sizeof(Entry); 
+
+
     // Calcule o tamanho do arquivo em bytes.
     file.seekg(0, std::ios::end);
     streampos file_size = file.tellg();

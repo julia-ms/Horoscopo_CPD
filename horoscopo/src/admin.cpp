@@ -77,7 +77,7 @@ int includeWord(){
 
         break;
     case 2 :
-        word.classe = "s.."; 
+        word.classe = "s."; 
         insertInverted(newEntry, "../invertidos/substantivos.bin"); 
 
         break;
@@ -96,7 +96,7 @@ int includeWord(){
         break;
     }
 
-    cout << "Arquivo inserido com sucesso!"; 
+    cout << "Arquivo inserido com sucesso! Agora tenho: " << readNumEntry() << "registros."; 
 
     return 0;
 }

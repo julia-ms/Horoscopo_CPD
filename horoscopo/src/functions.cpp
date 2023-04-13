@@ -45,6 +45,7 @@ int fillFile(string arq_data_is, string arq_binary_is){
         ID++; 
     }
 
+    ID = ID - 1; 
     updateNumEntrys(ID); 
     
     //fechamento de todos os arquivos abertos 
@@ -123,26 +124,19 @@ int readFile(string arq_binary_is){
 //insere Word ao final e retorna o endereco de insercao
 streampos insertWordFinal(Word word) {
     streampos addressWord; 
-    int ID; 
 
     //atualizo o ID da palavra a ser inserida
-    word.ID = ID; 
 
     ofstream dic_binary_insert("../data/dictionary.bin", ios_base::binary | ios_base::app);
 
     if (!dic_binary_insert) {                                  
         return -1;
     }                
+    
 
-
-    int ba;
-    addressWord = dic_binary_insert.tellp();
-    ba = addressWord; 
-
-    //addressWord = addressWord - sizeof(Word);
-    ba = ba - sizeof(Word);
-
-    addressWord = ba; 
+    // Verifica o tamanho do arquivo para pegar a posicao de insercao
+    dic_binary_insert.seekp(0, ios::end);
+    addressWord = dic_binary_insert.tellp(); 
 
     dic_binary_insert.write((char*)&word.ID, sizeof(int));
     dic_binary_insert.write(word.palavra.c_str(), word.palavra.size() + 1);
@@ -152,8 +146,11 @@ streampos insertWordFinal(Word word) {
     dic_binary_insert.write(word.significado.c_str(), word.significado.size() + 1);
     dic_binary_insert.write((char*)&word.deleted, sizeof(bool));
 
+
+
     dic_binary_insert.close(); 
 
+    cout << "aqui quando eu insiro to retornando: " << addressWord << endl; 
     return addressWord;                              
 }
 

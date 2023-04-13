@@ -79382,6 +79382,14 @@ tessálico
 tessálio
 11562485
 
+94411
+testeAdj1
+12542595
+
+-1
+testeAdj2
+12542639
+
 87552
 tessalonicense
 11562594
