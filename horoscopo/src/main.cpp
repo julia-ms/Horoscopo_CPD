@@ -14,20 +14,27 @@ int main(int arqc, char* argv[]) {
   tuple<int, int, int, int> tam;            //tamAdj, tamSub, tamVer, tamPrep; 
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
 
-  //PARTE PARA CRIACAO 
-  //string arq_data_is = argv[1];
-  //string arq_binary_is = argv[2];
-  //fillFile(arq_data_is, arq_binary_is);
-  
-  //get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
-  //get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
-  //get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
-  //get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
-  //readInverted("../invertidos/adjetivos.bin"); 
-  //saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));
 
- 
- 
+  //cria os arquivos binarios e de índice caso eles nao existam
+
+  ifstream arquivo("dictionary.bin", ios::binary);
+  if (arquivo.is_open()) {
+      //ja existe
+      arquivo.close();
+  } 
+  else {
+    //PARTE PARA CRIACAO 
+    string arq_data_is = argv[1];
+    string arq_binary_is = argv[2];
+    fillFile(arq_data_is, arq_binary_is);
+    get<0>(tam) = generateInverted("adj.", "../invertidos/adjetivos.bin");
+    get<1>(tam) = generateInverted("s.", "../invertidos/substantivos.bin");
+    get<2>(tam) = generateInvertedVerb("../invertidos/verbos.bin");
+    get<3>(tam) = generateInverted("prep.", "../invertidos/preposicoes.bin");
+    //readInverted("../invertidos/adjetivos.bin"); 
+    saveInt(get<0>(tam), get<1>(tam), get<2>(tam), get<3>(tam));     
+  }
+
   //TODO O TRABALHO AQUI 
 
   //variaveis de controle de arquivos invertidos
@@ -37,6 +44,9 @@ int main(int arqc, char* argv[]) {
   int badTip = 0; 
   int stillBad = 0; 
   int opDelete = 0; 
+
+
+/* INICIO DO TESTEEEEE
 
   //structs auxiliares
   Entry auxPrint; 
@@ -273,13 +283,61 @@ else if (modo == 2) {
   readFile("../data/dictionary.bin"); 
 
 
-  cout << "testando"; 
-  int posDelete = binarySearchPos("../invertidos/adjetivos.bin", "torrejano");
+//FIM DE TESTEEEE
+*/
+
+  Entry testando; 
+  int posDelete;
+
+  
+  cout << "Testando busca binária adj: "; 
+  posDelete = binarySearchPos("../invertidos/adjetivos.bin", "voluntarista");
+  cout << " e nessa posicao esta: "; 
+  testando = findInverted(posDelete, "../invertidos/adjetivos.bin");
+  testando.entryWord.wPrint(); 
+  cout << endl; 
+
+  
+  cout << "Testando busca binária subs: "; 
+  posDelete = binarySearchPos("../invertidos/substantivos.bin", "goles");
   cout << posDelete; 
+  cout << endl; 
+  cout << " e nessa posicao esta: "; 
+  testando = findInverted(posDelete, "../invertidos/substantivos.bin");
+  testando.entryWord.wPrint(); 
+  cout << endl; 
+
+  
+  cout << "Testando busca binária pron: "; 
+  posDelete = binarySearchPos("../invertidos/preposicoes.bin", "sobre");
+  cout << posDelete; 
+  cout << endl; 
+  cout << " e nessa posicao esta: "; 
+  testando = findInverted(posDelete, "../invertidos/preposicoes.bin");
+  testando.entryWord.wPrint(); 
+  cout << endl; 
+
+  
+  cout << "Testando busca binária verbs: "; 
+  posDelete = binarySearchPos("../invertidos/verbos.bin", "repensar");
+  cout << posDelete; 
+  cout << endl; 
+  cout << " e nessa posicao esta: "; 
+  testando = findInverted(posDelete, "../invertidos/verbos.bin");
+  testando.entryWord.wPrint(); 
+  cout << endl; 
+
+  
 
   return 0;
 
+//VOU TESTAR A BUSCA BINÁRIA
+
+
+
 }
+
+
 
 
 //espaco para testar funcoes de busca e insersao direto no dicionario

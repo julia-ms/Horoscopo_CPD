@@ -104,6 +104,8 @@ int updateEntry (Entry newEntryValue, string nomeArq, streampos pos);
 Entry binarySearchWord(string nomeArq, string targetWord);
 streampos binarySearchPos(string nomeArq, string targetWord); 
 void writeEntryPosition(string filename, Entry newEntry, streampos pos); 
+
+
 //FUNCTIONS HOROSCOPO
 int horoscopo();
 int generateRandom(int fator, int tam); 
@@ -119,9 +121,9 @@ int writeList(int op);
 int writeListReverse(int op);
 
 //functions index
-int invertido();    
-int classeInt(string auxclasse);
-int lerIndex(string classe, int id);
+//int invertido();    
+//int classeInt(string auxclasse);
+//int lerIndex(string classe, int id);
 
 
 

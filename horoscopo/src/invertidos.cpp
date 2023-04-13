@@ -205,11 +205,16 @@ void writeEntryPosition(string filename, Entry newEntry, streampos pos) {
     file.seekg(0, std::ios::end);
     streampos file_size = file.tellg();
 
+    //calcula tamanho da entrada
+    int sizeEntrada = sizeof(Entry); 
+    
     // Verifique se a posição de escrita está dentro do arquivo.
     if (pos > file_size / sizeof(Entry)) {
         std::cerr << "Posição de escrita inválida." << std::endl;
         return;
     }
+
+
 
     // Desloque os registros existentes para baixo a partir da posição de escrita.
     std::size_t num_records_to_shift = file_size / sizeof(Entry) - pos;
@@ -221,9 +226,13 @@ void writeEntryPosition(string filename, Entry newEntry, streampos pos) {
     std::streampos tamanhoAtual = file.tellp();
 
     //coloca o ponteiro de leitura no final menos 1 entrada
-    file.seekg(tamanhoAtual-sizeof(Entry)); 
+    int tamanhoAtualInt = tamanhoAtual;
+    int posicaoPointer; 
+    posicaoPointer = tamanhoAtualInt-sizeEntrada; 
+    file.seekg(posicaoPointer); 
 
     streampos posAtual; 
+    int posAtualInt; 
 
     for (size_t i = 0; i < num_records_to_shift; i++) {
         // Posicione o ponteiro de leitura/gravação no registro anterior.
@@ -242,11 +251,16 @@ void writeEntryPosition(string filename, Entry newEntry, streampos pos) {
         file.read((char*)&prev_entry, sizeof(Entry));
 
         //vou um na frente e escrevo la  
-        file.seekp(posAtual + sizeof(Entry)); 
+        posAtualInt = posAtual;
+        posAtualInt = posAtualInt + sizeof(Entry); 
+        file.seekp(posAtualInt); 
         file.write((char*)&prev_entry, sizeof(Entry)); 
 
+        
+        posAtualInt = posAtual;
+        posAtualInt = posAtualInt - sizeof(Entry); 
         //volto pra ler um atras
-        file.seekg(posAtual-sizeof(Entry)); 
+        file.seekg(posAtualInt); 
     }
 
     // Posicione o ponteiro de gravação no novo registro.
@@ -398,7 +412,12 @@ streampos binarySearchPos(string nomeArq, string targetWord) {
     streampos low = 0;
     streampos high = fileSize / sizeof(Entry) - 1;
 
+    int lowInt; 
+    int highInt; 
+
+
     streampos mid; 
+    int midInt; 
 
     while (low <= high) {
         // Calcula o meio do intervalo
@@ -421,11 +440,19 @@ streampos binarySearchPos(string nomeArq, string targetWord) {
             // target eh maior que midEntry quando retorna menor que 0
             // A palavra-alvo é maior que a palavra-chave do registro do meio,
             // portanto a busca deve continuar na metade superior do intervalo
-            low = mid + 1;
+            lowInt = low; 
+            midInt = mid; 
+            lowInt = midInt + 1; 
+
+            low = lowInt;
         } else {
             // A palavra-alvo é menor que a palavra-chave do registro do meio,
             // portanto a busca deve continuar na metade inferior do intervalo
-            high = mid - 1;
+            highInt = high; 
+            midInt = mid; 
+            highInt = midInt - 1; 
+
+            high = highInt;
         }
     }
 
