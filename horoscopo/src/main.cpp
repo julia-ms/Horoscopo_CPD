@@ -4,6 +4,15 @@
 
 using namespace std;
 
+
+int main(){
+
+  trie();
+
+ 
+  return 0;
+}
+/*
 // Declaração de função principal
 int main(int arqc, char* argv[]) {
   
@@ -284,3 +293,4 @@ else if (modo == 2) {
 
 //espaco para testar funcoes de busca e insersao direto no dicionario
 
+*/

@@ -123,6 +123,19 @@ int invertido();
 int classeInt(string auxclasse);
 int lerIndex(string classe, int id);
 
+//function trie
+
+struct TrieNode {
+    TrieNode *children[26];
+    Entry *entry;
+};
+
+
+int trie();
+void insertWord(TrieNode *root, const std::string &word, std::streampos pos, int id);
+void printTrie(TrieNode *root);
+
+
 
 
 #endif // BIB_H
