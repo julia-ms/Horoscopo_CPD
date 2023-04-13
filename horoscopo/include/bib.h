@@ -17,6 +17,8 @@ using namespace std;
 
 const int t = 6; 
 
+
+
 #define CHAR_SIZE 128
 
 

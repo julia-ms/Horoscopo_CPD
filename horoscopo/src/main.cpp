@@ -46,6 +46,7 @@ int main(int arqc, char* argv[]) {
   int stillBad = 0; 
   int opDelete = 0; 
 
+/*CRIA ARVORE TRIE --> NAO USAR MTO LENTO
   criaTrie(); 
 
   Trie auxPrint; 
@@ -56,6 +57,37 @@ int main(int arqc, char* argv[]) {
   //cout << auxPos; 
   auxPrint = readInArqT(auxPos); 
   cout << auxPrint.pos << " "; 
+
+*/
+
+  Trie auxPrint; 
+  streampos auxPos = -1; 
+
+
+  auxPos = searchT("horrendo");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " ";
+
+  auxPos = searchT("nervura");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " ";
+
+    auxPos = searchT("tarso");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " ";
+
+    auxPos = searchT("arrear");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " ";
+
 /*
 
 // INICIO DO TESTEEEEE

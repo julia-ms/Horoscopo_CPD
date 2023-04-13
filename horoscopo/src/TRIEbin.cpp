@@ -4,7 +4,6 @@ using namespace std;
  
 // Define o tamanho do caractere
  
-
 streampos root = -1; 
 
 
@@ -122,6 +121,8 @@ void insertT(string key, streampos pos) {
 // Função iterativa para pesquisar uma chave em um Trie. Ele retorna verdadeiro
 // se a chave for encontrada no Trie; caso contrário, retorna falso
 streampos searchT(string key) {
+
+    root = 0;
     //nao sei o que fazer com isso aq
 
     // retorna -1 se Trie estiver vazio
