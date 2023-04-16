@@ -17,6 +17,11 @@ using namespace std;
 
 const int t = 6; 
 
+
+
+#define CHAR_SIZE 128
+
+
 //structs 
 
 struct Word {
@@ -50,7 +55,12 @@ struct Entry {
     int ID; 
 };
 
-
+//Trie declarationn
+struct Trie {
+    bool isLeaf;
+    streampos character[CHAR_SIZE];
+    streampos pos;
+};
 
 //FUNCOES
 
@@ -83,6 +93,14 @@ void lerInteiros(int& a, int& b, int& c, int& d);
 int updateNumEntrys(int actualID);
 int readNumEntry(); 
 
+//FUNCTIONS TRIE
+Trie initT();
+streampos putInArqT(Trie trie);
+Trie readInArqT(streampos pos);
+int swapStructT(streampos posi, Trie trie); 
+void insertT(string key, streampos pos);
+streampos searchT(string key); 
+int criaTrie(); 
 
 //FUNCTIONS BTREE
 Node init(); 
@@ -119,6 +137,7 @@ int excludeWord();
 int listWords();
 int writeList(int op);
 int writeListReverse(int op);
+void buscaSignificado(); 
 
 //functions index
 //int invertido();    

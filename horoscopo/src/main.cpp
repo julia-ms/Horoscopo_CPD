@@ -15,6 +15,7 @@ int main(int arqc, char* argv[]) {
   tuple<streampos, streampos, streampos, streampos, string> posTuple;    //addressAdj, addressSub, addressVer, addressPrep;   
 
 
+
   //cria os arquivos binarios e de índice caso eles nao existam
 
   ifstream arquivo("../data/dictionary.bin", ios::binary);
@@ -45,6 +46,19 @@ int main(int arqc, char* argv[]) {
   int stillBad = 0; 
   int opDelete = 0; 
 
+/*CRIA ARVORE TRIE --> NAO USAR MTO LENTO
+  criaTrie(); 
+
+  Trie auxPrint; 
+  streampos auxPos = -1; 
+  
+  auxPos = searchT("com");
+  cout << "o "; 
+  //cout << auxPos; 
+  auxPrint = readInArqT(auxPos); 
+  cout << auxPrint.pos << " "; 
+
+*/
 
 
 // INICIO DO TESTEEEEE
@@ -229,7 +243,7 @@ home:
 
 else if (modo == 2) {
   int op;
-  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palavra nova\n2 - Excluir uma palavra existente\n3 - Listar todas as palavras presentes no banco de dados" << endl;
+  cout << "Essa é a página do administrador. O que deseja fazer?\n1 - Incluir uma palavra nova\n2 - Excluir uma palavra existente\n3 - Listar todas as palavras presentes no banco de dados\n4 - Buscar significado de uma palavra" << endl;
   cout << "Para sair aperte qualquer tecla." << endl;
   cout << "Insira opção: ";
   cin >> op;
@@ -261,6 +275,17 @@ else if (modo == 2) {
     else 
       goto saida;
   }
+  else if(op == 4) {
+    buscaSignificado(); 
+      cout << "Digite 1 para voltar para Home. Outro valor para sair." << endl; 
+    cin >> newTry; 
+    if (newTry ==  1)
+      goto home; 
+    else 
+      goto saida;
+  }
+
+
   else goto saida;
 }
 
@@ -337,10 +362,6 @@ else if (modo == 2) {
   */
 
   return 0;
-
-//VOU TESTAR A BUSCA BINÁRIA
-
-
 
 }
 
