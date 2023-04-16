@@ -137,6 +137,7 @@ int excludeWord();
 int listWords();
 int writeList(int op);
 int writeListReverse(int op);
+void buscaSignificado(); 
 
 //functions index
 //int invertido();    

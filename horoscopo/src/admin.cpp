@@ -2,6 +2,32 @@
 
 using namespace std;
 
+
+void buscaSignificado() {
+    
+    string palavra; 
+    Word auxWord; 
+
+    cout << endl << "Digite a palavra que você quer saber o significado: "; 
+    cin >> palavra;     
+    
+    Trie auxPrint; 
+    streampos auxPos = -1; 
+
+    //busca endereco
+    auxPos = searchT(palavra);
+    auxPrint = readInArqT(auxPos); 
+    
+    //busca WORD
+    auxWord = searchWordAdress(auxPrint.pos);
+
+    cout << "O significado dessa palavra é: " << endl; 
+
+    cout << auxWord.significado << endl << endl; 
+
+}
+
+
 Word newUserWord() {
     Word newWord;
     string palavra;
@@ -66,6 +92,14 @@ int includeWord(){
     word = newUserWord(); 
     posicao = insertWordFinal(word); 
 
+    //verifica se ja existe palavra
+    if (searchT(word.palavra) != -1) {
+         cout << "A palavra ja existe!";
+         cout << endl;  
+         return 0; 
+    }
+
+
     newEntry.entryWord.fromString(word.palavra); 
     newEntry.ID = word.ID;
     newEntry.pos = posicao; 
@@ -97,6 +131,9 @@ int includeWord(){
     }
 
     cout << "Arquivo inserido com sucesso! Agora tenho: " << readNumEntry() << "registros."; 
+
+    //insere na TRIE
+    //insertT(word.palavra, posicao); 
 
     return 0;
 }
